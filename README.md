@@ -9,7 +9,7 @@ Este documento establece las convenciones de escritura de código, organización
 ### 1. Organización del Workspace y del Proyecto
 
 - **Workspace**: Usaremos Eclipse como entorno de desarrollo, y el *workspace* contendrá una carpeta para el proyecto que servirá como repositorio de Git. La estructura será:
-  
+```
     /workspace
     └── TPINT_GRUPO_X_LAB4                 # Carpeta raíz del proyecto
         ├── src
@@ -42,7 +42,7 @@ Este documento establece las convenciones de escritura de código, organización
         ├── TPINT documentation.docx        # Documento con el progreso de las pantallas y la base de datos del trabajo integrador
         ├── DER.png                         # Imagen del DER DDBB
         └── pom.xml                         # Configuración del proyecto Maven (si se usa Maven)
-
+```
 
 ### 2. Convenciones de Estilo de Código
 
