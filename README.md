@@ -13,7 +13,7 @@ Este documento establece las convenciones de escritura de código, organización
     /workspace
     └── TPINT_GRUPO_X_LAB4                 # Carpeta raíz del proyecto
         ├── src
-        │   └── tp.integrador               # Paquete principal del proyecto
+        │   └── integrador               # Paquete principal del proyecto
         │       ├── controller              # Controladores
         │       │   ├── Archivo.java
         │       │   └── Etc...
