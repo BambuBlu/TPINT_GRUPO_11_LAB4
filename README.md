@@ -121,8 +121,6 @@ Se añade la funcionalidad para agregar, buscar, modificar y eliminar clientes e
 
 #### 5 Buenas Prácticas Generales
 
-- **Documentación**: Cada cambio importante o funcionalidad nueva debe documentarse en el README.md o en documentos de diseño en la carpeta /docs.
-
 - **Refactorización**: Cuando se cambien nombres o estructura de clases, asegúrate de que las pruebas y la funcionalidad existente se mantengan.
 
 - **Revisión de Código**: Antes de hacer un merge en la rama principal, al menos otro miembro del equipo debería revisar los cambios.
