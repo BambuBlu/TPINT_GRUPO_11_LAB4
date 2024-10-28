@@ -40,8 +40,7 @@ Este documento establece las convenciones de escritura de código, organización
         ├── .gitignore                      # Archivos y carpetas a ignorar en Git
         ├── README.md                       # Documentación del proyecto
         ├── TPINT documentation.docx        # Documento con el progreso de las pantallas y la base de datos del trabajo integrador
-        ├── DER.png                         # Imagen del DER DDBB
-        └── pom.xml                         # Configuración del proyecto Maven (si se usa Maven)
+        └── DER.png                         # Imagen del DER DDBB
 ```
 
 ### 2. Convenciones de Estilo de Código
