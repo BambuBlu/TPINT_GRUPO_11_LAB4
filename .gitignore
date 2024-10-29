@@ -57,3 +57,4 @@ Thumbs.db
 *.tmp
 *.orig
 *.rej
+/build/

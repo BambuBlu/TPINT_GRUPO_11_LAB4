@@ -21,7 +21,6 @@ public class Cliente {
     private String email;                  // Correo electrónico del cliente
     private String telefono;               // Teléfono de contacto del cliente
     private String estado;                 // Estado del cliente (activo/inactivo)
-    // Falta implementacion
     private ArrayList<Cuenta> cuentas;     // Lista de cuentas del cliente
 
     /**
@@ -189,4 +188,3 @@ public class Cliente {
                 + estado + ", cuentas=" + cuentas + "]";
     }
 }
-Cambios Reali
