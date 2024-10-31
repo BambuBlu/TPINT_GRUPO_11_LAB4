@@ -7,7 +7,6 @@ public class Provincia {
 
     private int id;                // Identificador de la provincia
     private String nombre;         // Nombre de la provincia
- // Falta implementacion
     private Pais pais;             // País al que pertenece la provincia
 
     /**
