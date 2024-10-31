@@ -122,7 +122,7 @@
                 <input type="submit" name="btnInicioSesion" value="Iniciar sesión" class="btn">
             </div>
             <div class="form-group">
-                <a href="servletCliente?CrearCliente=1">Crear usuario</a>
+                <a href="Register.jsp">Crear usuario</a>
             </div>
         </form>
     </div>
