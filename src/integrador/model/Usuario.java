@@ -7,7 +7,7 @@ Esta clase representa el usuario del cliente.
 Cuenta con el dni como referencia al cliente como clave unica y sus respectivos atributos
 */
 public class Usuario {
-	
+	private int id_Usaurio;
 	private String nombreUsuario;
 	private String contrasena;
 	private Cliente cliente;
@@ -44,6 +44,12 @@ public class Usuario {
 	}
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+	public int getId_Usaurio() {
+		return id_Usaurio;
+	}
+	public void setId_Usaurio(int id_Usaurio) {
+		this.id_Usaurio = id_Usaurio;
 	}
 	
 }
