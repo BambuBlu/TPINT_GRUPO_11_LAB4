@@ -109,14 +109,14 @@
 		<!-- Por ahora se dejara de placeholder este div -->
 		<div class="error-message">Mensaje de error aquí</div>
 		
-        <form action="servletCliente" method="post">
+        <form action="ServletLogin" method="post">
             <div class="form-group">
                 <label for="txtNombre">Nombre de Usuario</label>
                 <input type="text" id="txtNombre" name="txtNombre" required maxlength="50">
             </div>
             <div class="form-group">
                 <label for="txtcontrasenia">Contraseña</label>
-                <input type="password" id="txtcontrasenia" name="txtcontrasenia" required>
+                <input type="password" id="txtContrasenia" name="txtcontrasenia" required>
             </div>
             <div class="form-group">
                 <input type="submit" name="btnInicioSesion" value="Iniciar sesión" class="btn">
