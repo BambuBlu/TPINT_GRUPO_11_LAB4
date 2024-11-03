@@ -189,6 +189,7 @@
             <label>Dirección:</label><input type="text" id="direccion" name="direcicon" value="<%= request.getAttribute("direccion") %>">
             <label>Email:</label><input type="email" id="email" name="email" value="<%= request.getAttribute("email") %>">
             <label>Teléfono:</label><input type="text" id="phone" name="phone" value="<%= request.getAttribute("phoneNumber") %>">
+            <label for="password">Contraseña:</label><input type="password" id="password" name="password" value="<%= request.getAttribute("password") %>">
         </div>
         	
         	   <div class="usuario">
