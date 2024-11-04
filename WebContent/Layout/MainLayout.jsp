@@ -19,17 +19,19 @@
 <body>
 	<!-- Esta pagina master va a servir para poder utilizarlo mas comodamente sobre las distintas paginas para matener una navegacion limpia  -->
 	<div
-		class="fixed-top w-100 bg-dark bg-opacity-75 shadow-lg d-flex justify-content-between align-items-center">
-		<img width="68" height="68"
-			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
-			alt="Logo Banco" />
+		class="fixed-top w-100 bg-dark shadow-lg d-flex justify-content-between align-items-center">
 
 		<%
 			Usuario usuarioActual = (Usuario) session.getAttribute("SessionActual");
 			if (usuarioActual != null && usuarioActual.getRol() == Roles.ADMIN) {
 		%>
+		<a href="./AdminMainPage.jsp"> <img width="68" height="68"
+			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
+			alt="Logo Banco" style="cursor: pointer;" />
+		</a>
+
 		<div class="d-flex justify-content-center align-items-center gap-3">
-			<a href="#" class="btn-main"> <img
+			<a href="./AdminUserList.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Lista Clientes Activos">
 				<p>Lista Clientes Activos</p>
@@ -57,18 +59,28 @@
 		</div>
 		<%
 			} else if (usuarioActual != null
-					&& (usuarioActual.getRol() == Roles.CLIENTE || usuarioActual.getRol() == Roles.ADMIN)) {
+					&& usuarioActual.getRol() == Roles.CLIENTE) {
 		%>
+		<a href="./MainPage.jsp"> <img width="68" height="68"
+			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
+			alt="Logo Banco" style="cursor: pointer;" />
+		</a>
+
+
 		<div class="d-flex justify-content-center align-items-center gap-3">
-			<a href="#" class="btn-main"> <img
+			<a href="./AccountMovements.jsp" class="btn-main"> <img
+				src="https://img.icons8.com/parakeet/48/checklist.png"
+				alt="Transferencias">
+				<p>Movimientos</p>
+			</a> <a href="./Transfers.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
 				<p>Transferencias</p>
-			</a> <a href="#" class="btn-main"> <img
+			</a> <a href="./Loans.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitar Préstamo">
 				<p>Préstamos</p>
-			</a> <a href="#" class="btn-main"> <img
+			</a> <a href="./ApplyLoan.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitar Préstamo">
 				<p>Solicitar Préstamos</p>
@@ -77,9 +89,13 @@
 		<%
 			}
 		%>
-		<img width="70" height="70"
+		<a href="./Profile.jsp"
+			style="text-decoration: none; margin: 10px 10px 0 0"> <img
+			width="50" height="50"
 			src="https://img.icons8.com/3d-fluency/94/user-male-circle.png"
 			alt="Imagen Usuario" />
+			<p class="text-center text-white fw-semibold"><%=usuarioActual.getNombreUsuario()%></p>
+		</a>
 	</div>
 </body>
 </html>

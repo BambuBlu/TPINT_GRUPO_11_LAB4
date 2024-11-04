@@ -30,13 +30,15 @@ body, html {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+	background-color: #79d7e7;
+	
 }
 
 .contenedor {
 	background-color: #ffffff;
 	padding: 30px;
 	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
 	width: 100%;
 	max-width: 600px;
 	box-sizing: border-box;
@@ -133,22 +135,13 @@ footer {
 </style>
 </head>
 <body>
-	<nav>
-		<%@include file="Layout/MainLayout.jsp"%>
-	</nav>
 
 	<div class="main">
+		<nav>
+			<%@include file="Layout/MainLayout.jsp"%>
+		</nav>
 		<div class="contenedor">
-			<h1>Inicio</h1>
-
-			<!-- Info de usuario y cierre de sesión -->
-			<div class="usuario">
-				<a href="#">Nombre Apellido</a>
-				<div class="cerrar-sesion">
-					<button class="btn">Cerrar sesión</button>
-				</div>
-			</div>
-
+			<h1>Inicio</h1>			
 			<!-- Info de cuentas -->
 			<div class="informacion-cuenta">
 				<div class="cuenta">

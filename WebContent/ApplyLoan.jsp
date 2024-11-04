@@ -19,13 +19,14 @@
 			justify-content: center;
 			align-items: center;
 			min-height: 100vh;
+			background-color: #79d7e7;
 		}
 		
 		.contenedor {
 			background-color: #ffffff;
 			padding: 30px;
 			border-radius: 10px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+			box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
 			width: 100%;
 			max-width: 600px;
 			box-sizing: border-box;
@@ -118,13 +119,6 @@
 	<div class="main">
 		<div class="contenedor">
 			<h1>Solicitud de Préstamos</h1>
-
-			<div class="usuario">
-				<a href="#">Nombre Apellido</a>
-				<form method="post">
-					<input type="submit" class="btn-submit" value="Cerrar sesión" name="btnLogout">
-				</form>             
-			</div>
 			
 			<!-- Formulario de solicitud de préstamo -->
 			<form method="post" class="formulario-prestamo">

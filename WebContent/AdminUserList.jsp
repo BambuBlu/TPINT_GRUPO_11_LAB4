@@ -1,163 +1,173 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="integrador.model.Usuario" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="integrador.model.Usuario"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Listado de Clientes Activos</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 <style>
-    /* Body */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #e0f7fa;
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
+/* Body */
+.body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #79d7e7;
+	margin: 0;
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
 
-    .contenedor {
-        background-color: #ffffff;
-        padding: 30px; 
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        max-width: 1500px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+.contenedor {
+	background-color: #ffffff;
+	border-radius: 10px;
+	padding: 30px;
+	box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
+	width: 100%;
+	max-width: auto;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 300px
+}
 
-    h1 {
-        text-align: center;
-        color: #00796b; 
-        font-size: 1.8em;
-        margin-bottom: 20px;
-    }
+h1 {
+	text-align: center;
+	color: #00796b;
+	font-size: 1.8em;
+	margin-bottom: 20px;
+}
 
-    .menu {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
+.menu {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin-bottom: 20px;
+}
 
-    .menu a {
-        color: #00796b; 
-        text-decoration: none;
-        padding: 10px 15px;
-        background-color: white;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
+.menu a {
+	color: #00796b;
+	text-decoration: none;
+	padding: 10px 15px;
+	background-color: white;
+	border-radius: 5px;
+	transition: background-color 0.3s;
+}
 
-    .menu a:hover {
-        background-color: #f0f0f0;
-    }
+.menu a:hover {
+	background-color: #f0f0f0;
+}
 
-    .usuario {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        margin-top: 20px;
-        border-top: 1px solid #ccc;
-        width: 100%;
-    }
+.usuario {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	margin-top: 20px;
+	border-top: 1px solid #ccc;
+	width: 100%;
+}
 
-    .btn {
-        background-color: #00796b; 
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-    }
+.btn {
+	background-color: #00796b;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	text-align: center;
+}
 
-    .btn:hover {
-        background-color: #004d40; 
-    }
+.btn:hover {
+	background-color: #004d40;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;       
-    }
+.table-container {
+	border-radius: 10px;
+	border: 4px solid #2196F3;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: #595C5F;
+}
 
-    table, th, td {
-        border: 1px solid #ccc;
-    }
+.tabla {
+	width: 100%;
+	background-color: #595C5F;
+	color: white;
+	font-size: 15px;
+	border-collapse: collapse;
+	height: inherit;
+	margin: 0px 100px 0 100px;
+}
 
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f4f4f9; 
-    }
+tr {
+	background-color: #595C5F;
+}
 </style>
 </head>
 <body>
-	<nav>
+
+	<div class="body">
 		<%@include file="Layout/MainLayout.jsp"%>
-	</nav>
-	
-    <div class="contenedor">
-        <h1>Listado de Clientes Activos</h1>
+		<div class="contenedor">
+			<h1>Listado de Clientes Activos</h1>
 
-        <div class="usuario">
-            <a href="#">Nombre Usuario </a>
-            <button class="btn">Cerrar sesión</button>
-        </div>
-
-        <table id="table_id" class="display">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Usuario</th>
-                    <th>Estado </th>
-                    <th>Funcionalidades</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                        <%  Usuario usuarios = new Usuario();
-                        
-                       //  for (let i = 0; i < usuarios.length; i++) {  %>
-                        
-                        
-                      <%// } %>
-                <!-- SIN DATOS AUN -->
-                <tr>
-                    <td>1</td>
-                    <td>12345678</td>
-                    <td>Con Deuda</td>
-                    <td><button>Dar de baja</button> <button>Modificar datos</button></td>
-                </tr>
-                <tr>
-                     <td>2</td>
-                    <td>910111213</td>
-                    <td>Sin Deuda</td>
-                    <td><button>Dar de baja</button> <button>Modificar datos</button></td>
-                </tr>
-                
-            </tbody>
-        </table>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#table_id').DataTable({
-                "dom" : '<"top"i>rt<"bottom"lp><"clear">',
-            });
-        });
-    </script>
+			<div class="table-container">
+				<table class="tabla">
+					<thead>
+						<tr class="text-center fw-bolder fs-5">
+							<th>Id</th>
+							<th>Usuario</th>
+							<th>Estado</th>
+							<th>Funcionalidades</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-center">
+							<td>1</td>
+							<td>12345678</td>
+							<td>Con Deuda</td>
+							<td><button class="btn btn-danger shadow-lg fw-bolder">Dar
+									de baja</button>
+								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
+									datos</button></td>
+						</tr>
+						<tr class="text-center">
+							<td>2</td>
+							<td>910111213</td>
+							<td>Sin Deuda</td>
+							<td><button class="btn btn-danger shadow-lg fw-bolder">Dar
+									de baja</button>
+								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
+									datos</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#table_id').DataTable({
+				"dom" : '<"top"i>rt<"bottom"lp><"clear">',
+			});
+		});
+	</script>
 </body>
 </html>
