@@ -94,7 +94,9 @@
 			width="50" height="50"
 			src="https://img.icons8.com/3d-fluency/94/user-male-circle.png"
 			alt="Imagen Usuario" />
-			<p class="text-center text-white fw-semibold"><%=usuarioActual.getNombreUsuario()%></p>
+			<p class="text-center text-white fw-semibold">
+    <%= usuarioActual != null ? usuarioActual.getNombreUsuario() : "Usuario no disponible" %>
+</p>
 		</a>
 	</div>
 </body>
