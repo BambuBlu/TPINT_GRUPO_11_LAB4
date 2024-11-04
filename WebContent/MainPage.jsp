@@ -128,35 +128,6 @@
             </div>
         </div>
 
-        <!-- Sección de movimientos recientes -->
-        <h2>Movimientos recientes</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Descripción</th>
-                    <th>Monto</th>
-                    <th>Fecha</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Depósito</td>
-                    <td>$5000</td>
-                    <td>01/11/2024</td>
-                </tr>
-                <tr>
-                    <td>Pago de servicios</td>
-                    <td>$1000</td>
-                    <td>30/10/2024</td>
-                </tr>
-                <tr>
-                    <td>Transferencia recibida</td>
-                    <td>$2000</td>
-                    <td>28/10/2024</td>
-                </tr>
-            </tbody>
-        </table>
-
         <!-- Botones para solicitar préstamo y transferir dinero -->
         <button class="btn" onclick="solicitarPrestamo()">Solicitar Préstamo</button>
         <button class="btn" onclick="transferirDinero()">Transferir Dinero</button>
