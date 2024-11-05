@@ -14,7 +14,7 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Listado de Clientes Activos</title>
+<title>Listado de Clientes</title>
 <style>
 /* Body */
 .body {
@@ -122,7 +122,16 @@ tr {
 	<div class="body">
 		<%@include file="Layout/MainLayout.jsp"%>
 		<div class="contenedor">
-			<h1>Listado de Clientes Activos</h1>
+		
+		<%  String listaClientes = request.getParameter("listaClientes");
+				 if ("listaClientesActivos".equals(listaClientes)) { %>
+				
+			<h1>Listado de Clientes Activos</h1> 
+			
+				<% } else if (listaClientes.equals("listaClientesInactivos")) { %>
+				<h1>Listado de Clientes Inactivos</h1> 
+				<% } %>
+
 
 			<div class="table-container">
 				<table class="tabla">
@@ -135,6 +144,7 @@ tr {
 						</tr>
 					</thead>
 					<tbody>
+				<% if ("listaClientesActivos".equals(listaClientes)) { %>
 						<tr class="text-center">
 							<td>1</td>
 							<td>12345678</td>
@@ -153,6 +163,29 @@ tr {
 								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
 									datos</button></td>
 						</tr>
+						
+						<% } else if (listaClientes.equals("listaClientesInactivos")) { %>
+						
+						<tr class="text-center">
+							<td>1</td>
+							<td>212576647</td>
+							<td>Con Deuda</td>
+							<td><button class="btn btn-danger shadow-lg fw-bolder">Habilitar</button>
+								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
+									datos</button></td>
+						</tr>
+						<tr class="text-center">
+							<td>2</td>
+							<td>55484466</td>
+							<td>Sin Deuda</td>
+							<td><button class="btn btn-danger shadow-lg fw-bolder">Habilitar</button>
+								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
+									datos</button></td>
+						</tr>
+						
+						<% } %>
+						
+						
 					</tbody>
 				</table>
 			</div>

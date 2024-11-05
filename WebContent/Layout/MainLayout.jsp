@@ -23,23 +23,36 @@
 
 		<%
 			Usuario usuarioActual = (Usuario) session.getAttribute("SessionActual");
+			//TEMPORAL, BORRAR LUEGO
+			if (usuarioActual == null) {
+        usuarioActual = new Usuario(); // Crea un nuevo usuario temporalmente
+        usuarioActual.setRol(Roles.ADMIN); // Define rol temporal para pruebas
+        session.setAttribute("SessionActual", usuarioActual); // Guardar en sesión
+    }//TEMPORAL, BORRAR LUEGO
+    
 			if (usuarioActual != null && usuarioActual.getRol() == Roles.ADMIN) {
+			
 		%>
+		
 		<a href="./AdminMainPage.jsp"> <img width="68" height="68"
 			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
 			alt="Logo Banco" style="cursor: pointer;" />
 		</a>
 
 		<div class="d-flex justify-content-center align-items-center gap-3">
-			<a href="./AdminUserList.jsp" class="btn-main"> <img
-				src="https://img.icons8.com/parakeet/48/checklist.png"
-				alt="Lista Clientes Activos">
-				<p>Lista Clientes Activos</p>
-			</a> <a href="#" class="btn-main"> <img
+			<%-- //${pageContext.request.contextPath}/AdminUserList.jsp PARA RUTAS ABSOLUTAS --%>
+			<a href="${pageContext.request.contextPath}/AdminUserList.jsp?listaClientes=listaClientesActivos" class="btn-main">
+    <img src="https://img.icons8.com/parakeet/48/checklist.png" alt="Lista Clientes Activos">
+	    <p>Lista Clientes Activos</p>
+</a>
+
+ <a href="${pageContext.request.contextPath}/AdminUserList.jsp?listaClientes=listaClientesInactivos" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Lista Clientes Inactivos">
-				<p>Lista de Clientes Inactivos</p>
-			</a> <a href="#" class="btn-main"> <img
+				<p>Lista de Clientes Inactivos</p>	
+			</a>
+			
+			 <a href="#" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Crear Cliente">
 				<p>Crear Cliente y Cuentas</p>
