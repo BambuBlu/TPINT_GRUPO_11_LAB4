@@ -22,19 +22,18 @@
 		class="fixed-top w-100 bg-dark shadow-lg d-flex justify-content-between align-items-center">
 
 		<%
-			Usuario usuarioActual = (Usuario) session.getAttribute("SessionActual");
-			//TEMPORAL, BORRAR LUEGO
-			if (usuarioActual == null) {
+		Usuario usuarioActual = (Usuario) session.getAttribute("SessionActual");
+		/*		if (usuarioActual == null) {  //TEMPORAL, BORRAR LUEGO (solo para login por cod.)
         usuarioActual = new Usuario(); // Crea un nuevo usuario temporalmente
         usuarioActual.setRol(Roles.ADMIN); // Define rol temporal para pruebas
         session.setAttribute("SessionActual", usuarioActual); // Guardar en sesión
-    }//TEMPORAL, BORRAR LUEGO
+    }*///TEMPORAL, BORRAR LUEGO 
     
 			if (usuarioActual != null && usuarioActual.getRol() == Roles.ADMIN) {
 			
 		%>
 		
-		<a href="./AdminMainPage.jsp"> <img width="68" height="68"
+		<a href="${pageContext.request.contextPath}/AdminMainPage.jsp"> <img width="68" height="68"
 			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
 			alt="Logo Banco" style="cursor: pointer;" />
 		</a>
@@ -52,7 +51,7 @@
 				<p>Lista de Clientes Inactivos</p>	
 			</a>
 			
-			 <a href="#" class="btn-main"> <img
+			 <a href="${pageContext.request.contextPath}/Register.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Crear Cliente">
 				<p>Crear Cliente y Cuentas</p>
@@ -60,11 +59,11 @@
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Listar Cuentas">
 				<p>Listar Cuentas</p>
-			</a> <a href="#" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/LoanApplicationList.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitudes de Préstamos">
 				<p>Listar Solicitudes de Préstamos</p>
-			</a> <a href="#" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/Statistics.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Estadística">
 				<p>Ver Estadística</p>
@@ -74,26 +73,26 @@
 			} else if (usuarioActual != null
 					&& usuarioActual.getRol() == Roles.CLIENTE) {
 		%>
-		<a href="./MainPage.jsp"> <img width="68" height="68"
+		<a href="${pageContext.request.contextPath}/MainPage.jsp"> <img width="68" height="68"
 			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
 			alt="Logo Banco" style="cursor: pointer;" />
 		</a>
 
 
 		<div class="d-flex justify-content-center align-items-center gap-3">
-			<a href="./AccountMovements.jsp" class="btn-main"> <img
+			<a href="${pageContext.request.contextPath}/AccountMovements.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
 				<p>Movimientos</p>
-			</a> <a href="./Transfers.jsp" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/Transfers.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
 				<p>Transferencias</p>
-			</a> <a href="./Loans.jsp" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/Loans.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitar Préstamo">
 				<p>Préstamos</p>
-			</a> <a href="./ApplyLoan.jsp" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/ApplyLoan.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitar Préstamo">
 				<p>Solicitar Préstamos</p>
@@ -102,7 +101,7 @@
 		<%
 			}
 		%>
-		<a href="./Profile.jsp"
+		<a href="${pageContext.request.contextPath}/Profile.jsp"
 			style="text-decoration: none; margin: 10px 10px 0 0"> <img
 			width="50" height="50"
 			src="https://img.icons8.com/3d-fluency/94/user-male-circle.png"
