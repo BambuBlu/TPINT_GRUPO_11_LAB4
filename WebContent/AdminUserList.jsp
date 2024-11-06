@@ -138,7 +138,7 @@ tr {
 					<thead>
 						<tr class="text-center fw-bolder fs-5">
 							<th>Id</th>
-							<th>Usuario</th>
+							<th>Dni Cliente</th>
 							<th>Estado</th>
 							<th>Funcionalidades</th>
 						</tr>
@@ -195,12 +195,5 @@ tr {
 		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" charset="utf8"
 		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#table_id').DataTable({
-				"dom" : '<"top"i>rt<"bottom"lp><"clear">',
-			});
-		});
-	</script>
 </body>
 </html>

@@ -3,10 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Listado de solicitud de prestamos</title>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<title>Listado de cuentas</title>
 <style>
 /* Body */
 .body {
@@ -22,14 +29,15 @@
 
 .contenedor {
 	background-color: #ffffff;
-	padding: 30px;
 	border-radius: 10px;
+	padding: 30px;
 	box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
-	width: 1700px;
+	width: 80%;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	height: 300px
 }
 
 h1 {
@@ -83,12 +91,6 @@ h1 {
 	background-color: #004d40;
 }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px;
-}
-
 .table-container {
 	border-radius: 10px;
 	border: 4px solid #2196F3;
@@ -113,54 +115,41 @@ tr {
 </style>
 </head>
 <body>
-
 	<div class="body">
-		<nav> <%@include file="Layout/MainLayout.jsp"%>
-		</nav>
-
+		<%@include file="Layout/MainLayout.jsp"%>
 		<div class="contenedor">
-			<h1>Listado de solicitud de prestamos</h1>
+			<h1>Listado de Cuentas</h1>
 
-			<div class="table-container ">
-				<table id="table_id" class="tabla">
+			<div class="table-container">
+				<table class="tabla">
 					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Dni cliente</th>
-							<th>Cbu</th>
-							<th>Fecha</th>
-							<th>Importe con intereses</th>
-							<th>Importe pedido</th>
-							<th>Plazo de pago en meses</th>
-							<th>Monto mensual</th>
-							<th>Estado</th>
-							<th></th>
-							<th></th>
+						<tr class="text-center fw-bolder fs-5">
+							<th>ID</th>
+							<th>Nombre</th>
+							<th>Dni Cliente</th>
+							<th>Rol</th>
+							<th>Baja</th>
 						</tr>
 					</thead>
 					<tbody>
-						<!-- Ejemplo de filas sin datos funcionales -->
-						<tr>
+						<tr class="text-center">
 							<td>1</td>
-							<td>12345678</td>
-							<td>123456789012345678</td>
-							<td>2024-10-29</td>
-							<td>$10,000</td>
-							<td>$8,000</td>
-							<td>12</td>
-							<td>$833.33</td>
-							<td>Pendiente</td>
-							<td><button class="btn btn-success fw-semibold">Aprobar</button></td>
-							<td><button class="btn btn-danger fw-semibold">Rechazar</button></td>
+							<td>nicolas123</td>
+							<td>45314567</td>
+							<td>Admin</td>
+							<td>False</td>
+						</tr>
+						<tr class="text-center">
+							<td>2</td>
+							<td>tobias456</td>
+							<td>46714537</td>
+							<td>Cliente</td>
+							<td>True</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script type="text/javascript" charset="utf8"
-		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 </body>
 </html>
