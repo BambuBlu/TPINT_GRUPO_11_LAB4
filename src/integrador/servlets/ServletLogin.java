@@ -56,7 +56,7 @@ public class ServletLogin extends HttpServlet {
 			Usuario usuario = new Usuario();
 			usuario.setNombreUsuario(nombreUsuario);
 			usuario.setContrasena(contraseniaUsuario);
-			usuario.setRol(Roles.ADMIN);
+			usuario.setRol(Roles.CLIENTE);
 			//por ahora para pasar el filtro, falta logica
 			usuario.setBaja(false);
 			

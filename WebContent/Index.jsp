@@ -4,11 +4,17 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login</title>
+<link rel="stylesheet" href="css/style.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
 <style>
-    /* Body */
+    /* Estilos generales */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #e0f7fa;
+        background-color: #79d7e7;
         margin: 0;
         padding: 0;
         display: flex;
@@ -18,14 +24,15 @@
     }
 
     /* Contenedor principal */
-    .container {
+    .contenedor {
         background-color: #ffffff;
         padding: 30px;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
         width: 100%;
         max-width: 350px;
         text-align: center;
+        box-sizing: border-box;
     }
 
     /* Título */
@@ -40,16 +47,15 @@
         margin: 15px 0;
     }
 
-    /* Campos de txt y contraseña */
+    /* Campos de texto y contraseña */
     input[type="text"], input[type="password"] {
         width: 100%;
         padding: 10px;
-        margin-top: 8px;
-        border: 2px solid #b2dfdb;
-        border-radius: 6px;
+        margin-top: 5px;
+        border: 1px solid #b2dfdb;
+        border-radius: 4px;
         font-size: 1em;
         box-sizing: border-box;
-        transition: border-color 0.3s;
     }
 
     input[type="text"]:focus, input[type="password"]:focus {
@@ -57,7 +63,7 @@
         outline: none;
     }
 
-    /* Btn Envío */
+    /* Botón de envío */
     input[type="submit"] {
         background-color: #00796b;
         color: #ffffff;
@@ -74,22 +80,8 @@
     input[type="submit"]:hover {
         background-color: #004d40;
     }
-
-    /* Enlaces */
-    a {
-        display: block;
-        margin-top: 20px;
-        color: #00796b;
-        text-decoration: none;
-        font-size: 0.9em;
-    }
-
-    a:hover {
-        color: #004d40;
-        text-decoration: underline;
-    }
-
-    /* Mensaje de error */
+    
+        /* Mensaje de error */
     .error-message {
         color: #d32f2f;
         font-size: 0.9em;
@@ -98,9 +90,9 @@
 </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Iniciar sesión</h1>
-<!-- Codigo comentado para posterior uso
+    <div class="contenedor">
+        <h1>Iniciar Sesión</h1>
+        <!-- Codigo comentado para posterior uso
         <%/// String errorMessage = (String) request.getAttribute("errorMessage"); %>
         <%// if (errorMessage != null) {%>
            <div class="error-message"><%//=//errorMessage%></div> 
@@ -108,20 +100,17 @@
 -->
 		<!-- Por ahora se dejara de placeholder este div -->
 		<div class="error-message">Mensaje de error aquí</div>
-		
         <form action="ServletLogin" method="post">
             <div class="form-group">
-                <label for="txtNombre">Nombre de Usuario</label>
+                <label for="txtNombre">Usuario:</label>
                 <input type="text" id="txtNombre" name="txtNombre" required maxlength="50">
             </div>
             <div class="form-group">
-                <label for="txtcontrasenia">Contraseña</label>
+                <label for="txtcontrasenia">Contraseña:</label>
                 <input type="password" id="txtContrasenia" name="txtcontrasenia" required>
             </div>
-            <div class="form-group">
-                <input type="submit" name="btnInicioSesion" value="Iniciar sesión" class="btn">
-            </div>
-            <div class="form-group">
+            <input type="submit" name="btnInicioSesion" value="Ingresar" class="btn">
+			<div class="form-group">
                 <a href="Register.jsp">Crear usuario</a>
             </div>
         </form>

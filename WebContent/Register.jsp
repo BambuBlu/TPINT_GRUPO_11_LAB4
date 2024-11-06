@@ -8,9 +8,9 @@
         /* Body */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e0f7fa;
+            background-color: #79d7e7;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,16 +22,16 @@
             background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             box-sizing: border-box;
         }
 
         /* Título */
         h2 {
             color: #00796b;
-            font-size: 1.8em;
+            font-size: 2em;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -45,7 +45,7 @@
 
         input[type="text"], input[type="date"], input[type="email"], input[type="password"], select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-top: 8px;
             border: 2px solid #b2dfdb;
             border-radius: 6px;
@@ -68,7 +68,7 @@
             margin-top: 20px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.2em;
             width: 100%;
             transition: background-color 0.3s;
         }
@@ -97,10 +97,8 @@
             <label for="txtSexo">Sexo</label>
             <select id="txtSexo" name="txtSexo" required>
                 <option value="">Seleccione un género</option>
-                <!-- Opciones dinámicas generadas en el servidor -->
                 <option value="1">Masculino</option>
                 <option value="2">Femenino</option>
-                <!-- Opciones adicionales -->
             </select>
 
             <label for="txtFecNac">Fecha de Nacimiento</label>
@@ -112,19 +110,16 @@
             <label for="txtPais">País</label>
             <select id="txtPais" name="txtPais" required>
                 <option value="">Seleccione un país</option>
-                <!-- Opciones dinámicas generadas en el servidor -->
             </select>
 
             <label for="txtProvincia">Provincia</label>
             <select id="txtProvincia" name="txtProvincia" required>
                 <option value="">Seleccione una provincia</option>
-                <!-- Opciones dinámicas generadas en el servidor -->
             </select>
 
             <label for="txtLocalidad">Localidad</label>
             <select id="txtLocalidad" name="txtLocalidad" required>
                 <option value="">Seleccione una localidad</option>
-                <!-- Opciones dinámicas generadas en el servidor -->
             </select>
 
             <label for="txtDireccion">Dirección</label>

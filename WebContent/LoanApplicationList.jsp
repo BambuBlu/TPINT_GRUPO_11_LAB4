@@ -115,8 +115,7 @@ tr {
 <body>
 
 	<div class="body">
-		<nav> <%@include file="Layout/MainLayout.jsp"%>
-		</nav>
+		<nav> <%@include file="Layout/MainLayout.jsp"%></nav>
 
 		<div class="contenedor">
 			<h1>Listado de solicitud de prestamos</h1>
