@@ -6,7 +6,7 @@ package integrador.model;
 public class Generos {
 
     private int id;                      // Identificador del género
-    private String descripcion;          // Descripción del género
+    private String descripcion;          // Descripción del género // 1 hombre, 2 mujer, 3 otro
 
     /**
      * Constructor con parámetros para crear un género.
