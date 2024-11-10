@@ -33,7 +33,7 @@ public class ServletClienteABM extends HttpServlet {
 	}
 
 	/**
-	 * ACCIONES DE CREAR, ELIMINAR Y ACTUALIZAR SERAN LLAMADAS DESDE EL doPost, dependiendo que cual se solicite.
+	 *  METODO do Post / ACCIONES DE CREAR, ELIMINAR Y ACTUALIZAR, dependiendo que cual se solicite.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -100,7 +100,7 @@ public class ServletClienteABM extends HttpServlet {
     	
     	Usuario usuario = new Usuario();
     	 
-        Cliente cliente = new Cliente();
+        Cliente clieS new Cliente();
         cliente.setDni(request.getParameter("txtDNI"));
         cliente.setCuil(request.getParameter("txtCUIL"));
         cliente.setNombre(request.getParameter("txtNombre"));
