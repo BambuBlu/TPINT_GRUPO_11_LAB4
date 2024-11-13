@@ -119,7 +119,6 @@ tr {
 		<%@include file="Layout/MainLayout.jsp"%>
 		<div class="contenedor">
 			<h1>Listado de Cuentas</h1>
-
 			<div class="table-container">
 				<table class="tabla">
 					<thead>

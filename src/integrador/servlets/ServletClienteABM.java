@@ -100,7 +100,7 @@ public class ServletClienteABM extends HttpServlet {
     	
     	Usuario usuario = new Usuario();
     	 
-        Cliente clieS new Cliente();
+        Cliente cliente = new Cliente();
         cliente.setDni(request.getParameter("txtDNI"));
         cliente.setCuil(request.getParameter("txtCUIL"));
         cliente.setNombre(request.getParameter("txtNombre"));
