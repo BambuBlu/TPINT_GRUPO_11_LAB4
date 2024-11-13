@@ -1,0 +1,72 @@
+package integrador.utils;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+//Clase estica para conexion con la base de datos MySql (En caso de tener datos diferentes alos siguientes, por favor modificar).
+
+public class DataAccess {
+	private static final String host = "jdbc:mysql://localhost:3306/dbbanco";
+	private static final String user = "root";
+	private static final String pass = "root";
+
+	private static Connection GetConnection() throws SQLException {
+		return DriverManager.getConnection(host, user, pass);
+	}
+	
+	// Método para ejecutar un procedimiento almacenado
+    public static void executeStoredProcedure(String procedureName, Object... params) {
+        String call = buildProcedureCall(procedureName, params.length);
+
+        try (Connection conn = GetConnection();
+             CallableStatement stmt = conn.prepareCall(call)) {
+
+            // Asigna los parámetros al CallableStatement si hay alguno
+            setParameters(stmt, params);
+
+            // Ejecuta el procedimiento almacenado
+            stmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Construye la llamada al procedimiento según el número de parámetros
+    private static String buildProcedureCall(String procedureName, int paramCount) {
+        StringBuilder call = new StringBuilder("{CALL ");
+        call.append(procedureName).append("(");
+
+        for (int i = 0; i < paramCount; i++) {
+            if (i > 0) call.append(", ");
+            call.append("?");
+        }
+
+        call.append(")}");
+        return call.toString();
+    }
+
+    // Asigna los parámetros al CallableStatement
+    private static void setParameters(CallableStatement stmt, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+    }
+    
+    public static ResultSet executeQuery(String query) {
+        try (Connection conn = GetConnection();
+             Statement stmt = conn.createStatement()) {
+
+            // Ejecuta la consulta y devuelve el ResultSet
+            return stmt.executeQuery(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
