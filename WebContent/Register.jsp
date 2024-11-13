@@ -81,7 +81,7 @@
 <body>
     <div class="container">
         <h2>Crear Usuario</h2>
-        <form action="servletCliente" method="post">
+        <form action="ServletClienteABM" method="post">
             <label for="txtDNI">DNI</label>
             <input type="text" id="txtDNI" name="txtDNI" required maxlength="8">
 

@@ -36,20 +36,12 @@ public class ServletClienteABM extends HttpServlet {
 	 *  METODO do Post / ACCIONES DE CREAR, ELIMINAR Y ACTUALIZAR, dependiendo que cual se solicite.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+       if (request.getParameter("btnCrearCliente") != null) {
+    	   crearCliente(request, response);
+    	   	   
+       }
 
-        switch (action) {
-            case "crear":
-                crearCliente(request, response);
-                break;
-          /*  case "eliminar":
-                eliminarCliente(request, response);
-                break;
-            case "actualizar":
-                actualizarCliente(request, response);
-                break;*/
-  
-        }
+    
     }
 	
     public ServletClienteABM() {
@@ -115,9 +107,10 @@ public class ServletClienteABM extends HttpServlet {
         
         // Creo usuario
         usuario.setCliente(cliente);
-        usuario.setNombreUsuario("txtUsuario");
-        usuario.setContrasena("txtContrasenia");
-
+        usuario.setNombreUsuario(request.getParameter("txtUsuario").toString());
+        usuario.setContrasena(request.getParameter("txtContrasenia").toString());
+        usuario.setRol(Roles.CLIENTE);
+        usuario.setBaja(false);
 
         // 
         ////ClienteDAO clienteDAO = new ClienteDAO();  FALTA CREAR BD
