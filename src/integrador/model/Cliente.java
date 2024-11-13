@@ -39,7 +39,7 @@ public class Cliente {
      * @param telefono Teléfono de contacto del cliente
      */
     public Cliente(String dni, String cuil, String nombre, String apellido, Generos sexo, String nacionalidad,
-                   Date fechaNacimiento, String direccion, Localidad localidad, String email, String telefono) {
+                   Date fechaNacimiento, String direccion, Localidad localidad, String email, String telefono, String estado) {
         super();
         this.dni = dni;
         this.cuil = cuil;
@@ -52,7 +52,7 @@ public class Cliente {
         this.localidad = localidad;
         this.email = email;
         this.telefono = telefono;
-        this.estado = "A"; // Estado inicial: Activo
+        this.estado = estado;
         this.cuentas = new ArrayList<>(); // Inicializa la lista de cuentas
     }
 

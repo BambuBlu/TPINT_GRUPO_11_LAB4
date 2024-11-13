@@ -1,5 +1,3 @@
-DELIMITER //
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `CrearCliente`(
 	IN p_dni VARCHAR(10),
     IN p_cuil VARCHAR(20),
@@ -13,7 +11,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `CrearCliente`(
     IN p_mail VARCHAR(100),
     IN p_telefono VARCHAR(100),
 	IN p_usuario varchar(50),
-	IN p_contraseña varchar(100)
+	IN p_contrasena varchar(100)
     
 )
 BEGIN
@@ -41,8 +39,6 @@ BEGIN
     VALUES (p_dni,CURRENT_DATE, 1, nuevo_cbu, 10000);
     
     INSERT INTO usuarios (dni_cliente, usuario, contraseña, tipo_usuario, estado) 
-	VALUES (p_dni, p_usuario, p_contraseña, 'cliente', 'A');
+	VALUES (p_dni, p_usuario, p_contrasena, 'cliente', 'A');
 
-END //
-
-DELIMITER ;
+END
