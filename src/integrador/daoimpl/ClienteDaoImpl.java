@@ -19,12 +19,14 @@ public class ClienteDaoImpl implements ClienteDao {
 	
 	@Override
 	public ArrayList<Cliente> GetAllClientes() {
-	
+		
 		return null;
 	}
 
 	@Override
 	public boolean CrearCliente(Cliente nuevoCliente) {
+		String query = "Insert into (Dni, Cuil, Nombre, Apellido, ID_Genero, ID_Nacionalidad, FechaDeNacimiento, Direccion, ID_Localidad, Email, Telefono, Estado) "
+				+ "Values ()";
 		return false;
 	}
 
