@@ -42,7 +42,6 @@ release.properties
 /conf/Catalina/localhost/*
 
 # Archivos específicos de MySQL
-*.sql
 *.log
 /data/
 
