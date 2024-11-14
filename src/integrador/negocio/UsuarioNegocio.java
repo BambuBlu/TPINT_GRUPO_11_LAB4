@@ -1,5 +1,10 @@
 package integrador.negocio;
 
-public class UsuarioNegocio {
+import java.util.ArrayList;
 
+import integrador.model.Usuario;
+
+public interface UsuarioNegocio {
+
+	ArrayList<Usuario> GetAllUsuariosActivos();
 }

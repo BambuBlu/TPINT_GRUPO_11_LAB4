@@ -14,7 +14,21 @@ public class Usuario {
 	private Roles Rol;
 	private boolean baja;
 	
+	
+	public Usuario() {
+	
+	}
 
+	public Usuario(int id_Usaurio, String nombreUsuario, String contrasena, Cliente cliente, Roles rol, boolean baja) {
+		super();
+		this.id_Usaurio = id_Usaurio;
+		this.nombreUsuario = nombreUsuario;
+		this.contrasena = contrasena;
+		this.cliente = cliente;
+		Rol = rol;
+		this.baja = baja;
+	}
+	
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}

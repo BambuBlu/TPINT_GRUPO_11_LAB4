@@ -16,7 +16,7 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 		try {
 			ArrayList<Cliente> clientesFiltrados = new ArrayList<Cliente>();
 			for (Cliente cliente : dao.GetAllClientes()) {
-				if (cliente.getEstado() == estado)
+				if (estado.equals(cliente.getEstado()))
 					clientesFiltrados.add(cliente);
 			}
 
@@ -34,7 +34,7 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 			if (dao.CrearCliente(nuevoCliente, nuevoUsuario))
 				return true;
 			else
-				return false;		
+				return false;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return false;
@@ -57,11 +57,11 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 	@Override
 	public boolean EliminarCliente(Cliente clienteAeliminar) {
 		try {
-			
-		if (dao.EliminarCliente(clienteAeliminar))
-			return true;
-		else
-			return false;
+
+			if (dao.EliminarCliente(clienteAeliminar))
+				return true;
+			else
+				return false;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return false;

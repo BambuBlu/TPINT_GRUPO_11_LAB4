@@ -74,6 +74,22 @@ public class Cliente {
         this.estado = "A"; // Estado inicial: Activo
         this.cuentas = new ArrayList<>(); // Inicializa la lista de cuentas
     }
+    
+    public Cliente(Cliente cliente) {
+        this.dni = cliente.getDni();
+        this.cuil = cliente.getCuil();
+        this.nombre = cliente.getNombre();
+        this.apellido = cliente.getApellido();
+        this.sexo = cliente.getSexo();
+        this.nacionalidad = cliente.getNacionalidad();
+        this.fechaNacimiento = cliente.getFechaNacimiento();
+        this.direccion = cliente.getDireccion();
+        this.localidad = cliente.getLocalidad();
+        this.email = cliente.getEmail();
+        this.telefono = cliente.getTelefono();
+        this.estado = cliente.getEstado();
+        this.cuentas = cliente.getCuentas(); 
+    }
 
     // Getters y Setters
     public String getDni() {

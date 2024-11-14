@@ -39,8 +39,7 @@ public class ServletLogin extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+			
 		if (request.getParameter("btnInicioSesion") != null) {
 			IniciarSesionUsuario(request, response);
 		}
@@ -53,6 +52,7 @@ public class ServletLogin extends HttpServlet {
 		//Validacion de valores nulos o vacios 
 		if ((nombreUsuario != null || nombreUsuario != "") && (contraseniaUsuario != null || contraseniaUsuario != "")) {
 			//Logica con la base de datos para verificar si existe y esta hablitado de pasar el filtro de seguridad, si todo esta en orden, se crea el objeto y se guarda en Session 
+			
 			Usuario usuario = new Usuario();
 			usuario.setNombreUsuario(nombreUsuario);
 			usuario.setContrasena(contraseniaUsuario);
@@ -60,7 +60,7 @@ public class ServletLogin extends HttpServlet {
 			//por ahora para pasar el filtro, falta logica
 			usuario.setBaja(false);
 			
-			//Hay que recoctar todos los datos personales del cliente y almacenarlos en esta propiedad
+			
 			usuario.setCliente(new Cliente ());
 			
 			if (!usuario.getBaja()) {

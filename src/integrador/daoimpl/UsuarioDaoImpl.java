@@ -1,16 +1,55 @@
 package integrador.daoimpl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import integrador.dao.UsuarioDao;
+import integrador.enums.Roles;
+import integrador.model.Cliente;
 import integrador.model.Usuario;
+import integrador.negocioimpl.ClienteNegocioImpl;
+import integrador.utils.DataAccess;
 
 public class UsuarioDaoImpl implements UsuarioDao {
 
 	@Override
 	public ArrayList<Usuario> GetAllUsuarios() {
-		// TODO Auto-generated method stub
-		return null;
+		String query = "select id, dni_cliente, usuario, contraseña, tipo_usuario, estado from usuarios";
+	    ResultSet resultquery = DataAccess.executeQuery(query);
+	    ArrayList<Usuario> usuarios = new ArrayList<>();
+	    ClienteNegocioImpl clientenegocio = new ClienteNegocioImpl();
+	    try {
+	        while (resultquery.next()) {
+	        	int id = resultquery.getInt("id");
+	            String dniCliente = resultquery.getString("dni_cliente");
+	            String nombreUsuario = resultquery.getString("usuario");
+	            String contraseña = resultquery.getString("contraseña");
+	            Roles tipo_Usuario = Roles.valueOf(resultquery.getString("tipo_usuario").toUpperCase());
+	            boolean estado = "I".equals(resultquery.getString("estado"));
+	            
+	            Cliente clienteXUsuario = null;
+	            for (Cliente cliente : clientenegocio.GetAllClientes("A")) {
+					if (cliente.getDni().equals(dniCliente)) {
+						clienteXUsuario = new Cliente(cliente);
+					}
+						
+				}
+	            Usuario usuario = new Usuario(id, nombreUsuario, contraseña, clienteXUsuario, tipo_Usuario, estado);
+	            
+	            usuarios.add(usuario);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultquery != null) resultquery.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return usuarios;	
 	}
 
 	@Override
