@@ -53,7 +53,7 @@ public class ServletLogin extends HttpServlet {
 	public void IniciarSesionUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String nombreUsuario = request.getParameter("txtNombre");
-		String contraseniaUsuario = request.getParameter("txtContrasenia");
+		String contraseniaUsuario = request.getParameter("txtcontrasenia");
 
 		// Validacion de valores nulos o vacios
 		if ((nombreUsuario != null || nombreUsuario != "")
