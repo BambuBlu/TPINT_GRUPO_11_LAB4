@@ -1,7 +1,10 @@
 package integrador.negocio;
 
+import java.util.ArrayList;
+
+import integrador.model.Provincia;
+
 public interface ProvinciaNegocio {
 	
-	//Buscar por ID
-
+	ArrayList<Provincia> GetAllProvincias();
 }
