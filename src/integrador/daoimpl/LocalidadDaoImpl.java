@@ -15,7 +15,7 @@ import integrador.utils.DataAccess;
 
 public class LocalidadDaoImpl implements LocalidadDao{
 
-	// Implemeto la logica del Dao de Genero
+	// Implemeto la logica del Dao de Localidad
 	public LocalidadDaoImpl() {
 
 	}
