@@ -92,14 +92,10 @@
 <body>
     <div class="contenedor">
         <h1>Iniciar Sesión</h1>
-        <!-- Codigo comentado para posterior uso
-        <%/// String errorMessage = (String) request.getAttribute("errorMessage"); %>
-        <%// if (errorMessage != null) {%>
-           <div class="error-message"><%//=//errorMessage%></div> 
-        <%// } %>
--->
-		<!-- Por ahora se dejara de placeholder este div -->
-		<div class="error-message">Mensaje de error aquí</div>
+        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+        <% if (errorMessage != null) {%>
+           <div class="error-message"><%= errorMessage%></div> 
+        <% } %>
         <form action="ServletLogin" method="post">
             <div class="form-group">
                 <label for="txtNombre">Usuario:</label>

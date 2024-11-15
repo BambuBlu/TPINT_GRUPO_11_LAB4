@@ -14,7 +14,7 @@ public class DataAccess {
 	private static final String user = "root";
 	private static final String pass = "root";
 
-	private static Connection GetConnection() throws SQLException {
+	public static Connection GetConnection() throws SQLException {
 		return DriverManager.getConnection(host, user, pass);
 	}
 	
@@ -58,12 +58,10 @@ public class DataAccess {
     }
     
     public static ResultSet executeQuery(String query) {
-        try (Connection conn = GetConnection();
-             Statement stmt = conn.createStatement()) {
-
-            // Ejecuta la consulta y devuelve el ResultSet
+        try {
+            Connection conn = GetConnection();
+            Statement stmt = conn.createStatement();
             return stmt.executeQuery(query);
-
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
