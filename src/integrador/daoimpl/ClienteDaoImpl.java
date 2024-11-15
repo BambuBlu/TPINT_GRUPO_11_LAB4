@@ -13,6 +13,10 @@ import integrador.model.Pais;
 import integrador.model.Usuario;
 import integrador.utils.DataAccess;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Statement;
+
 // Implemeto la logica del Dao de Cliente
 public class ClienteDaoImpl implements ClienteDao {
 
@@ -66,6 +70,7 @@ public class ClienteDaoImpl implements ClienteDao {
 	    return clientes;	
 	}
 
+	
 	@Override
 	public boolean CrearCliente(Cliente nuevoCliente, Usuario nuevoUsuario) {
 
@@ -82,22 +87,36 @@ public class ClienteDaoImpl implements ClienteDao {
 		}
 	}
 
-	@Override
-	public boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) {
-		try {
-			DataAccess.executeStoredProcedure("ModificarCliente", clienteModificado.getDni(), clienteModificado.getCuil(),
-					clienteModificado.getNombre(), clienteModificado.getApellido(), clienteModificado.getSexo().getId(),
-					clienteModificado.getNacionalidad(), clienteModificado.getFechaNacimiento(),
-					clienteModificado.getDireccion(), clienteModificado.getLocalidad().getId(), clienteModificado.getEmail(),
-					clienteModificado.getTelefono(), usuarioModificado.getContrasena());
-			
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-		
+	
+	public boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) throws SQLException {
+		System.out.println("Entro a ModificarCliente del Negocio");
+	    String sqlCliente = "{CALL ModificarEstadoCliente(?, ?)}";
+	    String sqlUsuario = "{CALL ModificarEstadoUsuario(?, ?)}";
+	    Connection conn = null;
+	    conn = DataAccess.GetConnection();
+	    try (CallableStatement stmtCliente = conn.prepareCall(sqlCliente); CallableStatement stmtUsuario = conn.prepareCall(sqlUsuario)) {
+	        
+	        stmtCliente.setString(1, clienteModificado.getDni());
+	        stmtCliente.setString(2, clienteModificado.getEstado());
+	        int rowsAffectedCliente = stmtCliente.executeUpdate();
+	        
+	        if (rowsAffectedCliente > 0) {
+	            stmtUsuario.setLong(1, usuarioModificado.getId_Usaurio());
+	            stmtUsuario.setString(2, usuarioModificado.getBaja() ? "A" : "I");
+	            int rowsAffectedUsuario = stmtUsuario.executeUpdate();
+	            
+	            if (rowsAffectedUsuario > 0) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    } catch (SQLException e) {
+	        System.out.println("Error al ejecutar los procedimientos: " + e.getMessage());
+	        return false;
+	    }
 	}
 
+	
 	@Override
 	public boolean EliminarCliente(Cliente clienteAeliminar) {
 		try {
