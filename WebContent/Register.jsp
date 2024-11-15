@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="integrador.model.Generos"%>
 <%@page import="integrador.negocioimpl.GeneroNegocioImpl"%>
 <%@page import="integrador.model.Localidad"%>
@@ -108,18 +109,18 @@
                 <% GeneroNegocioImpl generonegocio = new GeneroNegocioImpl(); 
             		
             		for(Generos genero : generonegocio.GetAllGeneros()){
+            			if (genero.getId() != -1 && (genero.getDescripcion() != null || genero.getDescripcion() != ""))
+            			{            				
             	%>
-                <option value="<%genero.getId();%>"><%genero.getDescripcion();%></option>		
+                <option value="<%= genero.getId()%>"><%= genero.getDescripcion()%></option>		
             	<%
+            			}
             		}
             	%>
             </select>
 
             <label for="txtFecNac">Fecha de Nacimiento</label>
             <input type="date" id="txtFecNac" name="txtFecNac" required>
-
-            <label for="txtNacionalidad">Nacionalidad</label>
-            <input type="text" id="txtNacionalidad" name="txtNacionalidad" required>
 
             <label for="txtPais">País</label>
             <select id="txtPais" name="txtPais" required>
@@ -129,7 +130,7 @@
             		
             		for(Pais pais : paisnegocio.GetAllPaises()){
             	%>
-                <option value="<%pais.getId();%>"><%pais.getNombre();%></option>		
+                <option value="<%= pais.getId()%>"><%= pais.getNombre()%></option>		
             	<%
             		}
             	%>
@@ -143,7 +144,7 @@
             		
             		for(Provincia provincia : provincianegocio.GetAllProvincias()){
             	%>
-                <option value="<%provincia.getId();%>"><%provincia.getNombre();%></option>		
+                <option value="<%= provincia.getId()%>"><%= provincia.getNombre()%></option>		
             	<%
             		}
             	%>
@@ -152,12 +153,19 @@
             <label for="txtLocalidad">Localidad</label>
             <select id="txtLocalidad" name="txtLocalidad" required>
                 <option value="">Seleccione una localidad</option>
-                <% LocalidadNegocioImpl localidadnegocio = new LocalidadNegocioImpl(); 
+                 <% LocalidadNegocioImpl localidadnegocio = new LocalidadNegocioImpl(); 
             		
-            		for(Localidad localidad : localidadnegocio.GetAllLocalidades()){
+            		ArrayList<Localidad> lista = localidadnegocio.GetAllLocalidades();
+            		
+            		if (lista != null){
+            			for(Localidad localidad: localidadnegocio.GetAllLocalidades()){
+            				if (localidad.getId() != -1 && (localidad.getNombre() != null || localidad.getNombre() != ""))
+            				{            				
             	%>
-                <option value="<%localidad.getId();%>"><%localidad.getNombre();%></option>		
+               				 <option value="<%= localidad.getId()%>"><%= localidad.getNombre()%></option>		
             	<%
+            				}
+            			}
             		}
             	%>
             </select>

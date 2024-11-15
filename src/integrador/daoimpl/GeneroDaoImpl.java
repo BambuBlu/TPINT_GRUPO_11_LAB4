@@ -17,7 +17,7 @@ public class GeneroDaoImpl implements GeneroDao {
 	}
 
 
-	public ArrayList<Generos> GetAllGeneros() {
+	public ArrayList<Generos> GetAllGeneros() throws SQLException {
 		String query = "SELECT id, descripcion FROM generos";
 	    ResultSet resultquery = DataAccess.executeQuery(query);
 	    ArrayList<Generos> generos = new ArrayList<>();

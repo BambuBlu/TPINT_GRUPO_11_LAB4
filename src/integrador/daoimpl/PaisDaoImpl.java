@@ -16,7 +16,7 @@ public class PaisDaoImpl implements PaisDao {
 		}
 		
 	@Override
-	public ArrayList<Pais> GetAllPais() {
+	public ArrayList<Pais> GetAllPais() throws SQLException {
 		String query = "SELECT id, nombre FROM paises";
 	    ResultSet resultquery = DataAccess.executeQuery(query);
 	    ArrayList<Pais> paises = new ArrayList<>();

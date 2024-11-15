@@ -21,7 +21,7 @@ public class LocalidadDaoImpl implements LocalidadDao {
 	}
 
 	@Override
-	public ArrayList<Localidad> GetAllLocalidad() {
+	public ArrayList<Localidad> GetAllLocalidad() throws SQLException {
 
 		String query = "SELECT id, nombre, id_provincia FROM localidades";
 		ResultSet resultquery = DataAccess.executeQuery(query);
@@ -40,11 +40,15 @@ public class LocalidadDaoImpl implements LocalidadDao {
 					if (provincia.getId() == id_provincia) {
 						provinciasXLocalidad = new Provincia(provincia.getId(), provincia.getNombre(),
 								provincia.getPais());
+						break;
 					}
 				}
+				if (provinciasXLocalidad == null)
+					provinciasXLocalidad = new Provincia();
+
 				// Una vez encontrado, creo el objeto y lo agrego a la lista
-				Localidad localidad = new Localidad(id, nombre, provinciasXLocalidad); 
-																						
+				Localidad localidad = new Localidad(id, nombre, provinciasXLocalidad);
+
 				localidades.add(localidad);
 			}
 		} catch (SQLException e) {

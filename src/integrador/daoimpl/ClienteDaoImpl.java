@@ -21,7 +21,7 @@ public class ClienteDaoImpl implements ClienteDao {
 	}
 
 	@Override
-	public ArrayList<Cliente> GetAllClientes() {
+	public ArrayList<Cliente> GetAllClientes() throws SQLException {
 
 		String query = "SELECT dni, cuil, nombre, apellido, sexo_id, nacionalidad, fecha_nacimiento, direccion, localidad_id, mail, telefono, estado FROM clientes";
 	    ResultSet resultquery = DataAccess.executeQuery(query);

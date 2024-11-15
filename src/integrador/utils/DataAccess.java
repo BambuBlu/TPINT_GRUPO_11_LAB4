@@ -57,14 +57,18 @@ public class DataAccess {
         }
     }
     
-    public static ResultSet executeQuery(String query) {
+    public static ResultSet executeQuery(String query) throws SQLException {
+    	Connection conn = GetConnection();
         try {
-            Connection conn = GetConnection();
             Statement stmt = conn.createStatement();
             return stmt.executeQuery(query);
         } catch (SQLException e) {
+        	
             e.printStackTrace();
             return null;
         }
+        finally {
+			conn.close();
+		}
     }
 }

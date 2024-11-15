@@ -11,10 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import integrador.model.Usuario;
+import integrador.negocioimpl.ClienteNegocioImpl;
+import integrador.negocioimpl.LocalidadNegocioImpl;
+import integrador.negocioimpl.PaisNegocioImpl;
+import integrador.negocioimpl.ProvinciaNegocioImpl;
 import integrador.enums.Roles;
 import integrador.model.Cliente;
 import integrador.model.Generos;
 import integrador.model.Localidad;
+import integrador.model.Pais;
+import integrador.model.Provincia;
 
 /**
  * Servlet implementation class ServletClienteABM
@@ -22,39 +28,40 @@ import integrador.model.Localidad;
 @WebServlet("/ServletClienteABM")
 public class ServletClienteABM extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 *  METODO do Post / ACCIONES DE CREAR, ELIMINAR Y ACTUALIZAR, dependiendo que cual se solicite.
+	 * METODO do Post / ACCIONES DE CREAR, ELIMINAR Y ACTUALIZAR, dependiendo que
+	 * cual se solicite.
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       if (request.getParameter("btnCrearCliente") != null) {
-    	   crearCliente(request, response);	   	   
-       }
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		if (request.getParameter("btnCrearCliente") != null) {
+			crearCliente(request, response);
+		}
 
-    
-    }
-	
-    public ServletClienteABM() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	}
+
+	public ServletClienteABM() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
 
-    
-    /**
+	/**
      * Create Cliente
      */
     
@@ -86,8 +93,21 @@ public class ServletClienteABM extends HttpServlet {
     	    java.sql.Date fechaNacimiento = new java.sql.Date(utilDate.getTime());
         
         // PAIS, PROVINCIA, LOCALIDAD
-    	//Localidad localidad = new Localidad();
-    	//localidad.set
+    	
+    	// HardCodeo la Localidad a causa  de error en el negocio (Solucionar)
+    	Localidad localidad = new Localidad(1, "Capital Federal", new Provincia(1, "Buenos Aires", new Pais(1, "Argentina")));
+    	
+    	//Pais
+    	PaisNegocioImpl negociopais = new PaisNegocioImpl();
+    	String nacionalidad = negociopais.Find(Integer.parseInt(request.getParameter("txtPais"))).getNombre(); 
+    	
+    	//Localidad (Forma correcta de Get)
+    	//LocalidadNegocioImpl negociolocalidad = new LocalidadNegocioImpl();
+    	//Localidad localidadSeleccionada = negociolocalidad.Find(Integer.parseInt(request.getParameter("txtLocalidad")));
+    	
+    	//Provincia
+    	ProvinciaNegocioImpl provinciaNegocio = new ProvinciaNegocioImpl();
+    	Provincia provinciaSeleccionada = provinciaNegocio.Find(Integer.parseInt(request.getParameter("txtProvincia")));
     	
     	Usuario usuario = new Usuario();
     	 
@@ -97,9 +117,12 @@ public class ServletClienteABM extends HttpServlet {
         cliente.setNombre(request.getParameter("txtNombre"));
         cliente.setApellido(request.getParameter("txtApellido"));
         cliente.setSexo(sexo);  
-        cliente.setNacionalidad(request.getParameter("txtNacionalidad"));
-        //****** FALTA REIVISAR VER PAIS, PROVINCIA Y LOCALIDAD
-        cliente.setFechaNacimiento(fechaNacimiento); // 
+        cliente.setFechaNacimiento(fechaNacimiento); 
+        cliente.setNacionalidad(nacionalidad);
+        //Hay que agregar el parametro provincia en clase y en base de datos
+        //cliente.setProvincia(provinciaSeleccionada)
+        cliente.setLocalidad(localidad);
+        
         cliente.setDireccion(request.getParameter("txtDireccion"));
         cliente.setEmail(request.getParameter("txtEmail"));
         cliente.setTelefono(request.getParameter("txtTelefono"));
@@ -111,16 +134,10 @@ public class ServletClienteABM extends HttpServlet {
         usuario.setRol(Roles.CLIENTE);
         usuario.setBaja(false);
 
-        // 
-        ////ClienteDAO clienteDAO = new ClienteDAO();  FALTA CREAR BD
-        ////clienteDAO.create(cliente);
+        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+        clienteNegocio.CrearCliente(cliente, usuario);
 
-        response.sendRedirect("Index.jsp"); // Redirige a pagina principal para Loguearse
+        response.sendRedirect("Index.jsp");
     }
-    
-    
-    
-
-
 
 }

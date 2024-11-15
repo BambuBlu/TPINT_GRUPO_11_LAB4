@@ -18,7 +18,7 @@ public class ProvinciaDaoImpl implements ProvinciaDao {
 	}
 
 	@Override
-	public ArrayList<Provincia> GetAllProvincia() {
+	public ArrayList<Provincia> GetAllProvincia() throws SQLException {
 		String query = "SELECT id, nombre, id_pais FROM provincias";
 		ResultSet resultquery = DataAccess.executeQuery(query);
 		ArrayList<Provincia> provincias = new ArrayList<>();
