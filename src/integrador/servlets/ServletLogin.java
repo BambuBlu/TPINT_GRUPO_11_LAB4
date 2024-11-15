@@ -49,39 +49,46 @@ public class ServletLogin extends HttpServlet {
 			IniciarSesionUsuario(request, response);
 		}
 	}
-
+	
 	public void IniciarSesionUsuario(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String nombreUsuario = request.getParameter("txtNombre");
-		String contraseniaUsuario = request.getParameter("txtcontrasenia");
+	        throws ServletException, IOException {
+	    String nombreUsuario = request.getParameter("txtNombre");
+	    String contraseniaUsuario = request.getParameter("txtcontrasenia");
 
-		// Validacion de valores nulos o vacios
-		if ((nombreUsuario != null || nombreUsuario != "")
-				&& (contraseniaUsuario != null || contraseniaUsuario != "")) {
+	    // Validacion de valores nulos o vacios
+	    if ((nombreUsuario != null && !nombreUsuario.isEmpty())
+	            && (contraseniaUsuario != null && !contraseniaUsuario.isEmpty()))
 			// Logica con la base de datos para verificar si existe y esta hablitado de
 			// pasar el filtro de seguridad, si todo esta en orden, se crea el objeto y se
 			// guarda en Session
+	    	{
 
-			UsuarioNegocioImpl negocio = new UsuarioNegocioImpl();
+	        UsuarioNegocioImpl negocio = new UsuarioNegocioImpl();
 
-			for (Usuario usuario : negocio.GetAllUsuariosActivos()) {
-				if (usuario.getNombreUsuario().equals(nombreUsuario)
-						&& usuario.getContrasena().equals(contraseniaUsuario)) {
-					request.getSession().setAttribute("SessionActual", usuario);
-					if (usuario.getRol() == Roles.CLIENTE)
-						request.getRequestDispatcher("MainPage.jsp").forward(request, response);
-					else if (usuario.getRol() == Roles.ADMIN)
-						request.getRequestDispatcher("AdminMainPage.jsp").forward(request, response);
-				}
-			}
+	        for (Usuario usuario : negocio.GetAllUsuariosActivos()) {
+	            if (usuario.getNombreUsuario().equals(nombreUsuario)
+	                    && usuario.getContrasena().equals(contraseniaUsuario)) {
+	                request.getSession().setAttribute("SessionActual", usuario);
+	                
+	                if (usuario.getRol() == Roles.CLIENTE) {
+	                    request.getRequestDispatcher("MainPage.jsp").forward(request, response);
+	                    return;
+	                } else if (usuario.getRol() == Roles.ADMIN) {
+	                    request.getRequestDispatcher("AdminMainPage.jsp").forward(request, response);
+	                    return;
+	                }
+	            }
+	        }
 
-			request.setAttribute("SessionActual", "Usuario inexistente, intentelo de nuevo...");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+	        // Usuario no encontrado
+	        request.setAttribute("errorMessage", "Usuario inexistente, intentelo de nuevo...");
+	        request.getRequestDispatcher("/Index.jsp").forward(request, response);
 
-		} else {
-			request.setAttribute("SessionActual", "Por favor, complete todos los campos.");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-		}
+	    } else {
+	        // Campos vacíos
+	        request.setAttribute("errorMessage", "Por favor, complete todos los campos.");
+	        request.getRequestDispatcher("/Index.jsp").forward(request, response);
+	    }
 	}
 
 }
