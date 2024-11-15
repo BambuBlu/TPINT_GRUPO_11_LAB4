@@ -6,5 +6,5 @@ import integrador.model.Localidad;
 
 public interface LocalidadNegocio {
 	ArrayList<Localidad> GetAllLocalidades();
-
+	Localidad Find(int id_Localidad);
 }

@@ -19,4 +19,18 @@ public class ProvinciaNegocioImpl implements ProvinciaNegocio{
 		}
 	}
 
+	@Override
+	public Provincia Find(int id_Provincia) {
+		try {
+			for (Provincia provincia : dao.GetAllProvincia()) {
+				if (provincia.getId() == id_Provincia)
+					return provincia;
+			}
+			return null;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
 }
