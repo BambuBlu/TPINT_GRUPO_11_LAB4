@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="integrador.model.Usuario"%>
+<%@ page import="integrador.model.Usuario, integrador.model.Cliente, integrador.negocioimpl.ClienteNegocioImpl"%>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -119,81 +120,82 @@ tr {
 </head>
 <body>
 
-	<div class="body">
-		<%@include file="Layout/MainLayout.jsp"%>
-		<div class="contenedor">
-		
-		<%  String listaClientes = request.getParameter("listaClientes");
-				 if ("listaClientesActivos".equals(listaClientes)) { %>
-				
-			<h1>Listado de Clientes Activos</h1> 
-			
-				<% } else if (listaClientes.equals("listaClientesInactivos")) { %>
-				<h1>Listado de Clientes Inactivos</h1> 
-				<% } %>
+    <div class="body">
+    	<%@include file="Layout/MainLayout.jsp"%>
+        <div class="contenedor">
 
+            <!-- Mostrar título y lista de clientes dependiendo de la selección -->
+            <%
+                String listaClientes = request.getParameter("listaClientes");
+                if ("listaClientesActivos".equals(listaClientes)) {
+            %>
+                <h1>Listado de Clientes Activos</h1>
+            <%
+                } else if ("listaClientesInactivos".equals(listaClientes)) {
+            %>
+                <h1>Listado de Clientes Inactivos</h1>
+            <%
+                }
 
-			<div class="table-container">
-				<table class="tabla">
-					<thead>
-						<tr class="text-center fw-bolder fs-5">
-							<th>Id</th>
-							<th>Dni Cliente</th>
-							<th>Estado</th>
-							<th>Funcionalidades</th>
-						</tr>
-					</thead>
-					<tbody>
-				<% if ("listaClientesActivos".equals(listaClientes)) { %>
-						<tr class="text-center">
-							<td>1</td>
-							<td>12345678</td>
-							<td>Con Deuda</td>
-							<td><button class="btn btn-danger shadow-lg fw-bolder">Dar
-									de baja</button>
-								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
-									datos</button></td>
-						</tr>
-						<tr class="text-center">
-							<td>2</td>
-							<td>910111213</td>
-							<td>Sin Deuda</td>
-							<td><button class="btn btn-danger shadow-lg fw-bolder">Dar
-									de baja</button>
-								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
-									datos</button></td>
-						</tr>
-						
-						<% } else if (listaClientes.equals("listaClientesInactivos")) { %>
-						
-						<tr class="text-center">
-							<td>1</td>
-							<td>212576647</td>
-							<td>Con Deuda</td>
-							<td><button class="btn btn-danger shadow-lg fw-bolder">Habilitar</button>
-								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
-									datos</button></td>
-						</tr>
-						<tr class="text-center">
-							<td>2</td>
-							<td>55484466</td>
-							<td>Sin Deuda</td>
-							<td><button class="btn btn-danger shadow-lg fw-bolder">Habilitar</button>
-								<button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar
-									datos</button></td>
-						</tr>
-						
-						<% } %>
-						
-						
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script type="text/javascript" charset="utf8"
-		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+                // Obtener lista de clientes
+                ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+                String estado = (listaClientes != null && listaClientes.equals("listaClientesActivos")) ? "A" : "I";
+                ArrayList<Cliente> clientes = clienteNegocio.GetAllClientes(estado);
+            %>
+
+            <div class="table-container">
+                <table class="tabla">
+                    <thead>
+                        <tr class="text-center fw-bolder fs-5">
+                            <th>Dni Cliente</th>
+                            <th>Nombre Apellido</th>
+                            <th>Estado</th>
+                            <th>Funcionalidades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            if (clientes != null) {
+                                for (Cliente cliente : clientes) {
+                        %>
+                            <tr class="text-center">
+                                <td><%= cliente.getDni() %></td>
+                                <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
+                                <td><%= cliente.getEstado() %></td>
+								<td>
+								    <%
+								        if ("A".equals(cliente.getEstado())) {
+								    %>
+								        <form method="post" action="ServletClienteABM">
+								            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
+								            <input type="hidden" name="accion" value="darBaja" />
+								            <button type="submit" class="btn btn-danger shadow-lg fw-bolder">Dar de baja</button>
+								        </form>
+								    <%
+								        } else {
+								    %>
+								        <form method="post" action="ServletClienteABM">
+								            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
+								            <input type="hidden" name="accion" value="habilitar" />
+								            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
+								        </form>
+								    <%
+								        }
+								    %>
+								    <button class="btn btn-warning shadow-lg fw-bolder text-white">Modificar datos</button>
+								</td>
+                            </tr>
+                        <%
+                                }
+                            }
+                        %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 </body>
 </html>

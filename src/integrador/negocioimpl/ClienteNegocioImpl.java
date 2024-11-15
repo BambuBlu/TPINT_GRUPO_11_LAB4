@@ -43,6 +43,7 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 
 	@Override
 	public boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) {
+		System.out.println("Entro a ModificarCliente del Negocio");
 		try {
 			if (dao.ModificarCliente(clienteModificado, usuarioModificado))
 				return true;

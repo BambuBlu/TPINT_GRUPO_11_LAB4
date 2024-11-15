@@ -6,12 +6,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import integrador.model.Usuario;
-import integrador.negocio.UsuarioNegocio;
 import integrador.negocioimpl.UsuarioNegocioImpl;
 import integrador.enums.Roles;
-import integrador.model.Cliente;
 
 /**
  * Servlet implementation class ServletLogin
@@ -34,8 +33,12 @@ public class ServletLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+        if ("logout".equals(request.getParameter("action"))) {
+            realizarLogout(request, response);
+        } else {
+            response.getWriter().append("Served at: ").append(request.getContextPath());
+        }
 	}
 
 	/**
@@ -90,5 +93,14 @@ public class ServletLogin extends HttpServlet {
 	        request.getRequestDispatcher("/Index.jsp").forward(request, response);
 	    }
 	}
+	
+    private void realizarLogout(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        response.sendRedirect("Index.jsp");
+    }
 
 }

@@ -28,40 +28,42 @@ import integrador.model.Provincia;
 @WebServlet("/ServletClienteABM")
 public class ServletClienteABM extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * METODO do Post / ACCIONES DE CREAR, ELIMINAR Y ACTUALIZAR, dependiendo que
-	 * cual se solicite.
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if (request.getParameter("btnCrearCliente") != null) {
-			crearCliente(request, response);
-		}
-
-	}
-
+     
 	public ServletClienteABM() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 
-	/**
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Entro a doPost");
+		
+        String accion = request.getParameter("accion");
+        String clienteId = request.getParameter("clienteId");
+        
+        System.out.println("Valor de [accion] = " + accion);
+        System.out.println("Valor de [clienteId] = " + clienteId);
+		
+		if (request.getParameter("btnCrearCliente") != null) {
+    	   crearCliente(request, response);	   	   
+       } else if ("darBaja".equals(accion)) {
+    	   System.out.println("Entro a darBaja");
+           darBajaCliente(clienteId, response);
+       } else if ("habilitar".equals(accion)) {
+    	   System.out.println("Entro a habilitar");
+           habilitarCliente(clienteId, response);
+       }
+
+    
+    }
+	
+    
+    /**
      * Create Cliente
      */
     
@@ -139,5 +141,44 @@ public class ServletClienteABM extends HttpServlet {
 
         response.sendRedirect("Index.jsp");
     }
+   
+    /**
+     * Baja logica
+     */
+    private void darBajaCliente(String clienteId, HttpServletResponse response)
+    		throws IOException {
+    	System.out.println("Entro a darBajaCliente");
+        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+        Cliente cliente = new Cliente();
+        Usuario usuario = new Usuario();
+        cliente.setDni(clienteId);
+        cliente.setEstado("I");
+        usuario.setId_Usaurio(Integer.parseInt(clienteId));
+        usuario.setBaja(true);
+        
+        System.out.println("Valor de [cliente] = " + cliente);
+        
+        System.out.println("Valor de [cliente] = " + cliente);
+        
+        
+        clienteNegocio.ModificarCliente(cliente, usuario);
+        response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
+    }
 
+    /**
+     * Habilitacion de cliente
+     */
+    private void habilitarCliente(String clienteId, HttpServletResponse response)
+    		throws IOException {
+    	System.out.println("Entro a habilitarCliente");
+        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+        Cliente cliente = new Cliente();
+        Usuario usuario = new Usuario();
+        cliente.setDni(clienteId);
+        cliente.setEstado("A");
+        usuario.setId_Usaurio(Integer.parseInt(clienteId));
+        usuario.setBaja(false);
+        clienteNegocio.ModificarCliente(cliente, usuario);
+        response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
+    }
 }

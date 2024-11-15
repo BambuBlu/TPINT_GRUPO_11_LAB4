@@ -12,6 +12,6 @@ public interface ClienteDao {
 
 	ArrayList<Cliente> GetAllClientes() throws SQLException;
 	boolean CrearCliente(Cliente nuevoCliente, Usuario nuevoUsuario);
-	boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado);
+	boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) throws SQLException;
 	boolean EliminarCliente(Cliente clienteAeliminar);
 }
