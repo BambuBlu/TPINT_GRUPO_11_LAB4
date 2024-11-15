@@ -37,8 +37,7 @@ public class ServletClienteABM extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        if (request.getParameter("btnCrearCliente") != null) {
-    	   crearCliente(request, response);
-    	   	   
+    	   crearCliente(request, response);	   	   
        }
 
     

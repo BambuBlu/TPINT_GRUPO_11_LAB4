@@ -9,12 +9,27 @@ import integrador.negocio.GeneroNegocio;
 public class GeneroNegocioImpl implements GeneroNegocio {
 
 	private GeneroDaoImpl dao = new GeneroDaoImpl();
-	
+
 	@Override
 	public ArrayList<Generos> GetAllGeneros() {
 		try {
-			return dao.GetAllGeneros();	
+			return dao.GetAllGeneros();
 		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public Generos Find(int id_Genero) {
+		try {
+			for (Generos genero : dao.GetAllGeneros()) {
+				if (genero.getId() == id_Genero)
+					return genero;
+			}
+			return null;
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}

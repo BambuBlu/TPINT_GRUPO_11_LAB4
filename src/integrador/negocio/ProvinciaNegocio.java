@@ -7,4 +7,5 @@ import integrador.model.Provincia;
 public interface ProvinciaNegocio {
 	
 	ArrayList<Provincia> GetAllProvincias();
+	Provincia Find(int id_Provincia);
 }

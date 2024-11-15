@@ -7,4 +7,5 @@ import integrador.model.Generos;
 public interface GeneroNegocio {
 
 	ArrayList<Generos> GetAllGeneros();
+	Generos Find(int id_Genero);
 }
