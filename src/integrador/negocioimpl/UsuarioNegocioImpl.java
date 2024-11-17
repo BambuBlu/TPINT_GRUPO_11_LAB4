@@ -24,5 +24,10 @@ public class UsuarioNegocioImpl implements UsuarioNegocio{
 		}
 		return null;
 	}
+	
+	@Override
+	public Usuario obtenerUsuario(String dni) {
+		return dao.obtenerUsuario(dni);
+	}
 
 }

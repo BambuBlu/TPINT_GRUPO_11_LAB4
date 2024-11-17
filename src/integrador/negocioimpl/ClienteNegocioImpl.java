@@ -1,5 +1,6 @@
 package integrador.negocioimpl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import integrador.daoimpl.ClienteDaoImpl;
@@ -42,10 +43,9 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 	}
 
 	@Override
-	public boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) {
-		System.out.println("Entro a ModificarCliente del Negocio");
+	public boolean ModificarEstadoCliente(Cliente clienteModificado, Usuario usuarioModificado) {
 		try {
-			if (dao.ModificarCliente(clienteModificado, usuarioModificado))
+			if (dao.ModificarEstadoCliente(clienteModificado, usuarioModificado))
 				return true;
 			else
 				return false;
@@ -67,6 +67,25 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 			System.out.println(e.getMessage());
 			return false;
 		}
+	}
+	
+
+	@Override
+	public boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) {
+		try {
+			if (dao.ModificarCliente(clienteModificado, usuarioModificado))
+				return true;
+			else
+				return false;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	@Override
+	public Cliente obtenerCliente(String dni) throws SQLException {
+		return dao.obtenerCliente(dni);
 	}
 
 }

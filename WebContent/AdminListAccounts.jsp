@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ page import="integrador.model.Cuenta, integrador.negocioimpl.CuentaNegocioImpl"%>
+	<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -118,33 +120,74 @@ tr {
 	<div class="body">
 		<%@include file="Layout/MainLayout.jsp"%>
 		<div class="contenedor">
+		
 			<h1>Listado de Cuentas</h1>
+			
+			<%
+				String listaCuentas = request.getParameter("listaCuentas");
+                // Obtener lista de clientes
+                CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+                ArrayList<Cuenta> cuentas = cuentaNegocio.GetAllCuentas();
+            %>
 			<div class="table-container">
 				<table class="tabla">
 					<thead>
 						<tr class="text-center fw-bolder fs-5">
-							<th>ID</th>
-							<th>Nombre</th>
-							<th>Dni Cliente</th>
-							<th>Rol</th>
-							<th>Baja</th>
+							<th>Numero de cuenta</th>
+							<th>DNI</th>
+							<th>Fecha de creacion</th>
+							<th>Tipo de cuenta</th>
+							<th>CBU</th>
+							<th>Saldo</th>
+							<th>Estado</th>
+							<th>Funcionalidad</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="text-center">
-							<td>1</td>
-							<td>nicolas123</td>
-							<td>45314567</td>
-							<td>Admin</td>
-							<td>False</td>
-						</tr>
-						<tr class="text-center">
-							<td>2</td>
-							<td>tobias456</td>
-							<td>46714537</td>
-							<td>Cliente</td>
-							<td>True</td>
-						</tr>
+ <%
+                            if (cuentas != null) {
+                                for (Cuenta cuenta : cuentas) {
+                        %>
+                            <tr class="text-center">
+                                <td><%= cuenta.getNumeroDeCuenta() %></td>
+                                <td><%= cuenta.getDni() %></td>
+                                <td><%= cuenta.getFechaDeCreacion() %></td>
+                                <td><%= cuenta.getTipoCuenta().getDescripcion() %></td>
+                                <td><%= cuenta.getCbu() %></td>
+                                <td><%= cuenta.getSaldo() %></td>
+                                <td><%= cuenta.getEstado() %></td>
+								<td>
+								    <%
+								        if ("A".equals(cuenta.getEstado())) {
+								    %>
+								        <form method="post" action="ServletCuentaABM">
+								            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
+								            <input type="hidden" name="accion" value="darBaja" />
+								            <button type="submit" class="btn btn-danger shadow-lg fw-bolder">Dar de baja</button>
+								        </form>
+								    <%
+								        } else {
+								    %>
+								        <form method="post" action="ServletCuentaABM">
+								            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
+								            <input type="hidden" name="accion" value="habilitar" />
+								            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
+								        </form>
+								    <%
+								        }
+								    %>
+							    	<form method="post" action="ServletCuentaABM">
+							            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
+							            <input type="hidden" name="tipoCuentaId" value="<%= cuenta.getTipoCuenta().getId() %>" />
+							            <input type="hidden" name="accion" value="Modificar" />
+							            <button type="submit" class="btn btn-warning shadow-lg fw-bolder text-white">Modificar Tipo Cuenta</button>
+							        </form>
+								</td>
+                            </tr>
+                        <%
+                                }
+                            }
+                        %>
 					</tbody>
 				</table>
 			</div>

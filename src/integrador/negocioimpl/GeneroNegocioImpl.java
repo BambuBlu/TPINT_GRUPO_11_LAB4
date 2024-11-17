@@ -15,7 +15,8 @@ public class GeneroNegocioImpl implements GeneroNegocio {
 		try {
 			return dao.GetAllGeneros();
 		} catch (Exception e) {
-			return null;
+			e.printStackTrace();
+	        return new ArrayList<>();
 		}
 	}
 

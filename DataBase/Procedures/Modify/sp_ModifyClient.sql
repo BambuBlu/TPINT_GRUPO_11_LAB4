@@ -1,3 +1,5 @@
+DELIMITER //
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ModificarCliente`(
     IN p_dni VARCHAR(10),
     IN p_cuil VARCHAR(20),
@@ -29,4 +31,6 @@ BEGIN
     UPDATE Usuarios
     SET `contraseña` = p_contrasena
     WHERE dni_cliente = p_dni;
-END
+END //
+
+DELIMITER ;

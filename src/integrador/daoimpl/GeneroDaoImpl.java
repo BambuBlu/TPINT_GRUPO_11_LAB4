@@ -1,6 +1,5 @@
 package integrador.daoimpl;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,13 +15,12 @@ public class GeneroDaoImpl implements GeneroDao {
 
 	}
 
-
+	@Override
 	public ArrayList<Generos> GetAllGeneros() throws SQLException {
-		String query = "SELECT id, descripcion FROM generos";
-	    ResultSet resultquery = DataAccess.executeQuery(query);
+	    String query = "SELECT id, descripcion FROM generos";
 	    ArrayList<Generos> generos = new ArrayList<>();
 
-	    try {
+	    try (ResultSet resultquery = DataAccess.executeQuery(query)) {
 	        while (resultquery.next()) {
 	            int id = resultquery.getInt("id");
 	            String descripcion = resultquery.getString("descripcion");
@@ -32,15 +30,10 @@ public class GeneroDaoImpl implements GeneroDao {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (resultquery != null) resultquery.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
+	        throw e;
 	    }
 
-	    return generos;	
+	    return generos;
 	}
 	
 	

@@ -7,4 +7,6 @@ import integrador.model.Usuario;
 public interface UsuarioNegocio {
 
 	ArrayList<Usuario> GetAllUsuariosActivos();
+
+	Usuario obtenerUsuario(String dni);
 }

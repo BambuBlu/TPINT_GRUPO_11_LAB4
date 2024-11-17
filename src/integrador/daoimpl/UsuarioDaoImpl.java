@@ -82,5 +82,18 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		return false;
 	}
 
+
+	@Override
+	public Usuario obtenerUsuario(String dni) {
+		ArrayList<Usuario> listUsuarios = this.GetAllUsuarios();
+		for (Usuario usuario : listUsuarios) {
+			if (usuario.getCliente().getDni().contentEquals(dni)) {
+				return usuario;
+			}
+
+		}
+		return new Usuario();
+	}
+
 	
 }

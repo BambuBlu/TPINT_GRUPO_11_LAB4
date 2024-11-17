@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
+import integrador.negocioimpl.GeneroNegocioImpl;
 import integrador.negocioimpl.LocalidadNegocioImpl;
 import integrador.negocioimpl.PaisNegocioImpl;
 import integrador.negocioimpl.ProvinciaNegocioImpl;
+import integrador.negocioimpl.UsuarioNegocioImpl;
 import integrador.enums.Roles;
 import integrador.model.Cliente;
 import integrador.model.Generos;
@@ -45,25 +50,34 @@ public class ServletClienteABM extends HttpServlet {
 		
         String accion = request.getParameter("accion");
         String clienteId = request.getParameter("clienteId");
+        String clienteEstado = request.getParameter("clienteEstado");
+        
         
         System.out.println("Valor de [accion] = " + accion);
         System.out.println("Valor de [clienteId] = " + clienteId);
+        System.out.println("Valor de [clienteEstado] = " + clienteEstado);
 		
 		if (request.getParameter("btnCrearCliente") != null) {
     	   crearCliente(request, response);	   	   
        } else if ("darBaja".equals(accion)) {
-    	   System.out.println("Entro a darBaja");
            darBajaCliente(clienteId, response);
        } else if ("habilitar".equals(accion)) {
-    	   System.out.println("Entro a habilitar");
            habilitarCliente(clienteId, response);
+       } else if ("modificar".equals(accion)) {
+           try {
+				ModificarCliente(clienteId, clienteEstado, request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+       } else if ("submitEdit".equals(accion)) {
+    	   System.out.println("Entro a submitEdit");
+    	   SubmitModificarCliente(clienteEstado, request, response);
        }
 
     
     }
-	
-    
-    /**
+
+	/**
      * Create Cliente
      */
     
@@ -154,14 +168,9 @@ public class ServletClienteABM extends HttpServlet {
         cliente.setDni(clienteId);
         cliente.setEstado("I");
         usuario.setId_Usaurio(Integer.parseInt(clienteId));
-        usuario.setBaja(true);
+        usuario.setBaja(false);
         
-        System.out.println("Valor de [cliente] = " + cliente);
-        
-        System.out.println("Valor de [cliente] = " + cliente);
-        
-        
-        clienteNegocio.ModificarCliente(cliente, usuario);
+        clienteNegocio.ModificarEstadoCliente(cliente, usuario);
         response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
     }
 
@@ -177,8 +186,91 @@ public class ServletClienteABM extends HttpServlet {
         cliente.setDni(clienteId);
         cliente.setEstado("A");
         usuario.setId_Usaurio(Integer.parseInt(clienteId));
-        usuario.setBaja(false);
-        clienteNegocio.ModificarCliente(cliente, usuario);
+        usuario.setBaja(true);
+        
+        clienteNegocio.ModificarEstadoCliente(cliente, usuario);
         response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
     }
+    
+	
+    
+    private void ModificarCliente(String clienteId, String clienteEstado, HttpServletRequest request, HttpServletResponse response)
+    		throws ServletException, IOException, SQLException {
+    	System.out.println("Entro a ModificarCliente");
+    	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+        Cliente cliente = clienteNegocio.obtenerCliente(clienteId);
+        UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
+		Usuario usuario = usuarioNegocio.obtenerUsuario(cliente.getDni());
+
+		request.setAttribute("clienteModificar", cliente);
+		request.setAttribute("usuarioModificar", usuario);
+		request.setAttribute("estadoUsuario", clienteEstado);
+		
+		System.out.println("Valor de [cliente] = " + cliente);
+		System.out.println("Valor de [request.setAttribute(\"clienteModificar\")] = " + request.getAttribute("clienteModificar"));
+		System.out.println("Valor de [usuario] = " + usuario);
+		System.out.println("Valor de [request.setAttribute(\"usuarioModificar\")] = " + request.getAttribute("usuarioModificar"));
+		
+		
+		RequestDispatcher rd = request.getRequestDispatcher("UserModify.jsp");
+		rd.forward(request, response);
+	}
+    
+    
+    private void SubmitModificarCliente(String clienteEstado, HttpServletRequest request, HttpServletResponse response)
+    		throws ServletException, IOException {
+    	System.out.println("Entro a SubmitModificarCliente");
+    	
+		String dni = request.getParameter("txtDNI");
+		String cuil = request.getParameter("txtCUIL");
+		String nombre = request.getParameter("txtNombre");
+		String apellido = request.getParameter("txtApellido");
+		String sexo = request.getParameter("txtSexo");
+		String nacionalidad = request.getParameter("txtNacionalidad");
+		String fechaNacimientoStr = request.getParameter("txtFecNac");
+		String direccion = request.getParameter("txtDireccion");
+		String localidad = request.getParameter("txtLocalidad");
+		String email = request.getParameter("txtEmail");
+		String telefono = request.getParameter("txtTelefono");
+		String contraseña = request.getParameter("txtContrasenia");
+		Localidad ob_localidad;
+		Generos ob_genero;
+
+		Date fechaNacimiento = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			java.util.Date parsedDate = sdf.parse(fechaNacimientoStr);
+			fechaNacimiento = new java.sql.Date(parsedDate.getTime());
+
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+			request.setAttribute("error", "Formato de fecha de nacimiento inválido");
+			RequestDispatcher rd = request.getRequestDispatcher("/CrearCliente.jsp");
+			rd.forward(request, response);
+			return;
+		}
+		
+		LocalidadNegocioImpl localidadNegocio = new LocalidadNegocioImpl();
+		GeneroNegocioImpl genero = new GeneroNegocioImpl();
+		ob_localidad = localidadNegocio.Find(Integer.parseInt(localidad));
+		ob_genero = genero.Find(Integer.parseInt(sexo));
+		
+    	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+    	Cliente cliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad, (java.sql.Date) fechaNacimiento, direccion,
+				ob_localidad, email, telefono, clienteEstado);
+    	
+    	UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
+		Usuario usuario = usuarioNegocio.obtenerUsuario(cliente.getDni());
+		usuario.setContrasena(contraseña);
+		
+		
+    	clienteNegocio.ModificarCliente(cliente, usuario);
+    	
+        if("A".equals(clienteEstado)) {
+        	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
+        } else {
+        	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
+        }
+	}
 }

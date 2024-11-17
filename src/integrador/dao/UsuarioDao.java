@@ -9,4 +9,5 @@ public interface UsuarioDao {
 	boolean CrearUsuario(Usuario nuevoUsuario);
 	boolean ModificarUsuario(Usuario usuarioModificado);
 	boolean EliminarUsuario(Usuario usuarioAeliminar);
+	Usuario obtenerUsuario(String dni);
 }
