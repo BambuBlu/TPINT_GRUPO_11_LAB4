@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="integrador.model.Usuario, integrador.model.Cliente, integrador.negocioimpl.ClienteNegocioImpl"%>
 <%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,6 +15,21 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
+	
+<!-- PARA PAGINACION Y FILTRADO -->
+<link rel="stylesheet" href="/DataTables/datatables.css" />
+ 
+<script src="/DataTables/datatables.js"></script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#tableUserList_id').DataTable();
+	});
+</script>
+
+<!--  -->
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Listado de Clientes</title>
 <style>
@@ -144,7 +160,7 @@ tr {
             %>
 
             <div class="table-container">
-                <table class="tabla">
+                <table class="tabla" id="tableUserList_id">
                     <thead>
                         <tr class="text-center fw-bolder fs-5">
                             <th>Dni Cliente</th>

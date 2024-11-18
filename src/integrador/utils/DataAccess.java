@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class DataAccess {
 	private static final String host = "jdbc:mysql://localhost:3306/dbbanco";
 	private static final String user = "root";
-	private static final String pass = "1234";
+	private static final String pass = "root";
 
 	public static Connection GetConnection() throws SQLException {
 		return DriverManager.getConnection(host, user, pass);
