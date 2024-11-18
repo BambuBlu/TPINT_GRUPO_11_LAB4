@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#tableUserList_id').DataTable();
+		$('#tableUserList_idS').DataTable();
 	});
 </script>
 
