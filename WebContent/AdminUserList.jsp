@@ -22,11 +22,6 @@
 <script src="/DataTables/datatables.js"></script>
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#tableUserList_idS').DataTable();
-	});
-</script>
 
 <!--  -->
 
@@ -114,8 +109,9 @@ h1 {
 	border-radius: 10px;
 	border: 4px solid #2196F3;
 	width: 100%;
-	height: 100%;
-	overflow: hidden;
+	height: auto; /* Antes: //height: 100%;*/ 
+	  overflow: hidden; /* sin scroll*/ 
+max-height: none; /* Elimina cualquier restricción de altura máxima */
 	background-color: #595C5F;
 }
 
@@ -221,4 +217,10 @@ tr {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 </body>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#tableUserList_id').DataTable();
+	});
+</script>
 </html>
