@@ -15,6 +15,11 @@ public class DataAccess {
 	private static final String pass = "root";
 
 	public static Connection GetConnection() throws SQLException {
+		try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 		return DriverManager.getConnection(host, user, pass);
 	}
 	
@@ -67,8 +72,8 @@ public class DataAccess {
             e.printStackTrace();
             return null;
         }
-        finally {
+       /* finally {
 			conn.close();
-		}
+		}*/ // DEBE CERRARSE EN CADA RECURSO
     }
 }
