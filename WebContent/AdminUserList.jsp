@@ -28,105 +28,92 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Listado de Clientes</title>
 <style>
-/* Body */
+/* Estilo general del body */
 .body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background-color: #79d7e7;
-	margin: 0;
-	padding: 20px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #79d7e7;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
+/* Contenedor principal */
 .contenedor {
-	background-color: #ffffff;
-	border-radius: 10px;
-	padding: 30px;
-	box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
-	width: 100%;
-	max-width: auto;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	height: 300px
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Títulos */
 h1 {
-	text-align: center;
-	color: #00796b;
-	font-size: 1.8em;
-	margin-bottom: 20px;
+    text-align: center;
+    color: #00796b;
+    font-size: 1.8em;
+    margin-bottom: 20px;
 }
 
-.menu {
-	display: flex;
-	justify-content: center;
-	gap: 15px;
-	margin-bottom: 20px;
+/* Contenedor de la tabla */
+.table-container {
+    border-radius: 10px;
+    border: 4px solid #2196F3;
+    width: 100%;
+    background-color: #595C5F;
+    overflow-x: hidden;
+    max-height: none;
 }
 
-.menu a {
-	color: #00796b;
-	text-decoration: none;
-	padding: 10px 15px;
-	background-color: white;
-	border-radius: 5px;
-	transition: background-color 0.3s;
+/* Tabla */
+.tabla {
+    width: 100%;
+    table-layout: fixed;
+    background-color: #595C5F;
+    color: white;
+    font-size: 15px;
+    border-collapse: collapse;
+    margin: 0;
 }
 
-.menu a:hover {
-	background-color: #f0f0f0;
+/* Celdas y encabezados */
+.tabla th, .tabla td {
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+    white-space: normal;
+    padding: 10px;
 }
 
-.usuario {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px;
-	margin-top: 20px;
-	border-top: 1px solid #ccc;
-	width: 100%;
+/* Filas */
+.tabla tr {
+    background-color: #595C5F;
 }
 
+.tabla tr:nth-child(even) {
+    background-color: #4f4f4f;
+}
+
+/* Botones */
 .btn {
-	background-color: #00796b;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	text-align: center;
+    background-color: #00796b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
 }
 
 .btn:hover {
-	background-color: #004d40;
-}
-
-.table-container {
-	border-radius: 10px;
-	border: 4px solid #2196F3;
-	width: 100%;
-	height: auto; /* Antes: //height: 100%;*/ 
-	  overflow: hidden; /* sin scroll*/ 
-max-height: none; /* Elimina cualquier restricción de altura máxima */
-	background-color: #595C5F;
-}
-
-.tabla {
-	width: 100%;
-	background-color: #595C5F;
-	color: white;
-	font-size: 15px;
-	border-collapse: collapse;
-	height: inherit;
-	margin: 0px 100px 0 100px;
-}
-
-tr {
-	background-color: #595C5F;
+    background-color: #004d40;
 }
 </style>
 </head>
@@ -159,8 +146,16 @@ tr {
                 <table class="tabla" id="tableUserList_id">
                     <thead>
                         <tr class="text-center fw-bolder fs-5">
-                            <th>Dni Cliente</th>
+                            <th>Dni</th>
+                            <th>Cuil</th>
                             <th>Nombre Apellido</th>
+                            <th>Genero</th>
+                            <th>Nacionalidad</th>
+                            <th>Nacimiento</th>
+                            <th>Direccion</th>
+                            <th>Localidad</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
                             <th>Estado</th>
                             <th>Funcionalidades</th>
                         </tr>
@@ -172,7 +167,15 @@ tr {
                         %>
                             <tr class="text-center">
                                 <td><%= cliente.getDni() %></td>
+                                <td><%= cliente.getCuil() %></td>
                                 <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
+                                <td><%= cliente.getSexo().getDescripcion() %></td>
+                                <td><%= cliente.getNacionalidad() %></td>
+                                <td><%= cliente.getFechaNacimiento() %></td>
+                                <td><%= cliente.getDireccion() %></td>
+                                <td><%= cliente.getLocalidad().getNombre() %></td>
+                                <td><%= cliente.getEmail() %></td>
+                                <td><%= cliente.getTelefono() %></td>
                                 <td><%= cliente.getEstado() %></td>
 								<td>
 								    <%
@@ -220,7 +223,12 @@ tr {
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#tableUserList_id').DataTable();
+	    $('#tableUserList_id').DataTable({
+	        scrollY: 'auto',
+	        paging: true,
+	        searching: true,
+	        info: false
+	    });
 	});
 </script>
 </html>

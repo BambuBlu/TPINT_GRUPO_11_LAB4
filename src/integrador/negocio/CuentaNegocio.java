@@ -10,4 +10,6 @@ public interface CuentaNegocio {
 
 	boolean ModificarCuenta(Cuenta cuentaModificada);
 	boolean ModificarTipoCuenta(Cuenta cuentaModificada);
+
+	ArrayList<Cuenta> GetAllActiveCuentas();
 }

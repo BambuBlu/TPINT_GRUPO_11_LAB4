@@ -19,100 +19,125 @@
 <style>
 /* Body */
 .body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background-color: #79d7e7;
-	margin: 0;
-	padding: 20px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #79d7e7;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
+/* Contenedor principal */
 .contenedor {
-	background-color: #ffffff;
-	border-radius: 10px;
-	padding: 30px;
-	box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
-	width: 80%;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	height: 300px
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Título */
 h1 {
-	text-align: center;
-	color: #00796b;
-	font-size: 1.8em;
-	margin-bottom: 20px;
+    text-align: center;
+    color: #00796b;
+    font-size: 1.8em;
+    margin-bottom: 20px;
 }
 
+/* Menú */
 .menu {
-	display: flex;
-	justify-content: center;
-	gap: 15px;
-	margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .menu a {
-	color: #00796b;
-	text-decoration: none;
-	padding: 10px 15px;
-	background-color: white;
-	border-radius: 5px;
-	transition: background-color 0.3s;
+    color: #00796b;
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .menu a:hover {
-	background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
-.usuario {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px;
-	margin-top: 20px;
-	border-top: 1px solid #ccc;
-	width: 100%;
-}
-
-.btn {
-	background-color: #00796b;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	text-align: center;
-}
-
-.btn:hover {
-	background-color: #004d40;
-}
-
+/* Tabla */
 .table-container {
-	border-radius: 10px;
-	border: 4px solid #2196F3;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background-color: #595C5F;
+    border-radius: 10px;
+    border: 4px solid #2196F3;
+    width: 100%;
+    overflow-x: auto;
+    background-color: #595C5F;
 }
 
 .tabla {
-	width: 100%;
-	background-color: #595C5F;
-	color: white;
-	font-size: 15px;
-	border-collapse: collapse;
-	height: inherit;
+    width: 100%;
+    table-layout: fixed;
+    background-color: #595C5F;
+    color: white;
+    font-size: 15px;
+    border-collapse: collapse;
 }
 
-tr {
-	background-color: #595C5F;
+.tabla th,
+.tabla td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.tabla th {
+    font-weight: bold;
+    background-color: #00796b;
+    color: white;
+}
+
+.tabla tr:nth-child(even) {
+    background-color: #4f4f4f;
+}
+
+.tabla tr:nth-child(odd) {
+    background-color: #595C5F;
+}
+
+/* Botones */
+.btn {
+    background-color: #00796b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #004d40;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-success {
+    background-color: #28a745;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
 }
 </style>
 </head>

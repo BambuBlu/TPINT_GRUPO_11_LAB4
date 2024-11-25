@@ -65,6 +65,7 @@
     <div class="container">
         <h2>Cliente creado exitosamente</h2>
         <p>El cliente ha sido creado con éxito.</p>
+        <p>Su solicitud va a ser revisada.</p>
         <a href="Index.jsp">Ir a Login</a>
     </div>
 </body>

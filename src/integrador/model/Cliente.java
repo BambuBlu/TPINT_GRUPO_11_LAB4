@@ -39,7 +39,7 @@ public class Cliente {
      * @param telefono Teléfono de contacto del cliente
      */
     public Cliente(String dni, String cuil, String nombre, String apellido, Generos sexo, String nacionalidad,
-                   Date fechaNacimiento, String direccion, Localidad localidad, String email, String telefono, String estado) {
+                   Date fechaNacimiento, String direccion, Localidad localidad, String email, String telefono) {
         super();
         this.dni = dni;
         this.cuil = cuil;
@@ -52,9 +52,27 @@ public class Cliente {
         this.localidad = localidad;
         this.email = email;
         this.telefono = telefono;
-        this.estado = estado;
+        this.estado = "I";
         this.cuentas = new ArrayList<>(); // Inicializa la lista de cuentas
     }
+    
+	    public Cliente(String dni, String cuil, String nombre, String apellido, Generos sexo, String nacionalidad,
+	            Date fechaNacimiento, String direccion, Localidad localidad, String email, String telefono, String estado) {
+	 super();
+	 this.dni = dni;
+	 this.cuil = cuil;
+	 this.nombre = nombre;
+	 this.apellido = apellido;
+	 this.sexo = sexo;
+	 this.nacionalidad = nacionalidad;
+	 this.fechaNacimiento = fechaNacimiento;
+	 this.direccion = direccion;
+	 this.localidad = localidad;
+	 this.email = email;
+	 this.telefono = telefono;
+	 this.estado = estado;
+	 this.cuentas = new ArrayList<>(); // Inicializa la lista de cuentas
+	}
 
     /**
      * Constructor por defecto para crear un cliente vacío.
@@ -91,7 +109,9 @@ public class Cliente {
         this.cuentas = cliente.getCuentas(); 
     }
 
-    // Getters y Setters
+
+
+	// Getters y Setters
     public String getDni() {
         return dni;
     }

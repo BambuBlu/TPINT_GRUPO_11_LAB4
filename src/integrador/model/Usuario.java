@@ -29,6 +29,11 @@ public class Usuario {
 		this.baja = baja;
 	}
 	
+	public Usuario(String nombreUsuario, String contrasena) {
+		this.nombreUsuario = nombreUsuario;
+		this.contrasena = contrasena;
+	}
+
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}

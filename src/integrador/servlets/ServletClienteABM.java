@@ -2,6 +2,7 @@ package integrador.servlets;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.io.IOException;
@@ -15,17 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
+import integrador.negocioimpl.CuentaNegocioImpl;
 import integrador.negocioimpl.GeneroNegocioImpl;
 import integrador.negocioimpl.LocalidadNegocioImpl;
+import integrador.negocioimpl.MovimientoNegocioImpl;
 import integrador.negocioimpl.PaisNegocioImpl;
 import integrador.negocioimpl.ProvinciaNegocioImpl;
 import integrador.negocioimpl.UsuarioNegocioImpl;
 import integrador.enums.Roles;
 import integrador.model.Cliente;
+import integrador.model.Cuenta;
 import integrador.model.Generos;
 import integrador.model.Localidad;
+import integrador.model.Movimiento;
 import integrador.model.Pais;
 import integrador.model.Provincia;
+import integrador.model.TipoMovimiento;
 
 /**
  * Servlet implementation class ServletClienteABM
@@ -58,7 +64,11 @@ public class ServletClienteABM extends HttpServlet {
         System.out.println("Valor de [clienteEstado] = " + clienteEstado);
 		
 		if (request.getParameter("btnCrearCliente") != null) {
-    	   crearCliente(request, response);	   	   
+    	   try {
+			crearCliente(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	   	   
        } else if ("darBaja".equals(accion)) {
            darBajaCliente(clienteId, response);
        } else if ("habilitar".equals(accion)) {
@@ -82,78 +92,105 @@ public class ServletClienteABM extends HttpServlet {
      */
     
     private void crearCliente(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Genero
-    	String sexoValue = request.getParameter("txtSexo");
-    	Generos sexo = new Generos();
-    	if (sexoValue != null && !sexoValue.isEmpty()) {
-    	    if (sexoValue.equals("1")) {
-    	        sexo.setDescripcion("Masculino");
-    	    } else if (sexoValue.equals("2")) {
-    	        sexo.setDescripcion("Femenino");
-    	    }
-    	}
-    	//Fecha nacimiento
-    	  String fechaNacimientoStr = request.getParameter("fechaNacimiento");
+            throws ServletException, IOException, SQLException {
 
-    	    // Define the expected date format
-    	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Convierto formato
-    	    java.util.Date utilDate = null;
-    	    try {
-    	        // string a date
-    	    	 utilDate = sdf.parse(fechaNacimientoStr);
-    	    } catch (Exception e) {
-    	        e.printStackTrace(); // 
-    	    }
-    	    // Convierto java.util.Date a java.sql.Date (el usado en la clase)
-    	    java.sql.Date fechaNacimiento = new java.sql.Date(utilDate.getTime());
-        
-        // PAIS, PROVINCIA, LOCALIDAD
+    	LocalidadNegocioImpl localidadNegocio = new LocalidadNegocioImpl();
+    	GeneroNegocioImpl generoNegocio = new GeneroNegocioImpl();
+    	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
     	
-    	// HardCodeo la Localidad a causa  de error en el negocio (Solucionar)
-    	Localidad localidad = new Localidad(1, "Capital Federal", new Provincia(1, "Buenos Aires", new Pais(1, "Argentina")));
-    	
-    	//Pais
-    	PaisNegocioImpl negociopais = new PaisNegocioImpl();
-    	String nacionalidad = negociopais.Find(Integer.parseInt(request.getParameter("txtPais"))).getNombre(); 
-    	
-    	//Localidad (Forma correcta de Get)
-    	//LocalidadNegocioImpl negociolocalidad = new LocalidadNegocioImpl();
-    	//Localidad localidadSeleccionada = negociolocalidad.Find(Integer.parseInt(request.getParameter("txtLocalidad")));
-    	
-    	//Provincia
-    	ProvinciaNegocioImpl provinciaNegocio = new ProvinciaNegocioImpl();
-    	Provincia provinciaSeleccionada = provinciaNegocio.Find(Integer.parseInt(request.getParameter("txtProvincia")));
-    	
-    	Usuario usuario = new Usuario();
-    	 
-        Cliente cliente = new Cliente();
-        cliente.setDni(request.getParameter("txtDNI"));
-        cliente.setCuil(request.getParameter("txtCUIL"));
-        cliente.setNombre(request.getParameter("txtNombre"));
-        cliente.setApellido(request.getParameter("txtApellido"));
-        cliente.setSexo(sexo);  
-        cliente.setFechaNacimiento(fechaNacimiento); 
-        cliente.setNacionalidad(nacionalidad);
-        //Hay que agregar el parametro provincia en clase y en base de datos
-        //cliente.setProvincia(provinciaSeleccionada)
-        cliente.setLocalidad(localidad);
-        
-        cliente.setDireccion(request.getParameter("txtDireccion"));
-        cliente.setEmail(request.getParameter("txtEmail"));
-        cliente.setTelefono(request.getParameter("txtTelefono"));
-        
-        // Creo usuario
-        usuario.setCliente(cliente);
-        usuario.setNombreUsuario(request.getParameter("txtUsuario").toString());
-        usuario.setContrasena(request.getParameter("txtContrasenia").toString());
-        usuario.setRol(Roles.CLIENTE);
-        usuario.setBaja(false);
+		Localidad ob_localidad;
+		Generos ob_genero;
 
-        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
-        clienteNegocio.CrearCliente(cliente, usuario);
+		int id_sexo;
+		int id_localidad;
 
-        response.sendRedirect("Index.jsp");
+		String dni = request.getParameter("txtDNI");
+		String cuil = request.getParameter("txtCUIL");
+		String nombre = request.getParameter("txtNombre");
+		String apellido = request.getParameter("txtApellido");
+		String sexo = request.getParameter("txtSexo");
+		String fechaNacimientoStr = request.getParameter("txtFecNac");
+		String direccion = request.getParameter("txtDireccion");
+		String localidad = request.getParameter("txtLocalidad");
+		String email = request.getParameter("txtEmail");
+		String telefono = request.getParameter("txtTelefono");
+		String nacionalidad = request.getParameter("txtNacionalidad");
+
+		String usuario = request.getParameter("txtUsuario");
+		String contraseña = request.getParameter("txtContrasenia");
+		String repetirContraseña = request.getParameter("txtRepeContrasenia");
+
+		Date fechaNacimiento = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			java.util.Date parsedDate = sdf.parse(fechaNacimientoStr);
+			fechaNacimiento = new java.sql.Date(parsedDate.getTime());
+			id_sexo = Integer.parseInt(sexo);
+			id_localidad = Integer.parseInt(localidad);
+			
+			ob_localidad = localidadNegocio.Find(id_localidad);
+			ob_genero = generoNegocio.Find(id_sexo);
+
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+			request.setAttribute("error", "Formato de fecha de nacimiento inválido");
+			RequestDispatcher rd = request.getRequestDispatcher("/CrearCliente.jsp");
+			rd.forward(request, response);
+			return;
+		}
+		
+		
+		if (!contraseña.equals(repetirContraseña)) {
+			System.out.println("Las contraseñas no coinciden");
+			request.setAttribute("error", "Las contraseñas no coinciden");
+			RequestDispatcher rd = request.getRequestDispatcher("/CrearCliente.jsp");
+			rd.forward(request, response);
+			return;
+		}
+
+		
+		Cliente nuevoCliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad, (java.sql.Date) fechaNacimiento,
+				direccion, ob_localidad, email, telefono);
+
+		Usuario nuevoUsuario = new Usuario(usuario, contraseña);
+
+		clienteNegocio.CrearCliente(nuevoCliente, nuevoUsuario);
+
+		
+		Cliente clienteAgregado = clienteNegocio.obtenerCliente(dni);
+		if (clienteAgregado != null) {
+			Movimiento movimiento = new Movimiento();
+			CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+			MovimientoNegocioImpl movimientoNegocio = new MovimientoNegocioImpl();
+			ArrayList<Cuenta> cuentas = new ArrayList<Cuenta>();
+
+			cuentas = cuentaNegocio.GetAllActiveCuentas();
+			Cuenta nuevaCuenta = new Cuenta();
+			for (Cuenta cuenta : cuentas) {
+				if (cuenta.getDni().equals(clienteAgregado.getDni())) {
+					nuevaCuenta = cuenta;
+					break;
+				}
+			}
+			if (nuevaCuenta != null) {
+				movimiento.setCuenta(nuevaCuenta);
+				movimiento.setFecha((java.sql.Date) new Date(System.currentTimeMillis()));
+				movimiento.setDetalle("Alta de cuenta");
+				movimiento.setImporte(10000);
+
+				TipoMovimiento tipoMovimiento = new TipoMovimiento();
+				tipoMovimiento.setId(1);
+				tipoMovimiento.setDescripcion("Alta de cuenta");
+
+				movimiento.setTipoMovimiento(tipoMovimiento);
+				movimiento.setCuentaDestino(nuevaCuenta.getNumeroDeCuenta());
+
+				movimientoNegocio.agregarMovimiento(movimiento);
+
+				response.sendRedirect("SuccessRegister.jsp");
+			}
+		}
     }
    
     /**

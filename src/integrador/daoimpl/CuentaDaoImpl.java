@@ -53,6 +53,42 @@ public class CuentaDaoImpl implements CuentaDao {
 	}
 	
 	@Override
+	public ArrayList<Cuenta> GetAllActiveCuentas() {
+		ArrayList<Cuenta> listCuenta = new ArrayList<>();
+
+		String query = "SELECT c.numero_de_cuenta, c.dni_cliente, c.fecha_de_creacion, "
+				+ "c.id_tipo_cuenta, tc.descripcion AS tipo_cuenta, " + "c.cbu, c.saldo, c.estado " + "FROM cuentas c "
+				+ "INNER JOIN TipoDeCuenta tc ON c.id_tipo_cuenta = tc.id " + "WHERE c.estado = 'A'";
+
+		try (Connection conn = DataAccess.GetConnection();
+				Statement stmt = conn.createStatement();
+				ResultSet resultquery = stmt.executeQuery(query)) {
+
+			while (resultquery.next()) {
+				Cuenta cuenta = new Cuenta();
+				cuenta.setNumeroDeCuenta(resultquery.getInt("numero_de_cuenta"));
+				cuenta.setDni(resultquery.getString("dni_cliente"));
+				cuenta.setFechaDeCreacion(resultquery.getDate("fecha_de_creacion"));
+
+				TipoCuenta tipoCuenta = new TipoCuenta();
+				tipoCuenta.setId(resultquery.getInt("id_tipo_cuenta"));
+				tipoCuenta.setDescripcion(resultquery.getString("tipo_cuenta"));
+				cuenta.setTipoCuenta(tipoCuenta);
+
+				cuenta.setCbu(resultquery.getInt("cbu"));
+				cuenta.setSaldo(resultquery.getDouble("saldo"));
+				cuenta.setEstado(resultquery.getString("estado"));
+
+				listCuenta.add(cuenta);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return listCuenta;
+	}
+	
+	@Override
 	public boolean ModificaEstadoCuenta(Cuenta cuentaModificada) throws SQLException {
 	    String sqlCuenta = "{CALL ModificarEstadoCuenta(?, ?)}";
 	    

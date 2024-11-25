@@ -20,6 +20,17 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 			return null;
 		}
 	}
+	
+	@Override
+	public ArrayList<Cuenta> GetAllActiveCuentas() {
+		try {
+			return dao.GetAllActiveCuentas();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
 
 	@Override
 	public boolean ModificarCuenta(Cuenta cuentaModificada) {

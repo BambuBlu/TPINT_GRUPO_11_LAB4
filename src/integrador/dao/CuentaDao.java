@@ -10,4 +10,5 @@ public interface CuentaDao {
 	ArrayList<Cuenta> GetAllCuentas() throws SQLException;
 	boolean ModificaEstadoCuenta(Cuenta cuentaModificada) throws SQLException;
 	boolean ModificaTipoCuenta(Cuenta cuentaModificada) throws SQLException;
+	ArrayList<Cuenta> GetAllActiveCuentas();
 }
