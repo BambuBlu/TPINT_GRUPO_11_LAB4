@@ -124,9 +124,12 @@ public class ClienteDaoImpl implements ClienteDao {
 	public boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) throws SQLException {
 		String sqlCliente = "{CALL ModificarCliente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 	    
-	    Connection conn = null;
+	    /*Connection conn = null;
 	    conn = DataAccess.GetConnection();
-	    try (CallableStatement stmtCliente = conn.prepareCall(sqlCliente)) {
+	    try (CallableStatement stmtCliente = conn.prepareCall(sqlCliente))*/
+	    try (Connection conn = DataAccess.GetConnection(); 
+	            CallableStatement stmtCliente = conn.prepareCall(sqlCliente)) // lo genero como TRY-WITH-RESOURCES para cierre auto
+	    {
 	        
 	        stmtCliente.setString(1, clienteModificado.getDni());
 	        stmtCliente.setString(2, clienteModificado.getCuil());

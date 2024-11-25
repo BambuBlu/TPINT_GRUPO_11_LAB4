@@ -231,7 +231,7 @@ tr {
 								        }
 								    %>
 								    
-							    	<form method="post" action="ServletClienteABM">
+							    	<form method="post" action="ServletClienteABM"> <!-- Serverle com para post -->
 							            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 							            <input type="hidden" name="clienteEstado" value="<%= cliente.getEstado() %>" />
 							            <input type="hidden" name="accion" value="modificar" />
