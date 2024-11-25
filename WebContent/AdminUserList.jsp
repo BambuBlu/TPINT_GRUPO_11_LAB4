@@ -113,8 +113,64 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #004d40;
+	background-color: #004d40;
 }
+
+
+
+.contenedor {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: auto; /*Ancho deseado */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto; /* HAGO QUE CREZCA DINAMICAMENTE */
+}
+
+.table-container {
+    border-radius: 10px;
+    border: 4px solid #2196F3;
+    width: 100%;
+    background-color: #595C5F;
+    overflow: visible; /* Sin scroll */
+}
+
+.tabla {
+    width: 100%;
+    background-color: #595C5F;
+    color: white;
+    font-size: 15px;
+    border-collapse: collapse;
+}
+
+tr {
+    background-color: #595C5F;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: separate; /* Permitir espacio entre celdas */
+    border-spacing: 0 10px; /* Espaciado entre filas (vertical) */
+    background-color: #595C5F; /* Fondo de la tabla */
+}
+
+.tabla tr {
+    background-color: gray; /* Fondo blanco para las filas */
+    border-radius: 5px; /* Bordes redondeados para las filas */
+}
+
+.tabla td, .tabla th {
+    padding: 15px; /* Espaciado interno para cada celda */
+    text-align: center; /* Centrado del contenido */
+    border: none; /* Elimina bordes si es necesario */
+}
+
+
 </style>
 </head>
 <body>
@@ -164,8 +220,10 @@ h1 {
                         <%
                             if (clientes != null) {
                                 for (Cliente cliente : clientes) {
-                        %>
-                            <tr class="text-center">
+
+								        if ("A".equals(cliente.getEstado()) && "listaClientesActivos".equals(listaClientes)) {
+								    %>
+								    <tr class="text-center">
                                 <td><%= cliente.getDni() %></td>
                                 <td><%= cliente.getCuil() %></td>
                                 <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
@@ -178,9 +236,6 @@ h1 {
                                 <td><%= cliente.getTelefono() %></td>
                                 <td><%= cliente.getEstado() %></td>
 								<td>
-								    <%
-								        if ("A".equals(cliente.getEstado())) {
-								    %>
 								        <form method="post" action="ServletClienteABM">
 								            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 								            <input type="hidden" name="accion" value="darBaja" />
@@ -189,6 +244,11 @@ h1 {
 								    <%
 								        } else {
 								    %>
+								    <tr class="text-center">
+                                <td><%= cliente.getDni() %></td>
+                                <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
+                                <td><%= cliente.getEstado() %></td>
+								<td>
 								        <form method="post" action="ServletClienteABM">
 								            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 								            <input type="hidden" name="accion" value="habilitar" />
@@ -198,7 +258,7 @@ h1 {
 								        }
 								    %>
 								    
-							    	<form method="post" action="ServletClienteABM">
+							    	<form method="post" action="ServletClienteABM"> <!-- Serverle com para post -->
 							            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 							            <input type="hidden" name="clienteEstado" value="<%= cliente.getEstado() %>" />
 							            <input type="hidden" name="accion" value="modificar" />

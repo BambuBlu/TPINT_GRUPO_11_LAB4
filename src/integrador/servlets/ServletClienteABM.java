@@ -305,9 +305,9 @@ public class ServletClienteABM extends HttpServlet {
     	clienteNegocio.ModificarCliente(cliente, usuario);
     	
         if("A".equals(clienteEstado)) {
-        	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
-        } else {
         	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
+        } else {
+        	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
         }
 	}
 }
