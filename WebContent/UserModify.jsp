@@ -114,7 +114,7 @@
 			%>
 	
 	        <!-- Formulario de modificación de cliente -->
-	        <form action="servletClienteABM" method="post">
+	        <form action="ServletClienteABM" method="post">
 	            <label for="txtDNI">DNI</label> 
 				<input type="text" id="txtDNI" name="txtDNI" value="<%=cliente.getDni()%>" required maxlength="8" readonly> 
 				
