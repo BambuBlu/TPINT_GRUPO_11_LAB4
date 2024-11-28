@@ -245,7 +245,8 @@ tr {
 								        } else {
 								    %>
 								    <tr class="text-center">
-                                <td><%= cliente.getDni() %></td>
+                                  <td><%= cliente.getDni() %></td>
+                                <td><%= cliente.getCuil() %></td>
                                 <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
                                 <td><%= cliente.getSexo().getDescripcion() %></td>
                                 <td><%= cliente.getNacionalidad() %></td>
