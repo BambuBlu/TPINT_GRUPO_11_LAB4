@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ page import="integrador.model.Cliente, integrador.model.Movimiento, integrador.model.Cuenta, integrador.negocioimpl.MovimientoNegocioImpl" %>
+	<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -141,38 +143,51 @@ td {
 		<nav>
 			<%@include file="Layout/MainLayout.jsp"%>
 		</nav>
+		<% 
+                Cliente cliente = (Cliente) session.getAttribute("cliente");
+            %>
 
 		<div class="contenedor">
 			<h1>Movimientos de cuentas</h1>
 			<table>
-				<thead>
-					<tr>
-						<th>Fecha</th>
-						<th>Detalles</th>
-						<th>Monto</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>01-10-2024</td>
-						<td>Depósito</td>
-						<td>$ 5000</td>
-					</tr>
-					<tr>
-						<td>05-10-2024</td>
-						<td>Transferencia</td>
-						<td>$ -2000</td>
-					</tr>
-					<tr>
-						<td>10-10-2024</td>
-						<td>Pago de Servicio</td>
-						<td>$ -500</td>
-					</tr>
-					<tr>
-						<td colspan="3">No hay más movimientos para mostrar.</td>
-					</tr>
-				</tbody>
-			</table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Detalles</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                   <% 
+                ArrayList<Movimiento> movimientosCliente = (ArrayList<Movimiento>) request.getAttribute("movimientosCliente");
+                if (movimientosCliente != null && !movimientosCliente.isEmpty()) {
+                    for (Movimiento movimiento : movimientosCliente) {
+            %>
+                        <tr>
+                            <td><%= new java.text.SimpleDateFormat("dd-MM-yyyy").format(movimiento.getFecha()) %></td>
+                            <td><%= movimiento.getDetalle() %></td>
+                             <td>
+						        $ 
+						        <% 
+						            if (movimiento.getCuentaOrigen() == movimiento.getCuenta().getNumeroDeCuenta()) { 
+						                out.print("-");
+						            }
+						        %> 
+						        <%= movimiento.getImporte() %>
+						    </td>
+                        </tr>
+            <% 
+                    }
+                } else {
+            %>
+                    <tr>
+                        <td colspan="3">No hay movimientos para mostrar.</td>
+                    </tr>
+            <% 
+                }
+            %>
+            </tbody>
+        </table>
 		</div>
 	</div>
 </body>

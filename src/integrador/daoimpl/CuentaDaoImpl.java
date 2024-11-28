@@ -3,6 +3,7 @@ package integrador.daoimpl;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -89,6 +90,72 @@ public class CuentaDaoImpl implements CuentaDao {
 	}
 	
 	@Override
+	public ArrayList<Cuenta> GetAllInactiveCuentas() {
+		ArrayList<Cuenta> listCuenta = new ArrayList<>();
+
+		String query = "SELECT c.numero_de_cuenta, c.dni_cliente, c.fecha_de_creacion, "
+				+ "c.id_tipo_cuenta, tc.descripcion AS tipo_cuenta, " + "c.cbu, c.saldo, c.estado " + "FROM cuentas c "
+				+ "INNER JOIN TipoDeCuenta tc ON c.id_tipo_cuenta = tc.id " + "WHERE c.estado = 'A'";
+
+		try (Connection conn = DataAccess.GetConnection();
+				Statement stmt = conn.createStatement();
+				ResultSet resultquery = stmt.executeQuery(query)) {
+
+			while (resultquery.next()) {
+				Cuenta cuenta = new Cuenta();
+				cuenta.setNumeroDeCuenta(resultquery.getInt("numero_de_cuenta"));
+				cuenta.setDni(resultquery.getString("dni_cliente"));
+				cuenta.setFechaDeCreacion(resultquery.getDate("fecha_de_creacion"));
+
+				TipoCuenta tipoCuenta = new TipoCuenta();
+				tipoCuenta.setId(resultquery.getInt("id_tipo_cuenta"));
+				tipoCuenta.setDescripcion(resultquery.getString("tipo_cuenta"));
+				cuenta.setTipoCuenta(tipoCuenta);
+
+				cuenta.setCbu(resultquery.getInt("cbu"));
+				cuenta.setSaldo(resultquery.getDouble("saldo"));
+				cuenta.setEstado(resultquery.getString("estado"));
+
+				listCuenta.add(cuenta);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return listCuenta;
+	}
+	
+	@Override
+	public ArrayList<Cuenta> GetAllInactiveCuentasOfCliente(String dniCliente) {
+
+		ArrayList<Cuenta> cuentas = this.GetAllInactiveCuentas();
+		ArrayList<Cuenta> cuentas_cliente = new ArrayList<Cuenta>();
+
+		for (Cuenta cuenta : cuentas) {
+			System.out.println(cuenta);
+			if (cuenta.getDni().contentEquals(dniCliente)) {
+				cuentas_cliente.add(cuenta);
+			}
+		}
+		return cuentas_cliente;
+	}
+
+	@Override
+	public ArrayList<Cuenta> GetAllActiveCuentasOfCliente(String dniCliente) {
+
+		ArrayList<Cuenta> cuentas = this.GetAllActiveCuentas();
+		ArrayList<Cuenta> cuentas_cliente = new ArrayList<Cuenta>();
+		
+		for (Cuenta cuenta : cuentas) {
+			if (cuenta.getDni().contentEquals(dniCliente)) 
+			{
+				cuentas_cliente.add(cuenta);
+			}
+		}
+		return cuentas_cliente;
+	}
+	
+	@Override
 	public boolean ModificaEstadoCuenta(Cuenta cuentaModificada) throws SQLException {
 	    String sqlCuenta = "{CALL ModificarEstadoCuenta(?, ?)}";
 	    
@@ -131,5 +198,61 @@ public class CuentaDaoImpl implements CuentaDao {
 	        System.out.println("Error al ejecutar los procedimientos: " + e.getMessage());
 	        return false;
 	    }
+	}
+	
+	@Override
+	public void AgregarCuenta(Cuenta cuenta) {
+
+		String query = "INSERT INTO Cuentas (dni_cliente, fecha_de_creacion, id_tipo_cuenta, cbu, saldo) "
+				+ "VALUES (?, ?, ?, ?, ?)";
+
+		try (Connection connection = DataAccess.GetConnection(); PreparedStatement pst = connection.prepareStatement(query)) {
+			pst.setString(1, cuenta.getDni());
+			pst.setDate(2, cuenta.getFechaDeCreacion());
+			pst.setInt(3, cuenta.getTipoCuenta().getId());
+			pst.setInt(4, cuenta.getCbu());
+			pst.setDouble(5, cuenta.getSaldo());
+
+			pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Override
+	public int obtenerUltimoCBU() throws SQLException 
+	{		
+		String query = "SELECT cbu FROM cuentas";
+		Connection conn = DataAccess.GetConnection();
+		int ultimo = 0;
+		try (CallableStatement stmtCuenta = conn.prepareCall(query);
+				ResultSet resultquery = stmtCuenta.executeQuery()) 
+		{
+			while (resultquery.next()) 
+			{
+				ultimo = resultquery.getInt("cbu");
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return ultimo;
+	}
+	
+	
+	@Override
+	public Cuenta buscarPorCBU(int cbu) {
+
+		ArrayList<Cuenta> cuentas = this.GetAllActiveCuentas();
+
+		for (Cuenta cuenta : cuentas) {
+			if (cuenta.getCbu() == cbu) {
+				return cuenta;
+			}
+		}
+		return new Cuenta();
 	}
 }

@@ -1,6 +1,11 @@
 package integrador.servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,8 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import integrador.model.Cuenta;
+import integrador.model.Movimiento;
+import integrador.model.SolicitudDeAlta;
 import integrador.model.TipoCuenta;
+import integrador.model.TipoMovimiento;
 import integrador.negocioimpl.CuentaNegocioImpl;
+import integrador.negocioimpl.MovimientoNegocioImpl;
+import integrador.negocioimpl.SolicitudesDeCuentaNegocioImpl;
 
 /**
  * Servlet implementation class ServletCuentaABM
@@ -38,7 +48,15 @@ public class ServletCuentaABM extends HttpServlet {
     	   darBajaCuenta(cuentaNumero, response);
     	   
        } else if ("habilitar".equals(accion)) {
+    	   System.out.println("Entro en Habilitar");
     	   habilitarCuenta(cuentaNumero, response);
+       } else if ("altaCuenta".equals(accion)) {
+    	   try {
+    		   System.out.println("Entro en altaCuenta");
+			ActivarCuenta(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
        }
 	}
 	
@@ -58,7 +76,7 @@ public class ServletCuentaABM extends HttpServlet {
         cuenta.setTipoCuenta(tipoCuenta);
 
         cuentaNegocio.ModificarTipoCuenta(cuenta);
-        response.sendRedirect("AdminListAccounts.jsp");
+        response.sendRedirect("ServletClienteABM?accion=listarCuentas");
 		
 	}
 
@@ -73,7 +91,7 @@ public class ServletCuentaABM extends HttpServlet {
         cuenta.setEstado("I");
         
         cuentaNegocio.ModificarCuenta(cuenta);
-        response.sendRedirect("AdminListAccounts.jsp");
+        response.sendRedirect("ServletClienteABM?accion=listarCuentas");
     }
 
     /**
@@ -87,6 +105,61 @@ public class ServletCuentaABM extends HttpServlet {
         cuenta.setEstado("A");
         
         cuentaNegocio.ModificarCuenta(cuenta);
-        response.sendRedirect("AdminListAccounts.jsp");
+        response.sendRedirect("ServletClienteABM?accion=listarCuentas");
     }
+    
+    public void ActivarCuenta(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+    	SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
+    	CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+    	MovimientoNegocioImpl movimientoNegocio = new MovimientoNegocioImpl();
+    	
+		int solicitudId = Integer.parseInt(request.getParameter("solicitudId"));
+
+		SolicitudDeAlta solicitud = solicitudesNegocio.obtenerSolicitudPorId(solicitudId);
+		if (solicitud != null) {
+
+			Cuenta nuevaCuenta = new Cuenta();
+
+			nuevaCuenta.setDni(solicitud.getCliente().getDni());
+			nuevaCuenta.setFechaDeCreacion(new Date(System.currentTimeMillis()));
+
+			TipoCuenta tipoCuenta = new TipoCuenta();
+			tipoCuenta.setId(solicitud.getTipoCuenta().getId());
+			tipoCuenta.setDescripcion(solicitud.getTipoCuenta().getDescripcion());
+			nuevaCuenta.setTipoCuenta(tipoCuenta);
+			int cbu = 0;
+			cbu = cuentaNegocio.obtenerUltimoCBU();
+
+			nuevaCuenta.setCbu(cbu + 1);
+			nuevaCuenta.setSaldo(10000.00);
+
+			cuentaNegocio.AgregarCuenta(nuevaCuenta);
+			solicitudesNegocio.eliminarSolicitud(solicitudId);
+
+			nuevaCuenta = cuentaNegocio.buscarPorCBU(nuevaCuenta.getCbu());
+
+			Movimiento movimiento = new Movimiento();
+
+			movimiento.setCuenta(nuevaCuenta);
+			movimiento.setFecha(new Date(System.currentTimeMillis()));
+			movimiento.setDetalle("Alta de cuenta");
+			movimiento.setImporte(10000);
+
+			TipoMovimiento tipoMovimiento = new TipoMovimiento();
+			tipoMovimiento.setId(1);
+			tipoMovimiento.setDescripcion("Alta de cuenta");
+
+			movimiento.setTipoMovimiento(tipoMovimiento);
+			movimiento.setCuentaDestino(nuevaCuenta.getNumeroDeCuenta());
+
+			movimientoNegocio.agregarMovimiento(movimiento);
+
+			ArrayList<SolicitudDeAlta> solicitudes = (ArrayList<SolicitudDeAlta>) solicitudesNegocio
+					.obtenerTodasLasSolicitudesActivas();
+			request.setAttribute("solicitudes", solicitudes);
+			RequestDispatcher rd = request.getRequestDispatcher("AdminAccountApplicationList.jsp");
+			rd.forward(request, response);
+		}
+	}
 }

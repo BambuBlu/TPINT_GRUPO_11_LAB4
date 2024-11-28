@@ -247,6 +247,13 @@ tr {
 								    <tr class="text-center">
                                 <td><%= cliente.getDni() %></td>
                                 <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
+                                <td><%= cliente.getSexo().getDescripcion() %></td>
+                                <td><%= cliente.getNacionalidad() %></td>
+                                <td><%= cliente.getFechaNacimiento() %></td>
+                                <td><%= cliente.getDireccion() %></td>
+                                <td><%= cliente.getLocalidad().getNombre() %></td>
+                                <td><%= cliente.getEmail() %></td>
+                                <td><%= cliente.getTelefono() %></td>
                                 <td><%= cliente.getEstado() %></td>
 								<td>
 								        <form method="post" action="ServletClienteABM">

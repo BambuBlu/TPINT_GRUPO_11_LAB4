@@ -55,10 +55,12 @@
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Crear Cliente">
 				<p>Crear Cliente y Cuentas</p>
-			</a> <a href="./AdminListAccounts.jsp" class="btn-main"> <img
-				src="https://img.icons8.com/parakeet/48/checklist.png"
-				alt="Listar Cuentas">
-				<p>Listar Cuentas</p>
+			</a> <a href="${pageContext.request.contextPath}/ServletClienteABM?accion=altaCuentas" class="btn-main">
+    			<img src="https://img.icons8.com/parakeet/48/checklist.png" alt="Listar Cuentas">
+    			<p>Solicitudes de Cuentas</p>
+			</a><a href="${pageContext.request.contextPath}/ServletClienteABM?accion=listarCuentas" class="btn-main">
+    			<img src="https://img.icons8.com/parakeet/48/checklist.png" alt="Listar Cuentas">
+    			<p>Listar Cuentas</p>
 			</a> <a href="${pageContext.request.contextPath}/LoanApplicationList.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitudes de Préstamos">
