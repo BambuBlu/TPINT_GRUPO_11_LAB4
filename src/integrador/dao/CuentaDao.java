@@ -17,4 +17,5 @@ public interface CuentaDao {
 	int obtenerUltimoCBU() throws SQLException;
 	Cuenta buscarPorCBU(int cbu);
 	void AgregarCuenta(Cuenta cuenta);
+	int modificarSaldoCuenta(Cuenta c);
 }

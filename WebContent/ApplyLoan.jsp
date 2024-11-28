@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+	<%@ page import="integrador.model.Cuenta"%>
+	<%@ page import="java.util.ArrayList" %>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
@@ -120,8 +122,9 @@
 		<div class="contenedor">
 			<h1>Solicitud de Préstamos</h1>
 			
+			<% ArrayList<Cuenta> cuentasCliente = (ArrayList<Cuenta>) request.getAttribute("ListCuentasActivas"); %>
 			<!-- Formulario de solicitud de préstamo -->
-			<form method="post" class="formulario-prestamo">
+			<form action="ServletCuentaABM" method="post" class="formulario-prestamo">
 				<label for="txtMontoSolicitado">Monto del Préstamo</label>
 				<input type="text" id="txtMontoSolicitado" name="txtMontoSolicitado" placeholder="Ingrese el monto" required> 
 
@@ -133,13 +136,16 @@
 					<option value="12">12 Cuotas</option>    
 				</select>
 				
-				<label for="cuentaDestino">Seleccionar Cuenta de Destino</label>
-				<select id="cuentaDestino" name="txtCuentaDestino">
-					<option value="1">Cuenta 1 - CBU: 123456789 - Número de Cuenta: 001</option>
-					<option value="2">Cuenta 2 - CBU: 987654321 - Número de Cuenta: 002</option>
-				</select>
-				
-				<button type="submit" name="btnSolicitarPrestamo" class="btn-submit">Solicitar Préstamo</button>   
+				<label for="cuentaDestino">Seleccionar cuenta de destino:</label>
+            	<select id="cuentaDestino" name="txtCuentaDestino">
+                <% for (Cuenta cuenta : cuentasCliente) { %>
+                    <option value="<%= cuenta.getCbu() %>">
+                        <%= cuenta.getTipoCuenta().getDescripcion() %> - CBU: <%= cuenta.getCbu() %> - Numero de Cuenta: <%= cuenta.getNumeroDeCuenta() %>
+                    </option>
+                <% } %>
+            	</select>
+				 
+				<button type="submit" name="accion" value="ConfirmarPrestamo" class="btn-submit">Solicitar Préstamo</button>   
 			</form>
 		</div>
 	</div>

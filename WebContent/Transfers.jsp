@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="integrador.model.Cuenta, integrador.model.Cliente"%>
+<%@ page import="java.util.ArrayList" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -109,53 +110,80 @@ select {
 			<%@include file="Layout/MainLayout.jsp"%>
 		</nav>
 
-		<div class="contenedor">
-			<h1>Nueva transferencia</h1>
-
-			<div class="container">
-				<form action="#" method="post">
-					<label for="txtCBU">CBU</label>
-					<input type="text" id="txtCBU" name="txtCBU" required maxlength="22">
-					<input type="submit" name="btnBuscarCBU" value="Buscar CBU" class="btn">
-				</form>
-
-				<div class="alert alert-danger" role="alert">
-					<!-- Mensaje de error si existe -->
-					Mensaje de error aquí.
-				</div>
-
-				<div class="container">
-					<h2>Detalles del Cliente y Cuenta</h2>
-					<hr>
-					<h3>Los datos ingresados corresponden a Nombre Apellido</h3>
-					<p>Tipo de cuenta destino: Tipo de cuenta aquí.</p>
-					<p>CBU destino: CBU aquí.</p>
-
-					<form action="#" method="post">
-						<label for="cuentaOrigen">Seleccionar cuenta de origen:</label>
-						<select id="cuentaOrigen" name="cuentaOrigen">
-							<option value="CUENTA1">Tipo Cuenta - CBU1 - Saldo</option>
-							<option value="CUENTA2">Tipo Cuenta - CBU2 - Saldo</option>
-						</select>
-
-						<label for="concepto">Concepto:</label>
-						<select id="concepto" name="concepto">
-							<option value="Alquiler">Alquiler</option>
-							<option value="Expensas">Expensas</option>
-							<option value="Factura">Factura</option>
-							<option value="Seguro">Seguro</option>
-							<option value="Honorarios">Honorarios</option>
-							<option value="Varios">Varios</option>
-						</select>
-
-						<label for="txtMonto">Monto:</label>
-						<input type="text" id="txtMonto" name="txtMonto" pattern="^\d+(\.\d{1,2})?$" title="Monto" required>
-
-						<input type="submit" name="btnTransferir" value="Transferir" class="btn" disabled>
-					</form>
-				</div>
-			</div>
-		</div>
+		<div class="container">
+            <h2>Nueva transferencia</h2>
+            
+            <!-- Formulario para buscar CBU -->
+            <%
+                Cliente clienteEncontrado = (Cliente) request.getAttribute("cliente");
+                Cuenta cuentaDestino = (Cuenta) request.getAttribute("cuentaDestino");
+                if (clienteEncontrado == null || cuentaDestino == null) {
+            %>
+            <form action="ServletCuentaABM" method="post">
+                <label for="txtCBU">CBU</label>
+                <input type="text" id="txtCBU" name="txtCBU" required maxlength="22">
+                <input type="submit" name="accion" value="BuscarCBU" class="btn">
+            </form>
+            <% } %>
+            
+            <!-- Mostrar mensaje de error si existe -->
+            <% String mensaje = (String) request.getAttribute("mensaje");
+               if (mensaje != null) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= mensaje %>
+                </div>
+            <% } %>
+            
+           <!-- Mostrar detalles si se encontro el cliente y cuenta -->
+            <%
+                ArrayList<Cuenta> cuentasCliente = (ArrayList<Cuenta>) request.getAttribute("cuentasCliente");
+                Cliente clienteDestino = (Cliente) request.getAttribute("clienteDestino");
+            %>
+            <% if (clienteEncontrado != null && cuentaDestino != null && cuentasCliente != null) { %>
+                <div class="container">
+                    <h2>Detalles del Cliente y Cuenta</h2>
+                    <hr>
+                    <h3>Los datos ingresados corresponden a <%= clienteDestino.getNombre() %> <%= clienteDestino.getApellido() %></h3>
+                    <p>Tipo de cuenta destino: <%= cuentaDestino.getTipoCuenta().getDescripcion() %></p>
+                    <p>CBU destino: <%= cuentaDestino.getCbu() %></p>
+                    
+                    <!-- Formulario de transferencia -->
+                    <form action="ServletCuentaABM" method="post">
+                        <input type="hidden" name="cuentaDestino" value="<%= cuentaDestino.getCbu() %>">
+                        
+                        <!-- Desplegable con opciones de las cuentas del cliente logeado -->
+                        <label for="cuentaOrigen">Seleccionar cuenta de origen:</label>
+                        <select id="cuentaOrigen" name="cuentaOrigen">
+                            <% for (Cuenta cuenta : cuentasCliente) { %>
+                                <option value="<%= cuenta.getCbu() %>">
+                                    <%= cuenta.getTipoCuenta().getDescripcion() %> - CBU: <%= cuenta.getCbu() %> - Saldo: <%= cuenta.getSaldo() %>
+                                </option>
+                            <% } %>
+                        </select>
+                        <br><br>
+                        
+                         <!-- Desplegable con opciones de concepto de transferencia -->                         
+			            <label for="concepto">Concepto:</label>
+			            <select id="concepto" name="concepto">
+			                <option value="Alquiler">Alquiler</option>
+			                <option value="Expensas">Expensas</option>
+			                <option value="Factura">Factura</option>
+			                <option value="Seguro">Seguro</option>
+			                <option value="Honorarios">Honorarios</option>
+			                <option value="Varios">Varios</option>
+			            </select>
+			            <br><br>
+                        <!-- Campo de texto para ingresar valor -->
+                        <label for="txtMonto">Monto:</label>
+                        <input type="text" id="txtMonto" name="txtMonto" pattern="^\d+(\.\d{1,2})?$" title="Monto" required>
+                        <br><br>
+                        
+                        <!-- Boton de submit para transferir -->
+                        <input type="submit" name="accion" value="Transferir" class="btn">
+                    </form>
+                </div>
+            <% } %>       
+        </div>
 	</div>
 </body>
 </html>

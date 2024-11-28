@@ -71,6 +71,55 @@ public class ClienteDaoImpl implements ClienteDao {
 
 	    return clientes;
 	}
+	
+	@Override
+	public ArrayList<Cliente> GetAllActiveClientes() throws SQLException {
+
+		ArrayList<Cliente> listaClientes = new ArrayList<>();
+
+		String query = "SELECT * FROM clientes where estado = 'A'";
+
+		Connection conn = DataAccess.GetConnection();
+		try (CallableStatement stmtCliente = conn.prepareCall(query); ResultSet rs = stmtCliente.executeQuery()) {
+			GeneroDaoImpl generoDaoImpl = new GeneroDaoImpl();
+			ArrayList<Generos> listaGeneros = generoDaoImpl.GetAllGeneros();
+			LocalidadDaoImpl localidadDaoImpl = new LocalidadDaoImpl();
+			ArrayList<Localidad> listaLocalidades = localidadDaoImpl.GetAllLocalidad();
+
+			while (rs.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setDni(rs.getString("dni"));
+				cliente.setCuil(rs.getString("cuil"));
+				cliente.setNombre(rs.getString("nombre"));
+				cliente.setApellido(rs.getString("apellido"));
+
+				for (Generos genero : listaGeneros) {
+					if (genero.getId() == rs.getInt("sexo_id")) {
+						cliente.setSexo(genero);
+					}
+				}
+
+				cliente.setNacionalidad(rs.getString("nacionalidad"));
+
+				for (Localidad localidad : listaLocalidades) {
+					if (localidad.getId() == rs.getInt("localidad_id")) {
+						cliente.setLocalidad(localidad);
+					}
+				}
+
+				cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+				cliente.setDireccion(rs.getString("direccion"));
+
+				cliente.setEmail(rs.getString("mail"));
+				cliente.setTelefono(rs.getString("telefono"));
+
+				listaClientes.add(cliente);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaClientes;
+	}
 
 	
 	@Override

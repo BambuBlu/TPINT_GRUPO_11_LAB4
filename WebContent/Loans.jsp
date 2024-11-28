@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@page import="java.util.ArrayList"%>
+	<%@ page import="integrador.model.Cuenta, integrador.model.Prestamo"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -142,34 +144,45 @@ h1, h2 {
 			<h1>Préstamos</h1>
 
 			<h2>Pagar Cuota Préstamos</h2>
-			<div class="menu">
-				<form>
-					<div class="form-group">
-						<label for="txtPrestamosActivo">Seleccione el préstamo a
-							pagar</label> <select id="txtPrestamosActivo" name="txtPrestamosActivo"
-							class="form-control">
-							<option value="">$1000 - CUOTAS RESTANTES: 3 - VALOR DE
-								CUOTA: $300</option>
-							<option value="">$2000 - CUOTAS RESTANTES: 5 - VALOR DE
-								CUOTA: $400</option>
-						</select>
-					</div>
-
-					<div class="form-group">
-						<label for="cuentaADebitar">Seleccionar cuenta a debitar:</label>
-						<select id="cuentaADebitar" name="txtcuentaADebitar"
-							class="form-control">
-							<option value="">Cuenta Ahorro - CBU: 123456789 - SALDO:
-								$1500</option>
-							<option value="">Cuenta Corriente - CBU: 987654321 -
-								SALDO: $5000</option>
-						</select>
-					</div>
-
-					<div class="d-flex h-auto justify-content-end">
-						<input type="button" value="Pagar Cuota" class="btn btn-success fw-semibold shadow-lg">
-					</div>
-				</form>
+				<div class="menu">
+				<% 
+	            ArrayList<Cuenta> cuentasCliente = (ArrayList<Cuenta>) request.getAttribute("ListCuentasActivas");
+	            ArrayList<Prestamo> prestamosCliente = (ArrayList<Prestamo>) request.getAttribute("prestamosActivos");
+	            %>
+	            
+	            
+	             <!-- Mostrar mensaje de error si existe -->
+	            <c:if test="${not empty requestScope.mensajeError}">
+	                <p style="color: red;">${requestScope.mensajeError}</p>
+	            </c:if>
+				<form action="servletCuentaABM" method="post">
+                <div class="form-group">
+                    <label for="txtPrestamosActivo">Seleccione el prestamo a pagar</label>
+                    <select id="txtPrestamosActivo" name="txtPrestamosActivo" class="form-control">
+                        <% for (Prestamo prestamo : prestamosCliente) { %>
+                            <option value="<%= prestamo.getId() %>">                    
+                                $<%= prestamo.getImporteConIntereses() %> - CUOTAS RESTANTES: <%= prestamo.getCuotasPagadas() %> - VALOR DE CUOTA: $ <%= prestamo.getMontoMensual() %>
+                            </option>
+                        <% } %>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cuentaADebitar">Seleccionar cuenta a debitar:</label>
+                    <select id="cuentaADebitar" name="txtcuentaADebitar" class="form-control">
+                        <% for (Cuenta cuenta : cuentasCliente) { %>
+                            <option value="<%= cuenta.getCbu() %>">
+                                <%= cuenta.getTipoCuenta().getDescripcion() %> - CBU: <%= cuenta.getCbu() %> - Numero de Cuenta: <%= cuenta.getNumeroDeCuenta() %> - SALDO: $ <%= cuenta.getSaldo() %>
+                            </option>
+                        <% } %>
+                    </select>
+                </div>
+                                                           
+                <div class="form-group">
+                    <!-- Bot�n de submit para transferir -->
+                    <input type="submit" name="PagarCuota" value="Pagar Cuota" class="btn btn-primary">   
+                </div>
+            </form>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,6 @@
 package integrador.servlets;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,24 +13,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
 import integrador.negocioimpl.CuentaNegocioImpl;
 import integrador.negocioimpl.GeneroNegocioImpl;
 import integrador.negocioimpl.LocalidadNegocioImpl;
 import integrador.negocioimpl.MovimientoNegocioImpl;
-import integrador.negocioimpl.PaisNegocioImpl;
-import integrador.negocioimpl.ProvinciaNegocioImpl;
+import integrador.negocioimpl.PrestamoNegocioImpl;
 import integrador.negocioimpl.SolicitudesDeCuentaNegocioImpl;
 import integrador.negocioimpl.UsuarioNegocioImpl;
-import integrador.enums.Roles;
 import integrador.model.Cliente;
 import integrador.model.Cuenta;
 import integrador.model.Generos;
 import integrador.model.Localidad;
 import integrador.model.Movimiento;
-import integrador.model.Pais;
-import integrador.model.Provincia;
+import integrador.model.Prestamo;
 import integrador.model.SolicitudDeAlta;
 import integrador.model.TipoCuenta;
 import integrador.model.TipoMovimiento;
@@ -69,6 +67,12 @@ public class ServletClienteABM extends HttpServlet {
 			ListarCuentasClientes(request, response);
 		} else if ("altaCuentas".equals(accion)) {
 			ListarAltasCuentas(request, response);
+		} else if ("listarPrestamos".equals(accion)) {
+			try {
+				ListarSolicitudPrestamos(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetros inválidos");
 	    }
@@ -460,7 +464,17 @@ public class ServletClienteABM extends HttpServlet {
 		// Redirigir a la página de alta de cuentas
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/AdminAccountApplicationList.jsp");
 		dispatcher.forward(request, response);
+	}	
+	
+	public void ListarSolicitudPrestamos(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		
+		PrestamoNegocioImpl prestamoNegocio = new PrestamoNegocioImpl();
+
+		ArrayList<Prestamo> listaPrestamosInactivos = (ArrayList<Prestamo>) prestamoNegocio.getPrestamosInactivos();
+		request.setAttribute("listaPrestamosInactivos", listaPrestamosInactivos);
+
+		RequestDispatcher rd = request.getRequestDispatcher("LoanApplicationList.jsp");
+		rd.forward(request, response);
 	}
-	
-	
 }

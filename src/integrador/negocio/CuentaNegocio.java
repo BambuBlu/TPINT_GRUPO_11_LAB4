@@ -23,4 +23,6 @@ public interface CuentaNegocio {
 	Cuenta buscarPorCBU(int cbu);
 
 	void AgregarCuenta(Cuenta cuenta);
+
+	int modificarSaldoCuenta(Cuenta cuenta);
 }

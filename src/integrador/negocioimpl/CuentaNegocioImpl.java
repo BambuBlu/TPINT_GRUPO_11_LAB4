@@ -85,4 +85,9 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	public void AgregarCuenta(Cuenta cuenta) {
 		dao.AgregarCuenta(cuenta);
 	}
+	
+	@Override
+	public int modificarSaldoCuenta(Cuenta cuenta) {
+		return dao.modificarSaldoCuenta(cuenta);
+	}
 }

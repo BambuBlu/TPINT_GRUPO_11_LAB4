@@ -255,4 +255,22 @@ public class CuentaDaoImpl implements CuentaDao {
 		}
 		return new Cuenta();
 	}
+	
+	@Override
+	public int modificarSaldoCuenta(Cuenta cuenta) {
+		String query = "{CALL ModificarSaldoCuenta(?, ?)}";
+		int filas = 0;
+
+		try (Connection connection = DataAccess.GetConnection(); CallableStatement stmtCuenta = connection.prepareCall(query)) {
+
+			stmtCuenta.setInt(1, cuenta.getNumeroDeCuenta());
+			stmtCuenta.setDouble(2, cuenta.getSaldo());
+
+			filas = stmtCuenta.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return filas;
+	}
 }

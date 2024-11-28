@@ -1,6 +1,6 @@
 <%@page import="java.util.List"%>
-<%@page import="integrador.model.SolicitudPrestamo"%>
-<%@page import="integrador.negocioimpl.SolicitudPrestamoNegocioImpl"%>
+<%@page import="integrador.model.Prestamo"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -80,29 +80,59 @@
                 <table id="table_id" class="tabla">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Nombre Cliente</th>
-                            <th>Apellido Cliente</th>
-                            <th>Tipo de Cuenta</th>                     
+							<th>Id</th>
+							<th>Dni cliente</th>
+							<th>Cbu</th>
+							<th>Fecha</th>
+							<th>Importe con intereses</th>
+							<th>Importe pedido</th>
+							<th>Plazo de pago en meses</th>
+							<th>Monto mensual</th>
+							<th>Estado</th>
+							<th>Aprobar</th>
+							<th>Rechazar</th>                  
                         </tr>
                     </thead>
                     <tbody>
-                        <%
-                            SolicitudPrestamoNegocioImpl solicitudesNegocio = new SolicitudPrestamoNegocioImpl();
-                            List<SolicitudPrestamo> lista = solicitudesNegocio.GetAllSolicitudesPrestamo();
-                            if (lista != null) {                        
-                                for (SolicitudPrestamo solicitud : lista) {
-                        %>
-                        <tr>
-                            <td><%= solicitud.getId_Solicitud() %></td>
-                            <td><%= solicitud.getCliente().getNombre() %></td>
-                            <td><%= solicitud.getCliente().getApellido() %></td>
-                            <td><%= solicitud.getTipo_Cuenta().getDescripcion() %></td>                    
-                        </tr>
-                        <%
-                                }
-                            }
-                        %>
+                       <%
+						ArrayList<Prestamo> listaPrestamos = new ArrayList<Prestamo>();
+							if (request.getAttribute("listaPrestamosInactivos") != null) {
+								 listaPrestamos = (ArrayList<Prestamo>) request.getAttribute("listaPrestamosInactivos");
+							} 
+							
+							if (listaPrestamos != null && !listaPrestamos.isEmpty()) {
+								for (Prestamo prestamo : listaPrestamos) {
+									%>
+									<tr>
+										<td><%=prestamo.getId()%></td>
+										<td><%=prestamo.getCliente().getDni()%></td>
+										<td><%=prestamo.getCuenta().getCbu() %></td>
+										<td><%=prestamo.getFecha()%></td>
+										<td>$<%=prestamo.getImporteConIntereses()%></td>
+										<td>$<%=prestamo.getImportePedido()%></td>
+										<td><%=prestamo.getPlazoDePagoEnMeses()%></td>
+										<td>$<%=prestamo.getMontoMensual()%></td>
+										<td><%=prestamo.getEstado()%></td>
+										
+										<td>
+										<form action="ServletCuentaABM" method="post">
+												<input type="hidden" name="prestamoSeleccionadoId" value="<%= prestamo.getId()%>">
+												
+												<input type="submit" name="accion" value="AprobarPrestamo">
+											</form>
+										</td>
+										<td>
+										<form action="ServletCuentaABM" method="post">
+												<input type="hidden" name="prestamoSeleccionadoId" value="<%= prestamo.getId()%>">
+											
+												<input type="submit" name="accion" value="RechazarPrestamo">
+											</form>
+										</td>
+									</tr>
+									<%
+								}
+							}
+						%>
                     </tbody>
                 </table>
             </div>
@@ -110,10 +140,12 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#table_id').DataTable();
-        });
-    </script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#table_id').DataTable({
+				"dom" : '<"top"i>rt<"bottom"lp><"clear">',
+			});
+		});
+	</script>
 </body>
 </html>

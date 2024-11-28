@@ -16,4 +16,5 @@ public interface ClienteDao {
 	boolean ModificarCliente(Cliente clienteModificado, Usuario usuarioModificado) throws SQLException;
 	boolean EliminarCliente(Cliente clienteAeliminar);
 	Cliente obtenerCliente(String dni) throws SQLException;
+	ArrayList<Cliente> GetAllActiveClientes() throws SQLException;
 }
