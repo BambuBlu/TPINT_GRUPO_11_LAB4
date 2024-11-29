@@ -106,17 +106,17 @@
             <label for="txtSexo">Sexo</label>
             <select id="txtSexo" name="txtSexo" required>
                 <option value="">Seleccione un género</option>
-                <% GeneroNegocioImpl generonegocio = new GeneroNegocioImpl(); 
-            		
-            		for(Generos genero : generonegocio.GetAllGeneros()){
-            			if (genero.getId() != -1 && (genero.getDescripcion() != null || genero.getDescripcion() != ""))
-            			{            				
-            	%>
-                <option value="<%= genero.getId()%>"><%= genero.getDescripcion()%></option>		
-            	<%
-            			}
-            		}
-            	%>
+                <% 
+                    GeneroNegocioImpl generoNegocio = new GeneroNegocioImpl();
+            		ArrayList<Generos> generos = generoNegocio.GetAllGeneros();
+                    for (Generos genero : generos) {
+                        if (genero.getId() != -1 && genero.getDescripcion() != null && !genero.getDescripcion().isEmpty()) { 
+                %>
+                    <option value="<%= genero.getId() %>"><%= genero.getDescripcion() %></option>
+                <% 
+                        } 
+                    }
+                %>
             </select>
 
             <label for="txtFecNac">Fecha de Nacimiento</label>
@@ -125,61 +125,51 @@
             <label for="txtPais">País</label>
             <select id="txtPais" name="txtPais" required>
                 <option value="">Seleccione un país</option>
-                
-            	<% PaisNegocioImpl paisnegocio = new PaisNegocioImpl(); 
-            		  ArrayList<Pais> paises = paisnegocio.GetAllPaises();
-            		  if (paises != null) {
-            			  for(Pais pais : paises){
-                  			System.out.println("pais" + pais.getNombre());
-            		  
-            		
-            	%>
-            	
-                <option value="<%= pais.getId()%>"><%= pais.getNombre()%></option>		
-            	<%
-            			  }
-            		}else {
-            	        System.out.println("No se encontraron países");
-            	    }
-            	%>
+                <% 
+                    PaisNegocioImpl paisNegocio = new PaisNegocioImpl();
+            		ArrayList<Pais> paises = paisNegocio.GetAllPaises();
+                    if (paises != null) {
+                        for (Pais pais : paises) { 
+                %>
+                    <option value="<%= pais.getId() %>"><%= pais.getNombre() %></option>
+                <% 
+                        }
+                    }
+                %>
             </select>
 
             <label for="txtProvincia">Provincia</label>
             <select id="txtProvincia" name="txtProvincia" required>
                 <option value="">Seleccione una provincia</option>
-                
-                <% ProvinciaNegocioImpl provincianegocio = new ProvinciaNegocioImpl(); 
-            		ArrayList<Provincia> provincias = provincianegocio.GetAllProvincias();
-            		 if (provincias != null) {
-            		for(Provincia provincia : provincias){
-            	%>
-                <option value="<%= provincia.getId()%>"><%= provincia.getNombre()%></option>		
-            	<%
-            	  }
-         		}else {
-        	        System.out.println("No se encontraron provincias");
-        	    }
-            	%>
+                <% 
+                    ProvinciaNegocioImpl provinciaNegocio = new ProvinciaNegocioImpl();
+            		ArrayList<Provincia> provincias = provinciaNegocio.GetAllProvincias();
+                    if (provincias != null) {
+                        for (Provincia provincia : provincias) { 
+                %>
+                    <option value="<%= provincia.getId() %>"><%= provincia.getNombre() %></option>
+                <% 
+                        }
+                    }
+                %>
             </select>
 
             <label for="txtLocalidad">Localidad</label>
             <select id="txtLocalidad" name="txtLocalidad" required>
                 <option value="">Seleccione una localidad</option>
-                 <% LocalidadNegocioImpl localidadnegocio = new LocalidadNegocioImpl(); 
-            		
-            		ArrayList<Localidad> lista = localidadnegocio.GetAllLocalidades();
-            		
-            		if (lista != null){
-            			for(Localidad localidad: localidadnegocio.GetAllLocalidades()){
-            				if (localidad.getId() != -1 && (localidad.getNombre() != null || localidad.getNombre() != ""))
-            				{            				
-            	%>
-               				 <option value="<%= localidad.getId()%>"><%= localidad.getNombre()%></option>		
-            	<%
-            				}
-            			}
-            		}
-            	%>
+                <% 
+                    LocalidadNegocioImpl localidadNegocio = new LocalidadNegocioImpl();
+                    ArrayList<Localidad> localidades = localidadNegocio.GetAllLocalidades();
+                    if (localidades != null) {
+                        for (Localidad localidad : localidades) {
+                            if (localidad.getId() != -1 && localidad.getNombre() != null && !localidad.getNombre().isEmpty()) { 
+                %>
+                    <option value="<%= localidad.getId() %>"><%= localidad.getNombre() %></option>
+                <% 
+                            }
+                        }
+                    }
+                %>
             </select>
 
             <label for="txtDireccion">Dirección</label>
@@ -194,10 +184,10 @@
             <label for="txtUsuario">Nombre de Usuario</label>
             <input type="text" id="txtUsuario" name="txtUsuario" required>
 
-            <label for="txtContraseña">Contraseña</label>
+            <label for="txtContrasenia">Contraseña</label>
             <input type="password" id="txtContrasenia" name="txtContrasenia" required>
 
-            <label for="txtRepeContraseña">Repetir la contraseña</label>
+            <label for="txtRepeContrasenia">Repetir la contraseña</label>
             <input type="password" id="txtRepeContrasenia" name="txtRepeContrasenia" required>
 
             <input type="submit" value="Aceptar" name="btnCrearCliente">

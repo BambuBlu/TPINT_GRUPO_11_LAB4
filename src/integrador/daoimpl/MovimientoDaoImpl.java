@@ -22,8 +22,8 @@ public class MovimientoDaoImpl {
 		String query = "SELECT * FROM movimientos";
 
 		try (Connection conn = DataAccess.GetConnection();
-				CallableStatement stmtCuenta = conn.prepareCall(query);
-				ResultSet resultSet = stmtCuenta.executeQuery()) {
+			 CallableStatement stmtCuenta = conn.prepareCall(query);
+			 ResultSet resultSet = stmtCuenta.executeQuery()) {
 			while (resultSet.next()) {
 				Movimiento movimiento = new Movimiento();
 				movimiento.setId(resultSet.getInt("id"));

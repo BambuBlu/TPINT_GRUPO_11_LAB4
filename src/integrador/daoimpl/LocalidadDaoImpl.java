@@ -1,7 +1,9 @@
 package integrador.daoimpl;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import integrador.dao.LocalidadDao;
@@ -27,38 +29,37 @@ public class LocalidadDaoImpl implements LocalidadDao {
 		String query = "SELECT id, nombre, id_provincia FROM localidades";
 		ArrayList<Localidad> localidades = new ArrayList<>();
 
-		 try (ResultSet resultquery = DataAccess.executeQuery(query)) {
-			 
-				ProvinciaDaoImpl provinciaDaoImpl = new ProvinciaDaoImpl();
-				
-		        while (resultquery.next()) {
-		            int id = resultquery.getInt("id");
-		            String nombre = resultquery.getString("nombre");
-		            int id_provincia = resultquery.getInt("id_provincia");
-		            
-		         // Busco provincia correspondiente a la localidad
-					Provincia provinciasXLocalidad = null;
+		ProvinciaDaoImpl provinciaDaoImpl = new ProvinciaDaoImpl();
+		ArrayList<Provincia> provincias = provinciaDaoImpl.GetAllProvincia();
 
-					
-					for (Provincia provincia : provinciaDaoImpl.GetAllProvincia()) {
-						if (provincia.getId() == id_provincia) {
-							provinciasXLocalidad = new Provincia(provincia.getId(), provincia.getNombre(),
-									provincia.getPais());
-							break;
-						}
+		try (Connection con = DataAccess.GetConnection();
+			 Statement stmt = con.createStatement();
+			 ResultSet resultquery = stmt.executeQuery(query)) {
+
+			while (resultquery.next()) {
+				int id = resultquery.getInt("id");
+				String nombre = resultquery.getString("nombre");
+				int id_provincia = resultquery.getInt("id_provincia");
+
+				// Busco provincia correspondiente a la localidad
+				Provincia provinciasXLocalidad = new Provincia();
+
+				for (Provincia provincia : provincias) {
+					if (provincia.getId() == id_provincia) {
+						provinciasXLocalidad = new Provincia(provincia.getId(), provincia.getNombre(),
+								provincia.getPais());
+						break;
 					}
-					if (provinciasXLocalidad == null)
-						provinciasXLocalidad = new Provincia();
+				}
 
-					// Una vez encontrado, creo el objeto y lo agrego a la lista
-					Localidad localidad = new Localidad(id, nombre, provinciasXLocalidad);
-					localidades.add(localidad);
+				// Una vez encontrado, creo el objeto y lo agrego a la lista
+				Localidad localidad = new Localidad(id, nombre, provinciasXLocalidad);
+				localidades.add(localidad);
 
-		        }
-		 } catch (SQLException e) {
-				e.printStackTrace();
-			} 
-		 	
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		return localidades;
 	}

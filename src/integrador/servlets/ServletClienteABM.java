@@ -40,18 +40,19 @@ import integrador.model.TipoMovimiento;
 @WebServlet("/ServletClienteABM")
 public class ServletClienteABM extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     
+
 	public ServletClienteABM() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String accion = request.getParameter("accion");
-		
-	    if (request.getParameter("movimiento") != null) {
-	    	CargarMovimientos(request, response);
-	    } else if (request.getParameter("Caja") != null) {
+
+		if (request.getParameter("movimiento") != null) {
+			CargarMovimientos(request, response);
+		} else if (request.getParameter("Caja") != null) {
 			try {
 				SolicitarCajaDeAhorro(request, response);
 			} catch (SQLException e) {
@@ -74,48 +75,48 @@ public class ServletClienteABM extends HttpServlet {
 				e.printStackTrace();
 			}
 		} else {
-	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetros inválidos");
-	    }
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetros inválidos");
+		}
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String accion = request.getParameter("accion");
+		String clienteId = request.getParameter("clienteId");
+		String clienteEstado = request.getParameter("clienteEstado");
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String accion = request.getParameter("accion");
-        String clienteId = request.getParameter("clienteId");
-        String clienteEstado = request.getParameter("clienteEstado");
-		
 		if (request.getParameter("btnCrearCliente") != null) {
-    	   try {
-			crearCliente(request, response);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	   	   
-       } else if ("darBaja".equals(accion)) {
-           darBajaCliente(clienteId, response);
-       } else if ("habilitar".equals(accion)) {
-           habilitarCliente(clienteId, response);
-       } else if ("modificar".equals(accion)) {
-           try {
+			try {
+				crearCliente(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if ("darBaja".equals(accion)) {
+			darBajaCliente(clienteId, response);
+		} else if ("habilitar".equals(accion)) {
+			habilitarCliente(clienteId, response);
+		} else if ("modificar".equals(accion)) {
+			try {
 				ModificarCliente(clienteId, clienteEstado, request, response);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-       } else if ("submitEdit".equals(accion)) {
-    	   SubmitModificarCliente(clienteEstado, request, response);
-       }
-    }
+		} else if ("submitEdit".equals(accion)) {
+			SubmitModificarCliente(clienteEstado, request, response);
+		}
+	}
 
 	/**
-     * Create Cliente
-     */
-    
-    private void crearCliente(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+	 * Create Cliente
+	 */
 
-    	LocalidadNegocioImpl localidadNegocio = new LocalidadNegocioImpl();
-    	GeneroNegocioImpl generoNegocio = new GeneroNegocioImpl();
-    	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
-    	
+	private void crearCliente(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+
+		LocalidadNegocioImpl localidadNegocio = new LocalidadNegocioImpl();
+		GeneroNegocioImpl generoNegocio = new GeneroNegocioImpl();
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+
 		Localidad ob_localidad;
 		Generos ob_genero;
 
@@ -132,7 +133,7 @@ public class ServletClienteABM extends HttpServlet {
 		String localidad = request.getParameter("txtLocalidad");
 		String email = request.getParameter("txtEmail");
 		String telefono = request.getParameter("txtTelefono");
-		String nacionalidad = request.getParameter("txtNacionalidad");
+		String nacionalidad = request.getParameter("txtPais");
 
 		String usuario = request.getParameter("txtUsuario");
 		String contraseña = request.getParameter("txtContrasenia");
@@ -146,7 +147,7 @@ public class ServletClienteABM extends HttpServlet {
 			fechaNacimiento = new java.sql.Date(parsedDate.getTime());
 			id_sexo = Integer.parseInt(sexo);
 			id_localidad = Integer.parseInt(localidad);
-			
+
 			ob_localidad = localidadNegocio.Find(id_localidad);
 			ob_genero = generoNegocio.Find(id_sexo);
 
@@ -157,8 +158,7 @@ public class ServletClienteABM extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		
-		
+
 		if (!contraseña.equals(repetirContraseña)) {
 			System.out.println("Las contraseñas no coinciden");
 			request.setAttribute("error", "Las contraseñas no coinciden");
@@ -167,15 +167,13 @@ public class ServletClienteABM extends HttpServlet {
 			return;
 		}
 
-		
-		Cliente nuevoCliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad, (java.sql.Date) fechaNacimiento,
-				direccion, ob_localidad, email, telefono);
+		Cliente nuevoCliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad,
+				(java.sql.Date) fechaNacimiento, direccion, ob_localidad, email, telefono);
 
 		Usuario nuevoUsuario = new Usuario(usuario, contraseña);
 
 		clienteNegocio.CrearCliente(nuevoCliente, nuevoUsuario);
 
-		
 		Cliente clienteAgregado = clienteNegocio.obtenerCliente(dni);
 		if (clienteAgregado != null) {
 			Movimiento movimiento = new Movimiento();
@@ -209,49 +207,45 @@ public class ServletClienteABM extends HttpServlet {
 				response.sendRedirect("SuccessRegister.jsp");
 			}
 		}
-    }
-   
-    /**
-     * Baja logica
-     */
-    private void darBajaCliente(String clienteId, HttpServletResponse response)
-    		throws IOException {
-        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
-        Cliente cliente = new Cliente();
-        Usuario usuario = new Usuario();
-        cliente.setDni(clienteId);
-        cliente.setEstado("I");
-        usuario.setId_Usaurio(Integer.parseInt(clienteId));
-        usuario.setBaja(false);
-        
-        clienteNegocio.ModificarEstadoCliente(cliente, usuario);
-        response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
-    }
+	}
 
-    /**
-     * Habilitacion de cliente
-     */
-    private void habilitarCliente(String clienteId, HttpServletResponse response)
-    		throws IOException {
-        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
-        Cliente cliente = new Cliente();
-        Usuario usuario = new Usuario();
-        cliente.setDni(clienteId);
-        cliente.setEstado("A");
-        usuario.setId_Usaurio(Integer.parseInt(clienteId));
-        usuario.setBaja(true);
-        
-        clienteNegocio.ModificarEstadoCliente(cliente, usuario);
-        response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
-    }
-    
-	
-    
-    private void ModificarCliente(String clienteId, String clienteEstado, HttpServletRequest request, HttpServletResponse response)
-    		throws ServletException, IOException, SQLException {
-    	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
-        Cliente cliente = clienteNegocio.obtenerCliente(clienteId);
-        UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
+	/**
+	 * Baja logica
+	 */
+	private void darBajaCliente(String clienteId, HttpServletResponse response) throws IOException {
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+		Cliente cliente = new Cliente();
+		Usuario usuario = new Usuario();
+		cliente.setDni(clienteId);
+		cliente.setEstado("I");
+		usuario.setId_Usaurio(Integer.parseInt(clienteId));
+		usuario.setBaja(false);
+
+		clienteNegocio.ModificarEstadoCliente(cliente, usuario);
+		response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
+	}
+
+	/**
+	 * Habilitacion de cliente
+	 */
+	private void habilitarCliente(String clienteId, HttpServletResponse response) throws IOException {
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+		Cliente cliente = new Cliente();
+		Usuario usuario = new Usuario();
+		cliente.setDni(clienteId);
+		cliente.setEstado("A");
+		usuario.setId_Usaurio(Integer.parseInt(clienteId));
+		usuario.setBaja(true);
+
+		clienteNegocio.ModificarEstadoCliente(cliente, usuario);
+		response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
+	}
+
+	private void ModificarCliente(String clienteId, String clienteEstado, HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException, SQLException {
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+		Cliente cliente = clienteNegocio.obtenerCliente(clienteId);
+		UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
 		Usuario usuario = usuarioNegocio.obtenerUsuario(cliente.getDni());
 
 		request.setAttribute("clienteModificar", cliente);
@@ -261,11 +255,10 @@ public class ServletClienteABM extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("UserModify.jsp");
 		rd.forward(request, response);
 	}
-    
-    
-    private void SubmitModificarCliente(String clienteEstado, HttpServletRequest request, HttpServletResponse response)
-    		throws ServletException, IOException {
-    	
+
+	private void SubmitModificarCliente(String clienteEstado, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String dni = request.getParameter("txtDNI");
 		String cuil = request.getParameter("txtCUIL");
 		String nombre = request.getParameter("txtNombre");
@@ -295,31 +288,31 @@ public class ServletClienteABM extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		
+
 		LocalidadNegocioImpl localidadNegocio = new LocalidadNegocioImpl();
 		GeneroNegocioImpl genero = new GeneroNegocioImpl();
 		ob_localidad = localidadNegocio.Find(Integer.parseInt(localidad));
 		ob_genero = genero.Find(Integer.parseInt(sexo));
-		
-    	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
-    	Cliente cliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad, (java.sql.Date) fechaNacimiento, direccion,
-				ob_localidad, email, telefono, clienteEstado);
-    	
-    	UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
+
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+		Cliente cliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad,
+				(java.sql.Date) fechaNacimiento, direccion, ob_localidad, email, telefono, clienteEstado);
+
+		UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
 		Usuario usuario = usuarioNegocio.obtenerUsuario(cliente.getDni());
 		usuario.setContrasena(contraseña);
-		
-		System.out.println( "cliente a modificar es " + cliente.getApellido());
-		
-    	clienteNegocio.ModificarCliente(cliente, usuario);
-    	
-        if("A".equals(clienteEstado)) {
-        	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
-        } else {
-        	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
-        }
+
+		System.out.println("cliente a modificar es " + cliente.getApellido());
+
+		clienteNegocio.ModificarCliente(cliente, usuario);
+
+		if ("A".equals(clienteEstado)) {
+			response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesActivos");
+		} else {
+			response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
+		}
 	}
-    
+
 	public void CargarMovimientos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		MovimientoNegocioImpl movimientoNegocio = new MovimientoNegocioImpl();
@@ -345,7 +338,7 @@ public class ServletClienteABM extends HttpServlet {
 		request.setAttribute("movimientosCliente", movimientosCliente);
 		request.getRequestDispatcher("AccountMovements.jsp").forward(request, response);
 	}
-	
+
 	public void SolicitarCuentaCorriente(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
@@ -392,7 +385,7 @@ public class ServletClienteABM extends HttpServlet {
 			}
 		}
 	}
-	
+
 	public void SolicitarCajaDeAhorro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
@@ -439,22 +432,22 @@ public class ServletClienteABM extends HttpServlet {
 			}
 		}
 	}
-	
+
 	public void ListarCuentasClientes(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
-		
+
 		ArrayList<Cuenta> cuentas = cuentaNegocio.GetAllCuentas();
 		request.setAttribute("cuentas", cuentas);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/AdminListAccounts.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	public void ListarAltasCuentas(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
-		
+
 		// Obtener todas las solicitudes activas
 		ArrayList<SolicitudDeAlta> solicitudesActivas = (ArrayList<SolicitudDeAlta>) solicitudesNegocio
 				.obtenerTodasLasSolicitudesActivas();
@@ -465,11 +458,11 @@ public class ServletClienteABM extends HttpServlet {
 		// Redirigir a la página de alta de cuentas
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/AdminAccountApplicationList.jsp");
 		dispatcher.forward(request, response);
-	}	
-	
+	}
+
 	public void ListarSolicitudPrestamos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		
+
 		PrestamoNegocioImpl prestamoNegocio = new PrestamoNegocioImpl();
 
 		ArrayList<Prestamo> listaPrestamosInactivos = (ArrayList<Prestamo>) prestamoNegocio.getPrestamosInactivos();

@@ -1,7 +1,9 @@
 package integrador.daoimpl;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import integrador.dao.GeneroDao;
@@ -17,26 +19,26 @@ public class GeneroDaoImpl implements GeneroDao {
 
 	@Override
 	public ArrayList<Generos> GetAllGeneros() throws SQLException {
-	    String query = "SELECT id, descripcion FROM generos";
-	    ArrayList<Generos> generos = new ArrayList<>();
+		String query = "SELECT id, descripcion FROM generos";
+		ArrayList<Generos> generos = new ArrayList<>();
 
-	    try (ResultSet resultquery = DataAccess.executeQuery(query)) {
-	        while (resultquery.next()) {
-	            int id = resultquery.getInt("id");
-	            String descripcion = resultquery.getString("descripcion");
+		try (Connection con = DataAccess.GetConnection();
+			 Statement stmt = con.createStatement();
+			 ResultSet resultquery = stmt.executeQuery(query);) {
+			
+			while (resultquery.next()) {
+				int id = resultquery.getInt("id");
+				String descripcion = resultquery.getString("descripcion");
 
-	            Generos genero = new Generos(id, descripcion);
-	            generos.add(genero);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        throw e;
-	    }
+				Generos genero = new Generos(id, descripcion);
+				generos.add(genero);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
 
-	    return generos;
+		return generos;
 	}
-	
-	
-	
-	
+
 }

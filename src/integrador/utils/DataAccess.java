@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class DataAccess {
 	private static final String host = "jdbc:mysql://localhost:3306/dbbanco";
 	private static final String user = "root";
-	private static final String pass = "1234";
+	private static final String pass = "root";
 
 	public static Connection GetConnection() throws SQLException {
 		try {
@@ -58,7 +58,16 @@ public class DataAccess {
     // Asigna los parámetros al CallableStatement
     private static void setParameters(CallableStatement stmt, Object... params) throws SQLException {
         for (int i = 0; i < params.length; i++) {
-            stmt.setObject(i + 1, params[i]);
+            Object param = params[i];
+
+            if (param instanceof java.sql.Date) {
+                stmt.setDate(i + 1, (java.sql.Date) param);
+            } else if (param instanceof java.util.Date) {
+                // Si por error recibes java.util.Date, conviértelo
+                stmt.setDate(i + 1, new java.sql.Date(((java.util.Date) param).getTime()));
+            } else {
+                stmt.setObject(i + 1, param);
+            }
         }
     }
     

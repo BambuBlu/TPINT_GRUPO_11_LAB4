@@ -39,8 +39,9 @@ public class SolicitudesDeCuentaDaoImpl implements SolicitudesDeCuentaDao {
 		String query = "SELECT * FROM solicituddealta WHERE estado = 'A'";
 
 		try (Connection connection = DataAccess.GetConnection();
-				CallableStatement stmtCliente = connection.prepareCall(query);
-				ResultSet resultquery = stmtCliente.executeQuery()) {
+			 CallableStatement stmtCliente = connection.prepareCall(query);
+			 ResultSet resultquery = stmtCliente.executeQuery()) {
+			
 			while (resultquery.next()) {
 				SolicitudDeAlta solicitud = new SolicitudDeAlta();
 				solicitud.setId(resultquery.getInt("id"));

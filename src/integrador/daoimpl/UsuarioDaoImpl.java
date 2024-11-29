@@ -55,15 +55,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }/* finally {
-	        try {
-	            if (resultquery != null) resultquery.close();
-	            if (stmt != null) stmt.close();
-	            if (conn != null) conn.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }*/
+	    }
 
 	    return usuarios;
 	}
