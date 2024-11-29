@@ -127,12 +127,20 @@
                 <option value="">Seleccione un país</option>
                 
             	<% PaisNegocioImpl paisnegocio = new PaisNegocioImpl(); 
+            		  ArrayList<Pais> paises = paisnegocio.GetAllPaises();
+            		  if (paises != null) {
+            			  for(Pais pais : paises){
+                  			System.out.println("pais" + pais.getNombre());
+            		  
             		
-            		for(Pais pais : paisnegocio.GetAllPaises()){
             	%>
+            	
                 <option value="<%= pais.getId()%>"><%= pais.getNombre()%></option>		
             	<%
-            		}
+            			  }
+            		}else {
+            	        System.out.println("No se encontraron países");
+            	    }
             	%>
             </select>
 
@@ -141,12 +149,16 @@
                 <option value="">Seleccione una provincia</option>
                 
                 <% ProvinciaNegocioImpl provincianegocio = new ProvinciaNegocioImpl(); 
-            		
-            		for(Provincia provincia : provincianegocio.GetAllProvincias()){
+            		ArrayList<Provincia> provincias = provincianegocio.GetAllProvincias();
+            		 if (provincias != null) {
+            		for(Provincia provincia : provincias){
             	%>
                 <option value="<%= provincia.getId()%>"><%= provincia.getNombre()%></option>		
             	<%
-            		}
+            	  }
+         		}else {
+        	        System.out.println("No se encontraron provincias");
+        	    }
             	%>
             </select>
 
