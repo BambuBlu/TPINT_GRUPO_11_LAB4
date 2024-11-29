@@ -1,6 +1,10 @@
 package integrador.servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,7 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import integrador.model.Cliente;
+import integrador.model.Cuenta;
 import integrador.model.Usuario;
+import integrador.negocioimpl.ClienteNegocioImpl;
+import integrador.negocioimpl.CuentaNegocioImpl;
 import integrador.negocioimpl.UsuarioNegocioImpl;
 import integrador.enums.Roles;
 
@@ -49,12 +57,16 @@ public class ServletLogin extends HttpServlet {
 			throws ServletException, IOException {
 
 		if (request.getParameter("btnInicioSesion") != null) {
-			IniciarSesionUsuario(request, response);
+			try {
+				IniciarSesionUsuario(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void IniciarSesionUsuario(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+	        throws ServletException, IOException, SQLException {
 	    String nombreUsuario = request.getParameter("txtNombre");
 	    String contraseniaUsuario = request.getParameter("txtcontrasenia");
 
@@ -66,17 +78,37 @@ public class ServletLogin extends HttpServlet {
 			// guarda en Session
 	    	{
 
-	        UsuarioNegocioImpl negocio = new UsuarioNegocioImpl();
+	        UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
+	        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
 
-	        for (Usuario usuario : negocio.GetAllUsuariosActivos()) {
+	        for (Usuario usuario : usuarioNegocio.GetAllUsuariosActivos()) {
 	            if (usuario.getNombreUsuario().equals(nombreUsuario)
 	                    && usuario.getContrasena().equals(contraseniaUsuario)) {
 	                request.getSession().setAttribute("SessionActual", usuario);
 	                
 	                if (usuario.getRol() == Roles.CLIENTE) {
+	                	Cliente clienteActual = clienteNegocio.obtenerCliente(usuario.getCliente().getDni());
+	                	CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+	                	
+	                	if (clienteActual != null) {
+	    					ArrayList<Cuenta> cuentasActivas = cuentaNegocio.GetAllActiveCuentasOfCliente(clienteActual.getDni());
+	    					ArrayList<Cuenta> cuentasInactivas = cuentaNegocio.GetAllInactiveCuentasOfCliente(clienteActual.getDni());
+
+	    					clienteActual.setCuentas(new ArrayList<Cuenta>());
+	    					clienteActual.getCuentas().addAll(cuentasActivas);
+	    					clienteActual.getCuentas().addAll(cuentasInactivas);
+
+	    					request.getSession().setAttribute("cliente", clienteActual);
+	    					request.getSession().setAttribute("cuentasActivas", cuentasActivas);
+	    					request.getSession().setAttribute("cuentasInactivas", cuentasInactivas);
+	    				}
+	    				
 	                    request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 	                    return;
+	                    
 	                } else if (usuario.getRol() == Roles.ADMIN) {
+	                	Cliente clienteActual = clienteNegocio.obtenerCliente(usuario.getCliente().getDni());
+	    				request.getSession().setAttribute("cliente", clienteActual);
 	                    request.getRequestDispatcher("AdminMainPage.jsp").forward(request, response);
 	                    return;
 	                }

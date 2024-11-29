@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="integrador.model.Cliente, integrador.model.Cuenta, integrador.negocioimpl.CuentaNegocioImpl" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -60,23 +62,51 @@ h1 {
 <body>
     <div class="body">
         <%@include file="Layout/MainLayout.jsp"%>
-
+		<% 
+			Cliente cliente = (Cliente) session.getAttribute("cliente");
+			ArrayList<Cuenta> cuentasActivas = (ArrayList<Cuenta>) session.getAttribute("cuentasActivas");
+		%>
         <div class="contenedor">
             <h1>Inicio Cliente</h1>
             
-            <!-- Contenedor de saldo -->
             <div class="saldo-container">
-                <!-- Saldo en caja de ahorro -->
-                <div class="mb-3">
-                    <label class="saldo-label">Saldo en caja de ahorro:</label>
-                    <div class="saldo-value">$10,000</div> <!-- Placeholder de saldo -->
-                </div>
+				<% if (cuentasActivas != null && !cuentasActivas.isEmpty()) { %>
+	            <div class="informacion-cuenta">
+	                <% int numCuentas = 0; %>
+	                
+	                <% for (Cuenta cuenta : cuentasActivas) { %>
+	                	<% numCuentas++; %>
+	                    <% if ("Caja de ahorro".equals(cuenta.getTipoCuenta().getDescripcion())) { %>
+	                        
+	                        
+	                        <div class="cuenta">
+	                        	<span>Cbu [<%= cuenta.getCbu() %>] - </span>
+	                           <a href="ServletClienteABM?movimiento=1&NumCuenta=<%= cuenta.getNumeroDeCuenta() %>">Caja de ahorro</a>
+	                            <span>$ <%= cuenta.getSaldo() %></span>
+	                        </div>
 
-                <!-- Saldo en cuenta corriente -->
-                <div class="mb-3">
-                    <label class="saldo-label">Saldo en cuenta corriente:</label>
-                    <div class="saldo-value">$5,000</div> <!-- Placeholder de saldo -->
-                </div>
+	                    <% } else if ("Cuenta corriente".equals(cuenta.getTipoCuenta().getDescripcion())) { %>
+	                        
+	                        <div class="cuenta">
+	                        	<span>Cbu [<%= cuenta.getCbu() %>] - </span>
+	                           <a href="ServletClienteABM?movimiento=1&NumCuenta=<%= cuenta.getNumeroDeCuenta() %>">Cuenta corriente</a>
+	                            <span>$ <%= cuenta.getSaldo() %></span>
+	                        </div>
+	                        
+	                    <% } %>
+	                    
+	                <% } %>
+	                                         
+	                <% if (numCuentas < 3) { %>
+	                    <div class="informacion-cuenta">
+	                        <a href="ServletClienteABM?Caja=1&clienteDNI=<%= cliente.getDni() %>">Solicitar caja de ahorro</a> 
+	                    </div>               
+	                    <div class="informacion-cuenta">
+	                        <a href="ServletClienteABM?Cuenta=1&clienteDNI=<%= cliente.getDni() %>">Solicitar cuenta corriente</a> 
+	                    </div>        
+	                <%} %>
+	            </div>                    
+	        	<% } %>       
             </div>
         </div>
     </div>

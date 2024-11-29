@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import integrador.dao.TipoDeCuentaDao;
-import integrador.model.SolicitudPrestamo;
 import integrador.model.TipoCuenta;
 import integrador.utils.DataAccess;
 

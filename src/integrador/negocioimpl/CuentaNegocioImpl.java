@@ -1,5 +1,6 @@
 package integrador.negocioimpl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import integrador.daoimpl.CuentaDaoImpl;
@@ -58,5 +59,35 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 			return false;
 		}
 	}
+	
+	@Override
+	public ArrayList<Cuenta> GetAllInactiveCuentasOfCliente(String dniCliente) {
+		// TODO Auto-generated method stub
+		return dao.GetAllInactiveCuentasOfCliente(dniCliente);
+	}
 
+	@Override
+	public ArrayList<Cuenta> GetAllActiveCuentasOfCliente(String dniCliente) {
+		return dao.GetAllActiveCuentasOfCliente(dniCliente);
+	}
+	
+	@Override
+	public int obtenerUltimoCBU() throws SQLException {
+		return dao.obtenerUltimoCBU();
+	}
+	
+	@Override
+	public Cuenta buscarPorCBU(int cbu) {
+		return dao.buscarPorCBU(cbu);
+	}
+	
+	@Override
+	public void AgregarCuenta(Cuenta cuenta) {
+		dao.AgregarCuenta(cuenta);
+	}
+	
+	@Override
+	public int modificarSaldoCuenta(Cuenta cuenta) {
+		return dao.modificarSaldoCuenta(cuenta);
+	}
 }

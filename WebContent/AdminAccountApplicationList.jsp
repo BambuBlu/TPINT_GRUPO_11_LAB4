@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-	<%@ page import="integrador.model.Cuenta"%>
-	<%@ page import="java.util.ArrayList" %>
+	<%@ page import="integrador.model.SolicitudDeAlta"%>
+	<%@page import="java.util.List"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,7 +15,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Listado de cuentas</title>
+<title>Alta de cuentas</title>
 <style>
 /* Body */
 .body {
@@ -145,69 +145,37 @@ h1 {
 	<div class="body">
 		<%@include file="Layout/MainLayout.jsp"%>
 		<div class="contenedor">
-			<%
-                ArrayList<Cuenta> cuentas = (ArrayList<Cuenta>) request.getAttribute("cuentas");
-            %>
-            <h1>Listado de Cuentas</h1>
+            <h1>Solicitudes de Alta de Cuentas</h1>
 			<div class="table-container">
 				<table class="tabla">
 					<thead>
 						<tr class="text-center fw-bolder fs-5">
-							<th>Numero de cuenta</th>
+							<th>ID</th>
 							<th>DNI</th>
-							<th>Fecha de creacion</th>
 							<th>Tipo de cuenta</th>
-							<th>CBU</th>
-							<th>Saldo</th>
 							<th>Estado</th>
-							<th>Funcionalidad</th>
 						</tr>
 					</thead>
 					<tbody>
- <%
-                            if (cuentas != null) {
-                                for (Cuenta cuenta : cuentas) {
-                        %>
-                            <tr class="text-center">
-                                <td><%= cuenta.getNumeroDeCuenta() %></td>
-                                <td><%= cuenta.getDni() %></td>
-                                <td><%= cuenta.getFechaDeCreacion() %></td>
-                                <td><%= cuenta.getTipoCuenta().getDescripcion() %></td>
-                                <td><%= cuenta.getCbu() %></td>
-                                <td><%= cuenta.getSaldo() %></td>
-                                <td><%= cuenta.getEstado() %></td>
+					<% 
+						List<SolicitudDeAlta> solicitudes = (List<SolicitudDeAlta>) request.getAttribute("solicitudes");
+						for (SolicitudDeAlta solicitud : solicitudes) {
+					%>
+							<tr>
+								<td><%= solicitud.getId() %></td>
+								<td><%= solicitud.getCliente().getDni() %></td> 
+								<td><%= solicitud.getTipoCuenta().getDescripcion() %></td>
+								<td><%= solicitud.getEstado() %></td>
 								<td>
-								    <%
-								        if ("A".equals(cuenta.getEstado())) {
-								    %>
-								        <form method="post" action="ServletCuentaABM">
-								            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
-								            <input type="hidden" name="accion" value="darBaja" />
-								            <button type="submit" class="btn btn-danger shadow-lg fw-bolder">Dar de baja</button>
-								        </form>
-								    <%
-								        } else {
-								    %>
-								        <form method="post" action="ServletCuentaABM">
-								            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
-								            <input type="hidden" name="accion" value="habilitar" />
-								            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
-								        </form>
-								    <%
-								        }
-								    %>
-							    	<form method="post" action="ServletCuentaABM">
-							            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
-							            <input type="hidden" name="tipoCuentaId" value="<%= cuenta.getTipoCuenta().getId() %>" />
-							            <input type="hidden" name="accion" value="Modificar" />
-							            <button type="submit" class="btn btn-warning shadow-lg fw-bolder text-white">Modificar Tipo Cuenta</button>
+							        <form method="post" action="ServletCuentaABM">
+							            <input type="hidden" name="solicitudId" value="<%= solicitud.getId() %>" />
+							            <input type="hidden" name="accion" value="altaCuenta" />
+							            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
 							        </form>
 								</td>
-                            </tr>
-                        <%
-                                }
-                            }
-                        %>
+							</tr>
+						
+			            <% } %>
 					</tbody>
 				</table>
 			</div>

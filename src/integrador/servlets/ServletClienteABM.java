@@ -1,7 +1,6 @@
 package integrador.servlets;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,23 +13,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
 import integrador.negocioimpl.CuentaNegocioImpl;
 import integrador.negocioimpl.GeneroNegocioImpl;
 import integrador.negocioimpl.LocalidadNegocioImpl;
 import integrador.negocioimpl.MovimientoNegocioImpl;
-import integrador.negocioimpl.PaisNegocioImpl;
-import integrador.negocioimpl.ProvinciaNegocioImpl;
+import integrador.negocioimpl.PrestamoNegocioImpl;
+import integrador.negocioimpl.SolicitudesDeCuentaNegocioImpl;
 import integrador.negocioimpl.UsuarioNegocioImpl;
-import integrador.enums.Roles;
 import integrador.model.Cliente;
 import integrador.model.Cuenta;
 import integrador.model.Generos;
 import integrador.model.Localidad;
 import integrador.model.Movimiento;
-import integrador.model.Pais;
-import integrador.model.Provincia;
+import integrador.model.Prestamo;
+import integrador.model.SolicitudDeAlta;
+import integrador.model.TipoCuenta;
 import integrador.model.TipoMovimiento;
 
 /**
@@ -46,22 +47,42 @@ public class ServletClienteABM extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String accion = request.getParameter("accion");
+		
+	    if (request.getParameter("movimiento") != null) {
+	    	CargarMovimientos(request, response);
+	    } else if (request.getParameter("Caja") != null) {
+			try {
+				SolicitarCajaDeAhorro(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (request.getParameter("Cuenta") != null) {
+			try {
+				SolicitarCuentaCorriente(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if ("listarCuentas".equals(accion)) {
+			ListarCuentasClientes(request, response);
+		} else if ("altaCuentas".equals(accion)) {
+			ListarAltasCuentas(request, response);
+		} else if ("listarPrestamos".equals(accion)) {
+			try {
+				ListarSolicitudPrestamos(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetros inválidos");
+	    }
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Entro a doPost");
-		
         String accion = request.getParameter("accion");
         String clienteId = request.getParameter("clienteId");
         String clienteEstado = request.getParameter("clienteEstado");
-        
-        
-        System.out.println("Valor de [accion] = " + accion);
-        System.out.println("Valor de [clienteId] = " + clienteId);
-        System.out.println("Valor de [clienteEstado] = " + clienteEstado);
 		
 		if (request.getParameter("btnCrearCliente") != null) {
     	   try {
@@ -80,11 +101,8 @@ public class ServletClienteABM extends HttpServlet {
 				e.printStackTrace();
 			}
        } else if ("submitEdit".equals(accion)) {
-    	   System.out.println("Entro a submitEdit");
     	   SubmitModificarCliente(clienteEstado, request, response);
        }
-
-    
     }
 
 	/**
@@ -198,7 +216,6 @@ public class ServletClienteABM extends HttpServlet {
      */
     private void darBajaCliente(String clienteId, HttpServletResponse response)
     		throws IOException {
-    	System.out.println("Entro a darBajaCliente");
         ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
         Cliente cliente = new Cliente();
         Usuario usuario = new Usuario();
@@ -216,7 +233,6 @@ public class ServletClienteABM extends HttpServlet {
      */
     private void habilitarCliente(String clienteId, HttpServletResponse response)
     		throws IOException {
-    	System.out.println("Entro a habilitarCliente");
         ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
         Cliente cliente = new Cliente();
         Usuario usuario = new Usuario();
@@ -233,7 +249,6 @@ public class ServletClienteABM extends HttpServlet {
     
     private void ModificarCliente(String clienteId, String clienteEstado, HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException, SQLException {
-    	System.out.println("Entro a ModificarCliente");
     	ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
         Cliente cliente = clienteNegocio.obtenerCliente(clienteId);
         UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
@@ -242,13 +257,7 @@ public class ServletClienteABM extends HttpServlet {
 		request.setAttribute("clienteModificar", cliente);
 		request.setAttribute("usuarioModificar", usuario);
 		request.setAttribute("estadoUsuario", clienteEstado);
-		
-		System.out.println("Valor de [cliente] = " + cliente);
-		System.out.println("Valor de [request.setAttribute(\"clienteModificar\")] = " + request.getAttribute("clienteModificar"));
-		System.out.println("Valor de [usuario] = " + usuario);
-		System.out.println("Valor de [request.setAttribute(\"usuarioModificar\")] = " + request.getAttribute("usuarioModificar"));
-		
-		
+
 		RequestDispatcher rd = request.getRequestDispatcher("UserModify.jsp");
 		rd.forward(request, response);
 	}
@@ -256,7 +265,6 @@ public class ServletClienteABM extends HttpServlet {
     
     private void SubmitModificarCliente(String clienteEstado, HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
-    	System.out.println("Entro a SubmitModificarCliente");
     	
 		String dni = request.getParameter("txtDNI");
 		String cuil = request.getParameter("txtCUIL");
@@ -310,5 +318,164 @@ public class ServletClienteABM extends HttpServlet {
         } else {
         	response.sendRedirect("AdminUserList.jsp?listaClientes=listaClientesInactivos");
         }
+	}
+    
+	public void CargarMovimientos(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		MovimientoNegocioImpl movimientoNegocio = new MovimientoNegocioImpl();
+
+		String numCuentaStr = request.getParameter("NumCuenta");
+
+		if (numCuentaStr == null || numCuentaStr.isEmpty()) {
+			request.setAttribute("mensaje", "No se proporcionó un número de cuenta válido.");
+			request.getRequestDispatcher("Error.jsp").forward(request, response);
+			return;
+		}
+
+		int numCuenta = Integer.parseInt(numCuentaStr);
+
+		ArrayList<Movimiento> movimientosCliente = new ArrayList<>();
+		ArrayList<Movimiento> movimientos = (ArrayList<Movimiento>) movimientoNegocio.getMovimientos();
+
+		for (Movimiento m : movimientos) {
+			if (m.getCuenta().getNumeroDeCuenta() == numCuenta) {
+				movimientosCliente.add(m);
+			}
+		}
+		request.setAttribute("movimientosCliente", movimientosCliente);
+		request.getRequestDispatcher("AccountMovements.jsp").forward(request, response);
+	}
+	
+	public void SolicitarCuentaCorriente(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+
+		String dni = request.getParameter("clienteDNI");
+		if (dni != null && !dni.isEmpty()) {
+			ArrayList<SolicitudDeAlta> solicitudesActivas = (ArrayList<SolicitudDeAlta>) solicitudesNegocio
+					.obtenerTodasLasSolicitudesActivas();
+			// Verificar si ya tiene una solicitud activa para caja de ahorro
+			boolean tieneSolicitudActiva = false;
+
+			for (SolicitudDeAlta solicitud : solicitudesActivas) {
+				if (solicitud.getCliente().getDni().equals(dni)) {
+					if (solicitud.getTipoCuenta().getId() == 2 && solicitud.getEstado().equals("A")) {
+						tieneSolicitudActiva = true;
+						break;
+					}
+				}
+			}
+
+			if (!tieneSolicitudActiva) {
+				// Crear una instancia de Cliente con el DNI recibido
+				Cliente cliente = clienteNegocio.obtenerCliente(dni);
+
+				// Crear una instancia de TipoCuenta para Caja de Ahorro
+				TipoCuenta tipoCuenta = new TipoCuenta();
+				tipoCuenta.setId(2);
+				tipoCuenta.setDescripcion("Cuenta corriente");
+
+				// Crear una nueva solicitud
+				SolicitudDeAlta solicitud = new SolicitudDeAlta();
+				solicitud.setCliente(cliente);
+				solicitud.setTipoCuenta(tipoCuenta);
+				solicitud.setEstado("A");
+
+				// Agregar la solicitud a la base de datos
+				solicitudesNegocio.agregarSolicitud(solicitud);
+			}
+			try {
+				response.sendRedirect("MainPage.jsp");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void SolicitarCajaDeAhorro(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+
+		String dni = request.getParameter("clienteDNI");
+		if (dni != null && !dni.isEmpty()) {
+			ArrayList<SolicitudDeAlta> solicitudesActivas = (ArrayList<SolicitudDeAlta>) solicitudesNegocio
+					.obtenerTodasLasSolicitudesActivas();
+			// Verificar si ya tiene una solicitud activa para caja de ahorro
+			boolean tieneSolicitudActiva = false;
+
+			for (SolicitudDeAlta solicitud : solicitudesActivas) {
+				if (solicitud.getCliente().getDni().equals(dni)) {
+					if (solicitud.getTipoCuenta().getId() == 1 && solicitud.getEstado().equals("A")) {
+						tieneSolicitudActiva = true;
+						break;
+					}
+				}
+			}
+
+			if (!tieneSolicitudActiva) {
+				// Crear una instancia de Cliente con el DNI recibido
+				Cliente cliente = clienteNegocio.obtenerCliente(dni);
+
+				// Crear una instancia de TipoCuenta para Caja de Ahorro
+				TipoCuenta tipoCuenta = new TipoCuenta();
+				tipoCuenta.setId(1);
+				tipoCuenta.setDescripcion("Caja de Ahorro");
+
+				// Crear una nueva solicitud
+				SolicitudDeAlta solicitud = new SolicitudDeAlta();
+				solicitud.setCliente(cliente);
+				solicitud.setTipoCuenta(tipoCuenta);
+				solicitud.setEstado("A");
+
+				// Agregar la solicitud a la base de datos
+				solicitudesNegocio.agregarSolicitud(solicitud);
+			}
+			try {
+				response.sendRedirect("MainPage.jsp");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void ListarCuentasClientes(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+		
+		ArrayList<Cuenta> cuentas = cuentaNegocio.GetAllCuentas();
+		request.setAttribute("cuentas", cuentas);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/AdminListAccounts.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	public void ListarAltasCuentas(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		SolicitudesDeCuentaNegocioImpl solicitudesNegocio = new SolicitudesDeCuentaNegocioImpl();
+		
+		// Obtener todas las solicitudes activas
+		ArrayList<SolicitudDeAlta> solicitudesActivas = (ArrayList<SolicitudDeAlta>) solicitudesNegocio
+				.obtenerTodasLasSolicitudesActivas();
+
+		// Guardar las solicitudes en el request para pasarlas a la página JSP
+		request.setAttribute("solicitudes", solicitudesActivas);
+
+		// Redirigir a la página de alta de cuentas
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/AdminAccountApplicationList.jsp");
+		dispatcher.forward(request, response);
+	}	
+	
+	public void ListarSolicitudPrestamos(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		
+		PrestamoNegocioImpl prestamoNegocio = new PrestamoNegocioImpl();
+
+		ArrayList<Prestamo> listaPrestamosInactivos = (ArrayList<Prestamo>) prestamoNegocio.getPrestamosInactivos();
+		request.setAttribute("listaPrestamosInactivos", listaPrestamosInactivos);
+
+		RequestDispatcher rd = request.getRequestDispatcher("LoanApplicationList.jsp");
+		rd.forward(request, response);
 	}
 }

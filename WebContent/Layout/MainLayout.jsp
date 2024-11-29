@@ -55,11 +55,13 @@
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Crear Cliente">
 				<p>Crear Cliente y Cuentas</p>
-			</a> <a href="./AdminListAccounts.jsp" class="btn-main"> <img
-				src="https://img.icons8.com/parakeet/48/checklist.png"
-				alt="Listar Cuentas">
-				<p>Listar Cuentas</p>
-			</a> <a href="${pageContext.request.contextPath}/LoanApplicationList.jsp" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/ServletClienteABM?accion=altaCuentas" class="btn-main">
+    			<img src="https://img.icons8.com/parakeet/48/checklist.png" alt="Listar Cuentas">
+    			<p>Solicitudes de Cuentas</p>
+			</a><a href="${pageContext.request.contextPath}/ServletClienteABM?accion=listarCuentas" class="btn-main">
+    			<img src="https://img.icons8.com/parakeet/48/checklist.png" alt="Listar Cuentas">
+    			<p>Listar Cuentas</p>
+			</a> <a href="${pageContext.request.contextPath}/ServletClienteABM?accion=listarPrestamos" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitudes de Préstamos">
 				<p>Listar Solicitudes de Préstamos</p>
@@ -88,14 +90,13 @@
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
 				<p>Transferencias</p>
-			</a> <a href="${pageContext.request.contextPath}/Loans.jsp" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/ServletCuentaABM?accion=Prestamos" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitar Préstamo">
 				<p>Préstamos</p>
-			</a> <a href="${pageContext.request.contextPath}/ApplyLoan.jsp" class="btn-main"> <img
-				src="https://img.icons8.com/parakeet/48/checklist.png"
-				alt="Solicitar Préstamo">
-				<p>Solicitar Préstamos</p>
+			</a> <a href="${pageContext.request.contextPath}/ServletCuentaABM?accion=solicitarPrestamos" class="btn-main">
+    			<img src="https://img.icons8.com/parakeet/48/checklist.png" alt="Listar Cuentas">
+    			<p>Solicitar Préstamos</p>
 			</a>
 		</div>
 		<%
