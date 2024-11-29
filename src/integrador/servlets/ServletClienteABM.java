@@ -301,6 +301,7 @@ public class ServletClienteABM extends HttpServlet {
 		Usuario usuario = usuarioNegocio.obtenerUsuario(cliente.getDni());
 		usuario.setContrasena(contraseña);
 		
+		System.out.println( "cliente a modificar es " + cliente.getApellido());
 		
     	clienteNegocio.ModificarCliente(cliente, usuario);
     	

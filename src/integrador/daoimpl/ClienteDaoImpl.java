@@ -152,6 +152,11 @@ public class ClienteDaoImpl implements ClienteDao {
 	        return false;
 	    } catch (SQLException e) {
 	        System.out.println("Error al ejecutar los procedimientos: " + e.getMessage());
+	        
+	        e.printStackTrace(); // Imprime el error completo en la consola
+	        System.out.println("Código SQL Error: " + e.getErrorCode());
+	        System.out.println("Estado SQL: " + e.getSQLState());
+	        
 	        return false;
 	    }
 	}

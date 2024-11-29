@@ -21,14 +21,19 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	    String query = "select id, dni_cliente, usuario, contraseña, tipo_usuario, estado from usuarios";
 	    ArrayList<Usuario> usuarios = new ArrayList<>();
 	    ClienteNegocioImpl clientenegocio = new ClienteNegocioImpl();
-	    Connection conn = null;
+	  /*  Connection conn = null;
 	    Statement stmt = null;
 	    ResultSet resultquery = null;
-
-	    try {
-	        conn = DataAccess.GetConnection();
+    	
+	       ( conn = DataAccess.GetConnection();
 	        stmt = conn.createStatement();
-	        resultquery = stmt.executeQuery(query);
+	        resultquery = stmt.executeQuery(query) );*/
+	       
+	    try  // utilizo try with rousources para cierre de la conexion
+	    	(Connection conn = DataAccess.GetConnection();
+	         Statement stmt = conn.createStatement();
+	         ResultSet resultquery = stmt.executeQuery(query)){
+
 
 	        while (resultquery.next()) {
 	            int id = resultquery.getInt("id");
@@ -50,7 +55,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    } finally {
+	    }/* finally {
 	        try {
 	            if (resultquery != null) resultquery.close();
 	            if (stmt != null) stmt.close();
@@ -58,7 +63,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	    }
+	    }*/
 
 	    return usuarios;
 	}
