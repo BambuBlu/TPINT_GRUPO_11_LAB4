@@ -90,4 +90,22 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	public int modificarSaldoCuenta(Cuenta cuenta) {
 		return dao.modificarSaldoCuenta(cuenta);
 	}
+	
+	@Override
+	public float GetPromedioSaldos() {
+		// TODO Auto-generated method stub
+		return dao.GetPromedioSaldos();
+	}
+	
+	@Override
+	public float GetPorcentajeCuentasActivas() {
+		// TODO Auto-generated method stub
+		return dao.GetPorcentajeCuentasActivas();
+	}
+	
+	@Override
+	public float GetPorcentajeCuentasInactivas() {
+		// TODO Auto-generated method stub
+		return dao.GetPorcentajeCuentasInactivas();
+	}
 }

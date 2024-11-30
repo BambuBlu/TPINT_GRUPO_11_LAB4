@@ -155,7 +155,7 @@ h1, h2 {
 	            <c:if test="${not empty requestScope.mensajeError}">
 	                <p style="color: red;">${requestScope.mensajeError}</p>
 	            </c:if>
-				<form action="servletCuentaABM" method="post">
+				<form action="ServletCuentaABM" method="post">
                 <div class="form-group">
                     <label for="txtPrestamosActivo">Seleccione el prestamo a pagar</label>
                     <select id="txtPrestamosActivo" name="txtPrestamosActivo" class="form-control">
@@ -179,8 +179,8 @@ h1, h2 {
                 </div>
                                                            
                 <div class="form-group">
-                    <!-- Bot�n de submit para transferir -->
-                    <input type="submit" name="PagarCuota" value="Pagar Cuota" class="btn btn-primary">   
+                    <!-- Boton de submit para transferir -->
+                    <input type="submit" name="accion" value="PagarCuota" class="btn btn-primary">   
                 </div>
             </form>
 			</div>

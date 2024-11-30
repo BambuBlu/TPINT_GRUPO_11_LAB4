@@ -13,8 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
 import integrador.negocioimpl.CuentaNegocioImpl;
@@ -74,6 +72,8 @@ public class ServletClienteABM extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		} else if ("estadisticas".equals(accion)) {
+			Estadisticas(request, response);
 		} else {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetros inválidos");
 		}
@@ -103,6 +103,12 @@ public class ServletClienteABM extends HttpServlet {
 			}
 		} else if ("submitEdit".equals(accion)) {
 			SubmitModificarCliente(clienteEstado, request, response);
+		} else if ("Solicitar".equals(accion)) {
+			try {
+				EstadisticasVisualizar(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -191,7 +197,7 @@ public class ServletClienteABM extends HttpServlet {
 			}
 			if (nuevaCuenta != null) {
 				movimiento.setCuenta(nuevaCuenta);
-				movimiento.setFecha((java.sql.Date) new Date(System.currentTimeMillis()));
+				movimiento.setFecha(new java.sql.Date(System.currentTimeMillis()));
 				movimiento.setDetalle("Alta de cuenta");
 				movimiento.setImporte(10000);
 
@@ -470,5 +476,102 @@ public class ServletClienteABM extends HttpServlet {
 
 		RequestDispatcher rd = request.getRequestDispatcher("LoanApplicationList.jsp");
 		rd.forward(request, response);
+	}
+	
+	public void Estadisticas(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("Statistics.jsp");
+		rd.forward(request, response);
+	}
+	
+	public void EstadisticasVisualizar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+		MovimientoNegocioImpl movimientoNegocio = new MovimientoNegocioImpl();
+		
+		double promedioSaldos = 0;
+		float porcentajeCuentasActivas = 0;
+		float porcentajeCuentasInactivas = 0;
+		double importeMovido = 0;
+		double importeMovidoSemana = 0;
+
+		String opcionSeleccionada = request.getParameter("estadistica");
+
+		// Procesa las fechas en caso de ser necesario
+		String fechaDesdeStr = null;
+		String fechaHastaStr = null;
+		Date fechaDesdeDate = new Date(0);
+		Date fechaHastaDate = new Date(0);
+
+		if ("option3".equals(opcionSeleccionada)) {
+			fechaDesdeStr = request.getParameter("fechaDesde");
+			fechaHastaStr = request.getParameter("fechaHasta");
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			try {
+				java.util.Date fechaDesdeParsed = sdf.parse(fechaDesdeStr);
+				fechaDesdeDate = new java.sql.Date(fechaDesdeParsed.getTime());
+
+				java.util.Date fechaHastaParsed = sdf.parse(fechaHastaStr);
+				fechaHastaDate = new java.sql.Date(fechaHastaParsed.getTime());
+
+			} catch (java.text.ParseException e) {
+				e.printStackTrace();
+				request.setAttribute("error", "Formato de fecha inválido");
+				RequestDispatcher rd = request.getRequestDispatcher("/Statistics.jsp");
+				rd.forward(request, response);
+				return;
+			}
+
+		}
+
+		// Dependiendo de la seleccion del usuario, se ejecuta una u otra función
+		switch (opcionSeleccionada) {
+		case "option1":
+			promedioSaldos = cuentaNegocio.GetPromedioSaldos();
+
+			String strpromedioSaldos = Double.toString(promedioSaldos);
+
+			request.setAttribute("promedioSaldos", strpromedioSaldos);
+			break;
+
+		case "option2":
+			porcentajeCuentasActivas = cuentaNegocio.GetPorcentajeCuentasActivas();
+			porcentajeCuentasInactivas = cuentaNegocio.GetPorcentajeCuentasInactivas();
+
+			// HAY QUE PARSEAR A STRING PARA MANDARLO COMO ATRIBUTO!
+			String strPorcentajeCuentasActivas = Float.toString(porcentajeCuentasActivas);
+			String strPorcentajeCuentasInactivas = Float.toString(porcentajeCuentasInactivas);
+
+			request.setAttribute("porcentajeCuentasActivas", strPorcentajeCuentasActivas);
+			request.setAttribute("porcentajeCuentasInactivas", strPorcentajeCuentasInactivas);
+			break;
+
+		case "option3":
+			if (fechaDesdeDate != null && fechaHastaDate != null) {
+				importeMovido = movimientoNegocio.GetCantidadMovida(fechaDesdeDate, fechaHastaDate);
+
+				String strImporteMovido = Double.toString(importeMovido);
+
+				request.setAttribute("importeMovido", strImporteMovido);
+			}
+			break;
+
+		case "option4":
+			importeMovidoSemana = movimientoNegocio.GetCantidadSemana();
+
+			String strImporteMovidoSemana = Double.toString(importeMovidoSemana);
+
+			request.setAttribute("importeMovidoSemana", strImporteMovidoSemana);
+			break;
+
+		default:
+			// Nunca debería entrar en el default porque siempre hay una opción
+			// seleccionada.
+			break;
+		}
+
+		request.getRequestDispatcher("/Statistics.jsp").forward(request, response);
 	}
 }

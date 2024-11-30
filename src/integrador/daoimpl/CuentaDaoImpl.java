@@ -273,4 +273,57 @@ public class CuentaDaoImpl implements CuentaDao {
 		}
 		return filas;
 	}
+	
+	@Override
+	public float GetPromedioSaldos() {
+	    ArrayList<Cuenta> cuentas = this.GetAllActiveCuentas();
+	    
+	    if (cuentas == null || cuentas.isEmpty()) {
+	        return 0;
+	    }
+	    
+	    float sumaSaldos = 0;
+	    
+	    for (Cuenta cuenta : cuentas) {
+	        sumaSaldos += cuenta.getSaldo();
+	    }
+	    
+	    float promedio = sumaSaldos / cuentas.size();
+	    
+	    return promedio;
+	}
+	
+	@Override
+	public float GetPorcentajeCuentasActivas() {
+	    ArrayList<Cuenta> cuentasActivas = this.GetAllActiveCuentas();
+	    ArrayList<Cuenta> cuentasInactivas = this.GetAllInactiveCuentas();
+
+	    int totalCuentas = cuentasActivas.size() + cuentasInactivas.size();
+	    
+	    // Evitar division por cero
+	    if (totalCuentas == 0) {
+	        return 0;
+	    }
+
+	    float porcentaje = ((float) cuentasActivas.size() * 100) / totalCuentas;
+	    
+	    return porcentaje;
+	}
+	
+	@Override
+	public float GetPorcentajeCuentasInactivas() {
+		ArrayList<Cuenta> cuentasActivas = this.GetAllActiveCuentas();
+	    ArrayList<Cuenta> cuentasInactivas = this.GetAllInactiveCuentas();
+
+	    int totalCuentas = cuentasActivas.size() + cuentasInactivas.size();
+	    
+	    // Evitar division por cero
+	    if (totalCuentas == 0) {
+	        return 0;
+	    }
+
+	    float porcentaje = ((float) cuentasInactivas.size() * 100) / totalCuentas;
+	    
+	    return porcentaje;
+	}
 }

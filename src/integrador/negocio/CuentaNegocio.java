@@ -25,4 +25,10 @@ public interface CuentaNegocio {
 	void AgregarCuenta(Cuenta cuenta);
 
 	int modificarSaldoCuenta(Cuenta cuenta);
+
+	float GetPromedioSaldos();
+
+	float GetPorcentajeCuentasActivas();
+
+	float GetPorcentajeCuentasInactivas();
 }

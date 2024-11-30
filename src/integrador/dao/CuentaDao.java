@@ -18,4 +18,7 @@ public interface CuentaDao {
 	Cuenta buscarPorCBU(int cbu);
 	void AgregarCuenta(Cuenta cuenta);
 	int modificarSaldoCuenta(Cuenta c);
+	float GetPromedioSaldos();
+	float GetPorcentajeCuentasActivas();
+	float GetPorcentajeCuentasInactivas();
 }

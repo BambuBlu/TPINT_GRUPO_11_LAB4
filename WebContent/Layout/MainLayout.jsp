@@ -65,7 +65,7 @@
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Solicitudes de Préstamos">
 				<p>Listar Solicitudes de Préstamos</p>
-			</a> <a href="${pageContext.request.contextPath}/Statistics.jsp" class="btn-main"> <img
+			</a> <a href="${pageContext.request.contextPath}/ServletClienteABM?accion=estadisticas" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Estadística">
 				<p>Ver Estadística</p>

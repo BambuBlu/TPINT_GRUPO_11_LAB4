@@ -108,37 +108,15 @@ input[type="number"], .hidden {
 }
 </style>
 <script type="text/javascript">
-	function onRadioChange() {
-		var option3 = document.getElementById("option3");
-		var dateInput = document.getElementById("dateInput");
-		dateInput.style.display = option3.checked ? "block" : "none";
-	}
-
-	function mostrarResultado() {
-		// Oculta todos los resultados primero
-		document.getElementById("resultado1").style.display = "none";
-		document.getElementById("resultado2").style.display = "none";
-		document.getElementById("resultado3").style.display = "none";
-		document.getElementById("resultado4").style.display = "none";
-
-		// Muestra solo el resultado de la opción seleccionada
-		if (document.getElementById("option1").checked) {
-			document.getElementById("resultado1").style.display = "block";
-		} else if (document.getElementById("option2").checked) {
-			document.getElementById("resultado2").style.display = "block";
-		} else if (document.getElementById("option3").checked) {
-			const desde = document.getElementById("desde").value
-					|| "no especificado";
-			const hasta = document.getElementById("hasta").value
-					|| "no especificado";
-
-			const resultado3 = document.getElementById("resultado3");
-			resultado3.innerHTML = `Importe monetario movilizado desde ${desde} hasta ${hasta}: $5000`;
-			resultado3.style.display = "block";
-		} else if (document.getElementById("option4").checked) {
-			document.getElementById("resultado4").style.display = "block";
-		}
-	}
+function onRadioChange() {
+    var option3 = document.getElementById("option3");
+    var dateInput = document.getElementById("dateInput");
+    if (option3.checked) {
+        dateInput.classList.remove("hidden");
+    } else {
+        dateInput.classList.add("hidden");
+    }
+}
 </script>
 </head>
 <body>
@@ -151,46 +129,69 @@ input[type="number"], .hidden {
 		<div class="contenedor">
 			<h1>Estadísticas</h1>
 
-			<div class="usuario">
-				<a href="#">Nombre Apellido</a>
-				<button class="btn">Cerrar sesión</button>
-			</div>
-
-			<!-- Formulario para seleccionar opción -->
-			<form onsubmit="mostrarResultado(); return false;">
+			<form action="ServletClienteABM" method="post">
 				<div class="opciones">
-					<label><input type="radio" id="option1" name="estadistica"
-						onchange="onRadioChange()" checked> Promedio de saldos
-						entre todas las cuentas</label><br> <label><input
-						type="radio" id="option2" name="estadistica"
-						onchange="onRadioChange()"> Porcentaje de cuentas Activas
-						/ Inactivas</label><br> <label><input type="radio"
-						id="option3" name="estadistica" onchange="onRadioChange()">
-						Importe monetario movilizado</label><br> <label><input
-						type="radio" id="option4" name="estadistica"
-						onchange="onRadioChange()"> Movimientos realizados esta
-						semana</label>
+					<label for="option1">
+						<input type="radio" id="option1" name="estadistica" value="option1" onchange="onRadioChange()" checked>
+						Promedio de saldos entre todas las cuentas
+					</label>
+					<br>
+					<label for="option2">
+						<input type="radio" id="option2" name="estadistica" value="option2" onchange="onRadioChange()">
+						Porcentaje de cuentas Activas / Inactivas
+					</label>
+					<br>
+					<label for="option3">
+						<input type="radio" id="option3" name="estadistica" value="option3" onchange="onRadioChange()">
+						Importe monetario movilizado
+					</label>
+					<br>
+					<label for="option4">
+						<input type="radio" id="option4" name="estadistica" value="option4" onchange="onRadioChange()">
+						Movimientos realizados esta semana
+					</label>
 				</div>
-
-				<!-- Campos "Desde" y "Hasta" solo para la opción "Importe monetario movilizado" -->
+	
 				<div id="dateInput" class="hidden">
-					<label>Desde:</label> <input type="number" id="desde"
-						placeholder="Ingrese el monto"><br> <label>Hasta:</label>
-					<input type="number" id="hasta" placeholder="Ingrese el monto">
+				    <label for="fechaDesde">Desde:</label>
+				    <input type="date" id="fechaDesde" name="fechaDesde">
+				    <label for="fechaHasta">Hasta:</label>
+				    <input type="date" id="fechaHasta" name="fechaHasta">
 				</div>
-
-				<button type="submit" class="btn">Aceptar</button>
+	
+				<input type="submit" class="btn" value="Solicitar" name="accion">
 			</form>
-
-			<!-- Contenedor de resultados -->
-			<div class="resultado" id="resultado1">Promedio de saldos entre
-				todas las cuentas: $1000</div>
-			<div class="resultado" id="resultado2">Porcentaje de cuentas
-				Activas: 60% / Inactivas: 40%</div>
-			<div class="resultado" id="resultado3">Importe monetario
-				movilizado: $5000</div>
-			<div class="resultado" id="resultado4">Movimientos realizados
-				esta última semana: $1200</div>
+	
+			<div>
+				<%
+					if(request.getAttribute("promedioSaldos") != null){
+						String promedioSaldos = (String) request.getAttribute("promedioSaldos");
+				%>
+						<label>Promedio de saldos entre todas las cuentas: $<%= promedioSaldos %></label>
+				<%
+					}
+					else if(request.getAttribute("porcentajeCuentasActivas") != null && request.getAttribute("porcentajeCuentasInactivas") != null){
+						String porcentajeCuentasActivas = (String) request.getAttribute("porcentajeCuentasActivas");
+						String porcentajeCuentasInactivas = (String) request.getAttribute("porcentajeCuentasInactivas");
+				%>
+						<label>Porcentaje de cuentas Activas: <%= porcentajeCuentasActivas %></label>
+						<label>Porcentaje de cuentas Inactivas: <%= porcentajeCuentasInactivas %></label>
+				<%
+					}
+					else if(request.getAttribute("importeMovido") != null){
+						String importeMovido = (String) request.getAttribute("importeMovido");
+				%>
+						<label>Importe monetario movilizado: $<%= importeMovido %></label>
+				<%
+					}
+					else if(request.getAttribute("importeMovidoSemana") != null){
+						String importeMovidoSemana = (String) request.getAttribute("importeMovidoSemana");
+				%>
+						<label>Importe monetario movilizado esta ultima semana: $<%= importeMovidoSemana %></label>
+				<%
+					}
+				%>
+			</div>
 		</div>
 	</div>
 </body>
