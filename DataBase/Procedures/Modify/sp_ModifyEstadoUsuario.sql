@@ -7,7 +7,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ModificarEstadoUsuario`(
 BEGIN
     UPDATE Usuarios
     SET estado = p_estado
-    WHERE dni = p_dni;
+        WHERE dni_cliente = p_dni;
+    //WHERE dni = p_dni;
 END //
 
 DELIMITER ;

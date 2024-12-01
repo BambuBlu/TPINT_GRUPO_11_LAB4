@@ -155,7 +155,7 @@ public class ClienteDaoImpl implements ClienteDao {
 	        if (rowsAffectedCliente > 0) {
 	            stmtUsuario.setLong(1, usuarioModificado.getId_Usaurio());
 	            stmtUsuario.setString(2, usuarioModificado.getBaja() ? "A" : "I");
-			    
+	            
 	            int rowsAffectedUsuario = stmtUsuario.executeUpdate();
 	            
 	            if (rowsAffectedUsuario > 0) {
