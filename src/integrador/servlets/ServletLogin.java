@@ -114,6 +114,15 @@ public class ServletLogin extends HttpServlet {
 	                }
 	            }
 	        }
+	        
+	        for (Usuario usuarioInactivo : usuarioNegocio.GetAllUsuariosInactivos()) 
+	           	 if (usuarioInactivo.getNombreUsuario().equals(nombreUsuario)
+		                    && usuarioInactivo.getContrasena().equals(contraseniaUsuario)) {    
+	           		// Usuario Inactivo.
+	        	        request.setAttribute("errorMessage", "Usuario INACTIVO, comuniquese con el administrador...");
+	        	        request.getRequestDispatcher("/Index.jsp").forward(request, response);
+	           	 }
+	        
 
 	        // Usuario no encontrado
 	        request.setAttribute("errorMessage", "Usuario inexistente, intentelo de nuevo...");
