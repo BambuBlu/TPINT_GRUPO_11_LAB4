@@ -9,65 +9,69 @@
     <title>Listado de solicitud de prestamos</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     <style>
-        /* Body */
-        .body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #79d7e7;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    /* Body */
+    .body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #79d7e7;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-        .contenedor {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 1700px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .contenedor {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 30px 50px 160px 49px rgba(0, 0, 0, 0.3);
+        width: 90%;
+        max-width: 1700px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        h1 {
-            text-align: center;
-            color: #00796b;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-        }
+    h1 {
+        text-align: center;
+        color: #00796b;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
 
-        .table-container {
-            border-radius: 10px;
-            border: 4px solid #2196F3;
-            width: 100%;
-            overflow: hidden;
-            background-color: #595C5F;
-        }
+    .table-container {
+        border-radius: 10px;
+        border: 4px solid #2196F3;
+        width: 100%;
+        overflow: hidden;
+        background-color: #595C5F;
+    }
 
-        .tabla {
-            width: 100%;
-            background-color: #595C5F;
-            color: white;
-            font-size: 15px;
-            border-collapse: collapse;
-        }
+    .tabla {
+        width: 100%;
+        background-color: #595C5F;
+        color: white;
+        font-size: 15px;
+        border-collapse: collapse;
+    }
 
-        .tabla th, .tabla td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+    .tabla th, .tabla td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
 
-        .tabla th {
-            background-color: #00796b;
-            color: white;
-        }
-    </style>
+    .tabla th {
+        background-color: #00796b;
+        color: white;
+    }
+
+    .tabla td {
+        color: #000000; /* Texto claro para mejor visibilidad */
+    }
+</style>
 </head>
 <body>
     <div class="body">
@@ -106,7 +110,9 @@
 									<tr>
 										<td><%=prestamo.getId()%></td>
 										<td><%=prestamo.getCliente().getDni()%></td>
-										<td><%=prestamo.getCuenta().getCbu() %></td>
+										<td>
+    										<%= (prestamo.getCuenta() != null) ? prestamo.getCuenta().getCbu() : "Sin cuenta asociada" %>
+										</td>
 										<td><%=prestamo.getFecha()%></td>
 										<td>$<%=prestamo.getImporteConIntereses()%></td>
 										<td>$<%=prestamo.getImportePedido()%></td>
