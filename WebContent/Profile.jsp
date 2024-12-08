@@ -1,3 +1,8 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="integrador.model.Cliente"%>
+<%@page import="integrador.daoimpl.ClienteDaoImpl"%>
+<%@page import="integrador.daoimpl.UsuarioDaoImpl"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="integrador.model.Usuario"%>
@@ -45,9 +50,21 @@
 				</g> </svg>
 			</div> <%
  	Usuario usuarioActual1 = (Usuario) session.getAttribute("SessionActual");
+
  %>
 
 			<p><%=usuarioActual1.getNombreUsuario()%></p>
+			
+			<div class="d-flex justify-content-between align-items-center mt-3">
+				<form method="post" action="ServletClienteABM"> <!-- Serverle com para post -->
+				
+				<% System.out.println("Valor de [cliente] = " + usuarioActual1.getCliente().getDni()); %>
+					<input type="hidden" name="clienteId" value="<%= usuarioActual1.getCliente().getDni() %>" />
+					<input type="hidden" name="clienteEstado" value="<%= usuarioActual1.getCliente().getEstado() %>" />
+					<input type="hidden" name="accion" value="modificar" />
+					<button type="submit" class="btn btn-warning shadow-lg fw-bolder text-white">Modificar datos</button>
+				 </form>
+			</div>
 
 			<div class="d-flex justify-content-between align-items-center mt-3">
 					<button class="button-user mx-2" style="background-color: red; border: 3px solid #DF0025;"

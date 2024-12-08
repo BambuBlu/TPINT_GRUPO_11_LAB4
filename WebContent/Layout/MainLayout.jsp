@@ -23,11 +23,6 @@
 
 		<%
 		Usuario usuarioActual = (Usuario) session.getAttribute("SessionActual");
-		/*		if (usuarioActual == null) {  //TEMPORAL, BORRAR LUEGO (solo para login por cod.)
-        usuarioActual = new Usuario(); // Crea un nuevo usuario temporalmente
-        usuarioActual.setRol(Roles.ADMIN); // Define rol temporal para pruebas
-        session.setAttribute("SessionActual", usuarioActual); // Guardar en sesión
-    }*///TEMPORAL, BORRAR LUEGO 
     
 			if (usuarioActual != null && usuarioActual.getRol() == Roles.ADMIN) {
 			
