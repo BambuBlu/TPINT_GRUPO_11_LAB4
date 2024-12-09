@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
 import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
 import integrador.negocioimpl.CuentaNegocioImpl;
@@ -22,6 +24,8 @@ import integrador.negocioimpl.MovimientoNegocioImpl;
 import integrador.negocioimpl.PrestamoNegocioImpl;
 import integrador.negocioimpl.SolicitudesDeCuentaNegocioImpl;
 import integrador.negocioimpl.UsuarioNegocioImpl;
+import integrador.daoimpl.UsuarioDaoImpl;
+import integrador.excepciones.ExisteNombreUsuarioException;
 import integrador.model.Cliente;
 import integrador.model.Cuenta;
 import integrador.model.Generos;
@@ -126,6 +130,9 @@ public class ServletClienteABM extends HttpServlet {
 		Localidad ob_localidad;
 		Generos ob_genero;
 
+		Usuario usuariobuscado = new Usuario();
+		UsuarioDaoImpl usuarioDaoImpl = new UsuarioDaoImpl();
+		
 		int id_sexo;
 		int id_localidad;
 
@@ -172,7 +179,18 @@ public class ServletClienteABM extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-
+		
+		// VERIFICO QUE NO EXISTA EL USUARIO
+	//	usuariobuscado = usuarioDaoImpl.obtenerUsuario(dni); // VERIFICAR FUNCION
+		System.out.println("Valor del objeto usuario: " + usuario);
+		
+		if (usuariobuscado == null ) {
+			ExisteNombreUsuarioException excNombreUsuario  = new ExisteNombreUsuarioException();
+			   throw excNombreUsuario;
+			   // existe usuario
+		}
+		
+		try {
 		Cliente nuevoCliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad,
 				(java.sql.Date) fechaNacimiento, direccion, ob_localidad, email, telefono);
 
@@ -211,9 +229,17 @@ public class ServletClienteABM extends HttpServlet {
 				movimientoNegocio.agregarMovimiento(movimiento);
 
 				response.sendRedirect("SuccessRegister.jsp");
+				}
 			}
+		} catch(ExisteNombreUsuarioException e)
+		{
+			System.out.println("El nombre de usuario que intentas registrar ya existe. ");
+			e.printStackTrace();
 		}
-	}
+		
+		}
+		
+
 
 	/**
 	 * Baja logica
