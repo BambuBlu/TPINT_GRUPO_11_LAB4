@@ -183,7 +183,8 @@ public class ServletClienteABM extends HttpServlet {
 			return;
 		}
 		
-		// VERIFICO QUE NO EXISTA EL USUARIO
+
+//Verifico que no exista el DNI ni el nombre de usuario ya registrado
 		
 		ArrayList<Usuario> listausuariobuscados = usuarioDaoImpl.GetAllUsuariosActivosInactivos(); // Lo debo hacer para todos los usuarios, activos / inactivos.
 		for (Usuario usuarioBuscado : listausuariobuscados) {
@@ -204,12 +205,7 @@ public class ServletClienteABM extends HttpServlet {
 			}
 			
 				
-		}
-	//	usuarioEncontrado = usuarioDaoImpl.obtenerUsuario(dni); // VERIFICAR FUNCION
-	//	System.out.println("Valor del objeto usuario: " + usuario);
-		
-		
-		
+		}		
 		try {
 			
 			if (usuarioEncontradoNombreDuplicado.getId_Usaurio() > 0 ) { // No funcionaba correctamente comparando usuario con null.
