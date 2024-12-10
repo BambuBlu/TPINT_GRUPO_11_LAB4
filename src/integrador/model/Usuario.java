@@ -18,6 +18,16 @@ public class Usuario {
 	public Usuario() {
 	
 	}
+	
+	public Usuario(Usuario usuario) {
+		this.id_Usaurio = usuario.getId_Usaurio();
+		this.nombreUsuario = usuario.getNombreUsuario();
+		this.contrasena = usuario.getContrasena();
+		this.cliente = usuario.getCliente();
+		Rol =  usuario.getRol();
+		this.baja = usuario.getBaja();
+	}
+	
 
 	public Usuario(int id_Usaurio, String nombreUsuario, String contrasena, Cliente cliente, Roles rol, boolean baja) {
 		super();

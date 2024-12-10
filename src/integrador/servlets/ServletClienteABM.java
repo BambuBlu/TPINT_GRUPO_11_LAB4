@@ -25,6 +25,7 @@ import integrador.negocioimpl.PrestamoNegocioImpl;
 import integrador.negocioimpl.SolicitudesDeCuentaNegocioImpl;
 import integrador.negocioimpl.UsuarioNegocioImpl;
 import integrador.daoimpl.UsuarioDaoImpl;
+import integrador.excepciones.ExisteDNIUsuarioException;
 import integrador.excepciones.ExisteNombreUsuarioException;
 import integrador.model.Cliente;
 import integrador.model.Cuenta;
@@ -130,7 +131,9 @@ public class ServletClienteABM extends HttpServlet {
 		Localidad ob_localidad;
 		Generos ob_genero;
 
-		Usuario usuariobuscado = new Usuario();
+		Usuario usuarioEncontradoNombreDuplicado = new Usuario();
+		Usuario usuarioEncontradoDNIDuplicado = new Usuario();
+		//Usuario usuarioEncontrado = null;
 		UsuarioDaoImpl usuarioDaoImpl = new UsuarioDaoImpl();
 		
 		int id_sexo;
@@ -167,7 +170,7 @@ public class ServletClienteABM extends HttpServlet {
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
 			request.setAttribute("error", "Formato de fecha de nacimiento inválido");
-			RequestDispatcher rd = request.getRequestDispatcher("/CrearCliente.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/ErrorRegister.jsp");
 			rd.forward(request, response);
 			return;
 		}
@@ -175,22 +178,52 @@ public class ServletClienteABM extends HttpServlet {
 		if (!contraseña.equals(repetirContraseña)) {
 			System.out.println("Las contraseñas no coinciden");
 			request.setAttribute("error", "Las contraseñas no coinciden");
-			RequestDispatcher rd = request.getRequestDispatcher("/CrearCliente.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/ErrorRegister.jsp");
 			rd.forward(request, response);
 			return;
 		}
 		
 		// VERIFICO QUE NO EXISTA EL USUARIO
-	//	usuariobuscado = usuarioDaoImpl.obtenerUsuario(dni); // VERIFICAR FUNCION
-		System.out.println("Valor del objeto usuario: " + usuario);
 		
-		if (usuariobuscado == null ) {
-			ExisteNombreUsuarioException excNombreUsuario  = new ExisteNombreUsuarioException();
-			   throw excNombreUsuario;
-			   // existe usuario
+		ArrayList<Usuario> listausuariobuscados = usuarioDaoImpl.GetAllUsuariosActivosInactivos(); // Lo debo hacer para todos los usuarios, activos / inactivos.
+		for (Usuario usuarioBuscado : listausuariobuscados) {
+			System.out.println("Usuario buscado : " + usuarioBuscado.getNombreUsuario());
+			
+			
+			if  (usuarioBuscado.getNombreUsuario().equals(usuario)) {
+				usuarioEncontradoNombreDuplicado = usuarioBuscado;
+				System.out.println("Usuario encontrado. Nombre duplicado de usuario : " + usuarioEncontradoNombreDuplicado.getNombreUsuario());
+				break;
+			}
+			
+			if  (usuarioBuscado.getCliente().getDni().equals(dni)) {
+				// usuarioEncontradoDNIDuplicado = new Usuario(usuarioBuscado);
+				usuarioEncontradoDNIDuplicado = usuarioBuscado;
+				System.out.println("Usuario encontrado. Dni duplicado de usuario : " + usuarioEncontradoDNIDuplicado.getNombreUsuario());
+				break;
+			}
+			
+				
 		}
+	//	usuarioEncontrado = usuarioDaoImpl.obtenerUsuario(dni); // VERIFICAR FUNCION
+	//	System.out.println("Valor del objeto usuario: " + usuario);
+		
+		
 		
 		try {
+			
+			if (usuarioEncontradoNombreDuplicado.getId_Usaurio() > 0 ) { // No funcionaba correctamente comparando usuario con null.
+				ExisteNombreUsuarioException excNombreUsuario  = new ExisteNombreUsuarioException();
+				   throw excNombreUsuario;
+				   // existe usuario
+			}
+			if (usuarioEncontradoDNIDuplicado.getId_Usaurio() > 0 ) { // No funcionaba correctamente comparando usuario con null.
+				ExisteDNIUsuarioException excDNIUsuario  = new ExisteDNIUsuarioException();
+				   throw excDNIUsuario;
+				   // existe dni
+			}
+			
+			
 		Cliente nuevoCliente = new Cliente(dni, cuil, nombre, apellido, ob_genero, nacionalidad,
 				(java.sql.Date) fechaNacimiento, direccion, ob_localidad, email, telefono);
 
@@ -233,10 +266,34 @@ public class ServletClienteABM extends HttpServlet {
 			}
 		} catch(ExisteNombreUsuarioException e)
 		{
+			 request.setAttribute("error", e.getMessage());
+		     RequestDispatcher rd = request.getRequestDispatcher("/ErrorRegister.jsp");
+		     rd.forward(request, response);
+		        
 			System.out.println("El nombre de usuario que intentas registrar ya existe. ");
 			e.printStackTrace();
+			return;
 		}
 		
+		catch(ExisteDNIUsuarioException e)
+		{
+			 request.setAttribute("error", e.getMessage());
+		     RequestDispatcher rd = request.getRequestDispatcher("/ErrorRegister.jsp");
+		     rd.forward(request, response);
+		        
+			System.out.println("El DNI del usuario que intentas registrar ya existe. ");
+			e.printStackTrace();
+			return;
+		}
+		
+		
+		catch (Exception e) {
+		    e.printStackTrace();
+		    request.setAttribute("error", "Ocurrió un error inesperado. Por favor, intenta más tarde.");
+		    RequestDispatcher rd = request.getRequestDispatcher("/ErrorRegister.jsp");
+		    rd.forward(request, response);
+		    return;
+		}
 		}
 		
 

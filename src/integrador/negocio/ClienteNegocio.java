@@ -9,6 +9,7 @@ import integrador.model.Usuario;
 public interface ClienteNegocio {
 	
 	ArrayList<Cliente> GetAllClientes(String estado);
+	ArrayList<Cliente> GetAllClientesActivosInactivos();
 	boolean CrearCliente(Cliente nuevoCliente, Usuario nuevoUsuario);
 	boolean ModificarEstadoCliente(Cliente clienteModificado, Usuario usuarioModificado);
 	boolean ModificarCliente(Cliente clienteModificado, Usuario usuario);

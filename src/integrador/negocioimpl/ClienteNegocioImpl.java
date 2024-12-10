@@ -28,6 +28,23 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 			return null;
 		}
 	}
+	
+	@Override
+	public ArrayList<Cliente> GetAllClientesActivosInactivos() {
+		try {
+			ArrayList<Cliente> clientesFiltrados = new ArrayList<Cliente>();
+			for (Cliente cliente : dao.GetAllClientes()) {
+					clientesFiltrados.add(cliente);
+			}
+
+			return clientesFiltrados;
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
 
 	@Override
 	public boolean CrearCliente(Cliente nuevoCliente, Usuario nuevoUsuario) {

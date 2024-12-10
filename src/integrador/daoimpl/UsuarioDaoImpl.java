@@ -91,6 +91,44 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		}
 		return new Usuario();
 	}
+	
+	@Override
+	public ArrayList<Usuario> GetAllUsuariosActivosInactivos() {
+	    String query = "select id, dni_cliente, usuario, contraseña, tipo_usuario, estado from usuarios";
+	    ArrayList<Usuario> usuarios = new ArrayList<>();
+	    ClienteNegocioImpl clientenegocio = new ClienteNegocioImpl();
+
+	       
+	    try  // utilizo try with rousources para cierre de la conexion
+	    	(Connection conn = DataAccess.GetConnection();
+	         Statement stmt = conn.createStatement();
+	         ResultSet resultquery = stmt.executeQuery(query)){
+
+
+	        while (resultquery.next()) {
+	            int id = resultquery.getInt("id");
+	            String dniCliente = resultquery.getString("dni_cliente");
+	            String nombreUsuario = resultquery.getString("usuario");
+	            String contraseña = resultquery.getString("contraseña");
+	            Roles tipo_Usuario = Roles.valueOf(resultquery.getString("tipo_usuario").toUpperCase());
+	            boolean estado = "I".equals(resultquery.getString("estado"));
+
+	            Cliente clienteXUsuario = null;
+	            for (Cliente cliente : clientenegocio.GetAllClientesActivosInactivos()) {
+	                if (cliente.getDni().equals(dniCliente)) {
+	                    clienteXUsuario = new Cliente(cliente);
+	                }
+	            }
+
+	            Usuario usuario = new Usuario(id, nombreUsuario, contraseña, clienteXUsuario, tipo_Usuario, estado);
+	            usuarios.add(usuario);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return usuarios;
+	}
 
 	
 }
