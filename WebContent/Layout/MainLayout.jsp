@@ -76,12 +76,16 @@
 		</a>
 
 
+		
 		<div class="d-flex justify-content-center align-items-center gap-3">
-			<a href="${pageContext.request.contextPath}/AccountMovements.jsp" class="btn-main"> <img
+		<%  boolean hab_btn_mov = false;  if (hab_btn_mov) { %>
+			<a href="${pageContext.request.contextPath}/AccountMovements.jsp" class="btn-main">  <img    
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
 				<p>Movimientos</p>
-			</a> <a href="${pageContext.request.contextPath}/Transfers.jsp" class="btn-main"> <img
+			</a> 
+			<% } %> <!--  QUITE DE FORMA TEMPORAL EL BTN MOVIMIENTOS, POR QUE NO ESTABA DIRECCIONANDO A NINGUNA CUENTA. -->
+			<a href="${pageContext.request.contextPath}/Transfers.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
 				<p>Transferencias</p>
