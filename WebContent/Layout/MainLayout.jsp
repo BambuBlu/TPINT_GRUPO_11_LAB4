@@ -85,6 +85,7 @@
 				<p>Movimientos</p>
 			</a> 
 			<% } %> <!--  QUITE DE FORMA TEMPORAL EL BTN MOVIMIENTOS, POR QUE NO ESTABA DIRECCIONANDO A NINGUNA CUENTA. -->
+			
 			<a href="${pageContext.request.contextPath}/Transfers.jsp" class="btn-main"> <img
 				src="https://img.icons8.com/parakeet/48/checklist.png"
 				alt="Transferencias">
