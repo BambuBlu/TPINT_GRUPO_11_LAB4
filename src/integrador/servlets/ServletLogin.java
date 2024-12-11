@@ -82,7 +82,7 @@ public class ServletLogin extends HttpServlet {
 	        ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
 
 	        for (Usuario usuario : usuarioNegocio.GetAllUsuariosActivos()) {
-	            if (usuario.getNombreUsuario().equals(nombreUsuario)
+	            if (usuario.getNombreUsuario().equalsIgnoreCase(nombreUsuario) //equalsIgnoreCase para evitar comparacion may. y min.
 	                    && usuario.getContrasena().equals(contraseniaUsuario)) {
 	                request.getSession().setAttribute("SessionActual", usuario);
 	                
