@@ -234,7 +234,7 @@ tr {
                                 <td><%= cliente.getTelefono() %></td>
                                 <td><%= cliente.getEstado() %></td>
 								<td>
-								        <form method="post" action="ServletClienteABM">
+								        <form onsubmit="return confirm('¿Estás seguro de ejecutar esta accion?');"  method="post" action="ServletClienteABM">
 								            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 								            <input type="hidden" name="accion" value="darBaja" />
 								            <button type="submit" class="btn btn-danger shadow-lg fw-bolder">Dar de baja</button>
@@ -255,10 +255,11 @@ tr {
                                 <td><%= cliente.getTelefono() %></td>
                                 <td><%= cliente.getEstado() %></td>
 								<td>
-								        <form method="post" action="ServletClienteABM">
+								        <form onsubmit="return confirm('¿Estás seguro de ejecutar esta accion?');" method="post" action="ServletClienteABM">
 								            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 								            <input type="hidden" name="accion" value="habilitar" />
-								            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
+								           <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
+								            
 								        </form>
 								    <%
 								        }

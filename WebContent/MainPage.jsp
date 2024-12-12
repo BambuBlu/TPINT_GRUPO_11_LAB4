@@ -71,15 +71,21 @@ h1 {
             <h1>Inicio Cliente</h1>
             
             <div class="saldo-container">
+              <% int numCuentas = 0; %>
+              
 				<% if (cuentasActivas != null && !cuentasActivas.isEmpty()) { %>
 	            <div class="informacion-cuenta">
-	                <% int numCuentas = 0; %>
+	               
+	                
+	               
 	                
 	                <% for (Cuenta cuenta : cuentasActivas) { %>
-	                	<% numCuentas++; %>
+	                	
+	                	 <% numCuentas++; %>
+	                	 
 	                    <% if ("Caja de ahorro".equals(cuenta.getTipoCuenta().getDescripcion())) { %>
 	                        
-	                        
+	                      
 	                        <div class="cuenta">
 	                        	<span>Cbu [<%= cuenta.getCbu() %>] - </span>
 	                           <a href="ServletClienteABM?movimiento=1&NumCuenta=<%= cuenta.getNumeroDeCuenta() %>">Caja de ahorro</a>
@@ -98,14 +104,17 @@ h1 {
 	                    
 	                <% } %>
 	                                         
-	                <% if (numCuentas < 3) { %>
+	                  
+	                <%} %>
+	                
+	                 <% System.out.println("numero de cuentas " + numCuentas );
+	                if (numCuentas < 3) { %>
 	                    <div class="informacion-cuenta">
 	                        <a href="ServletClienteABM?Caja=1&clienteDNI=<%= cliente.getDni() %>">Solicitar caja de ahorro</a> 
 	                    </div>               
 	                    <div class="informacion-cuenta">
 	                        <a href="ServletClienteABM?Cuenta=1&clienteDNI=<%= cliente.getDni() %>">Solicitar cuenta corriente</a> 
-	                    </div>        
-	                <%} %>
+	                    </div>     
 	            </div>                    
 	        	<% } %>       
             </div>
