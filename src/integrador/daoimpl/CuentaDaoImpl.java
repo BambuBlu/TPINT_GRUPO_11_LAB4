@@ -95,7 +95,7 @@ public class CuentaDaoImpl implements CuentaDao {
 
 		String query = "SELECT c.numero_de_cuenta, c.dni_cliente, c.fecha_de_creacion, "
 				+ "c.id_tipo_cuenta, tc.descripcion AS tipo_cuenta, " + "c.cbu, c.saldo, c.estado " + "FROM cuentas c "
-				+ "INNER JOIN TipoDeCuenta tc ON c.id_tipo_cuenta = tc.id " + "WHERE c.estado = 'A'";
+				+ "INNER JOIN TipoDeCuenta tc ON c.id_tipo_cuenta = tc.id " + "WHERE c.estado = 'I'";
 
 		try (Connection conn = DataAccess.GetConnection();
 				Statement stmt = conn.createStatement();
