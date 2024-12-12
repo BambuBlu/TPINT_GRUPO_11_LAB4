@@ -70,12 +70,18 @@
 			} else if (usuarioActual != null
 					&& usuarioActual.getRol() == Roles.CLIENTE) {
 		%>
-		<a href="${pageContext.request.contextPath}/MainPage.jsp"> <img width="68" height="68"
+	<!--  	<a href="${pageContext.request.contextPath}/MainPage.jsp"> <img width="68" height="68"
 			src="https://img.icons8.com/external-flat-circular-vectorslab/136/external-Bank-business-and-finance-flat-circular-vectorslab.png"
 			alt="Logo Banco" style="cursor: pointer;" />
-		</a>
-
-
+		</a>  TEMPORAL FUERA DE USO-->
+<!-- Es necesario para que se actualice la cuenta del usuario logueado -->
+<form action="ServletCuentaABM" method="post">
+                <div class="form-group">            
+                    <input type="hidden" name="usuarioActualDNI" value="<%= usuarioActual.getCliente().getDni() %>"  >   
+                    <button type="submit" name="accion" value="btnActualizarCuentaEnSesion" class="btn-submit"> XXX </button>    
+                </div>
+            </form>
+            
 		
 		<div class="d-flex justify-content-center align-items-center gap-3">
 		<%  boolean hab_btn_mov = false;  if (hab_btn_mov) { %>

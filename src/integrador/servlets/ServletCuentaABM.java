@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.ParseConversionEvent;
 
 import integrador.model.Cliente;
 import integrador.model.Cuenta;
@@ -20,6 +21,7 @@ import integrador.model.Prestamo;
 import integrador.model.SolicitudDeAlta;
 import integrador.model.TipoCuenta;
 import integrador.model.TipoMovimiento;
+import integrador.model.Usuario;
 import integrador.negocioimpl.ClienteNegocioImpl;
 import integrador.negocioimpl.CuentaNegocioImpl;
 import integrador.negocioimpl.MovimientoNegocioImpl;
@@ -94,8 +96,37 @@ public class ServletCuentaABM extends HttpServlet {
     	   }
        } else if ("ConfirmarPrestamo".equals(accion)) {
 		   ConfirmarPrestamo(request, response);
+		} else if ("btnActualizarCuentaEnSesion".equals(accion)) {
+			try {
+				actualizarCuentaEnSesion(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		
 	}
+	
+	
+	private void actualizarCuentaEnSesion(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException, SQLException {
+		  
+		HttpSession session = request.getSession();
+		//Usuario usuario = (Usuario) session.getAttribute("usuarioActual");
+		String usuarioDNI  =   request.getParameter("usuarioActualDNI");
+		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
+		
+		//Cliente clienteActual = clienteNegocio.obtenerCliente(usuario.getCliente().getDni());
+		Cliente clienteActual = clienteNegocio.obtenerCliente(usuarioDNI);
+    	CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
+		
+		ArrayList<Cuenta> cuentasActivas = cuentaNegocio.GetAllActiveCuentasOfCliente(clienteActual.getDni());
+		request.getSession().setAttribute("cuentasActivas", cuentasActivas);
+		
+		request.getRequestDispatcher("MainPage.jsp").forward(request, response);
+	    return;
+	    
+	}
+	
+    
 	
 
 	private void modificarTipo(String cuentaNumero, String tipoCuentaId, HttpServletResponse response) 
@@ -488,6 +519,7 @@ public class ServletCuentaABM extends HttpServlet {
 	    {
 	        // Realizar el pago del préstamo
 	    	prestamoNegocio.pagarPrestamo(idPrestamoInt, numCuenta, cbuInt, importe);
+	    	
 	    } 
 	    else 
 	    {

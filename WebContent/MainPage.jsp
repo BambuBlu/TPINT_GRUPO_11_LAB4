@@ -64,6 +64,7 @@ h1 {
         <%@include file="Layout/MainLayout.jsp"%>
 		<% 
 			Cliente cliente = (Cliente) session.getAttribute("cliente");
+		
 			ArrayList<Cuenta> cuentasActivas = (ArrayList<Cuenta>) session.getAttribute("cuentasActivas");
 		%>
         <div class="contenedor">
