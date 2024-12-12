@@ -331,14 +331,27 @@ public class ServletClienteABM extends HttpServlet {
 		ClienteNegocioImpl clienteNegocio = new ClienteNegocioImpl();
 		Cliente cliente = clienteNegocio.obtenerCliente(clienteId);
 		UsuarioNegocioImpl usuarioNegocio = new UsuarioNegocioImpl();
+		
+		System.out.println(" DNI recibido al serv" + clienteId);
+		System.out.println(" Ingreso en modificar cliente. DNI " + cliente.getDni());
+		try {
 		Usuario usuario = usuarioNegocio.obtenerUsuario(cliente.getDni());
 
 		request.setAttribute("clienteModificar", cliente);
 		request.setAttribute("usuarioModificar", usuario);
 		request.setAttribute("estadoUsuario", clienteEstado);
+	
 
 		RequestDispatcher rd = request.getRequestDispatcher("UserModify.jsp");
 		rd.forward(request, response);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			request.setAttribute("error", "Error acceso BD");
+			RequestDispatcher rd = request.getRequestDispatcher("UserModify.jsp");
+			rd.forward(request, response);
+			return;
+		} 
+		
 	}
 
 	private void SubmitModificarCliente(String clienteEstado, HttpServletRequest request, HttpServletResponse response)

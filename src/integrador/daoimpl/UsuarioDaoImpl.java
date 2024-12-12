@@ -43,10 +43,16 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	            Roles tipo_Usuario = Roles.valueOf(resultquery.getString("tipo_usuario").toUpperCase());
 	            boolean estado = "I".equals(resultquery.getString("estado"));
 
+	            //System.out.println("Lee usuario");
+	            
+	            
+	            
 	            Cliente clienteXUsuario = null;
-	            for (Cliente cliente : clientenegocio.GetAllClientes("A")) {
-	                if (cliente.getDni().equals(dniCliente)) {
+	            //for (Cliente cliente : clientenegocio.GetAllClientes("A")) {
+	            for (Cliente cliente : clientenegocio.GetAllClientesActivosInactivos()) { 
+	            if (cliente.getDni().equals(dniCliente)) {
 	                    clienteXUsuario = new Cliente(cliente);
+	                    System.out.println("Lee cliente");
 	                }
 	            }
 
@@ -55,6 +61,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	        
 	    }
 
 	    return usuarios;
@@ -82,14 +89,19 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
 	@Override
 	public Usuario obtenerUsuario(String dni) {
-		ArrayList<Usuario> listUsuarios = this.GetAllUsuarios();
-		for (Usuario usuario : listUsuarios) {
-			if (usuario.getCliente().getDni().contentEquals(dni)) {
-				return usuario;
-			}
-
-		}
-		return new Usuario();
+	    ArrayList<Usuario> listUsuarios = this.GetAllUsuarios();
+	    System.out.println(" DNI recibido " + dni);
+	    if (listUsuarios != null) {
+	    	 System.out.println(" Lista no es nula " + dni);
+	        for (Usuario usuario : listUsuarios) {
+	        	System.out.println(" Usuario leido en obtener usuario: " + usuario.getCliente().getDni());
+	        	
+	            if (usuario.getCliente().getDni().contentEquals(dni)) {
+	                return usuario;
+	            }
+	        }
+	    }
+	    throw new IllegalArgumentException("No se encontró un usuario con el DNI proporcionado.");
 	}
 	
 	@Override

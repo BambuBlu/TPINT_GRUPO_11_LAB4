@@ -89,11 +89,19 @@
     </style>
 </head>
 <body>
+
+<nav>
+			<%@include file="Layout/MainLayout.jsp"%>
+		</nav>
+		
     <div class="container">
         <h2>Modificar Cliente</h2>
+
         <%
             Cliente cliente = (Cliente) request.getAttribute("clienteModificar");
             Usuario usuario = (Usuario) request.getAttribute("usuarioModificar");
+            
+            if(cliente != null){
         %>
         <form action="ServletClienteABM" method="post">
             <label for="txtDNI">DNI</label>
@@ -154,7 +162,11 @@
                 <button type="submit" class="button" name="accion" value="submitEdit">Aceptar</button>
                 <button type="button" class="button cancel" onclick="window.location.href='AdminMainPage.jsp'">Cancelar</button>
             </div>
-        </form>
+        </form> <% } else { %>
+        
+          <p><%= request.getAttribute("error") %></p> 
+          
+          <% } %>
     </div>
 </body>
 </html>
