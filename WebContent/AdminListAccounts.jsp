@@ -248,16 +248,14 @@ h1 {
 </body>
 
 <script type="text/javascript">
-	$(document).ready(function() { //  Inicializo tabla
-		var table = $('#tableAccountsList_id').DataTable({
+	$(document).ready(function() {
+	    $('#tableAccountsList_id').DataTable({
 	        scrollY: 'auto',
 	        paging: true,
 	        searching: true,
 	        info: false
 	    });
-	}
-
-	
+	});
 </script>
 
 </html>
