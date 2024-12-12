@@ -86,9 +86,17 @@ public class ServletClienteABM extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		///
+		System.out.println("Entro a doPost");
+		///
 		String accion = request.getParameter("accion");
 		String clienteId = request.getParameter("clienteId");
 		String clienteEstado = request.getParameter("clienteEstado");
+		
+		///
+		System.out.println("Valor de accion = [" + accion + "]");
+		///
 
 		if (request.getParameter("btnCrearCliente") != null) {
 			try {
@@ -109,7 +117,13 @@ public class ServletClienteABM extends HttpServlet {
 		} else if ("submitEdit".equals(accion)) {
 			SubmitModificarCliente(clienteEstado, request, response);
 		} else if ("Solicitar".equals(accion)) {
+			///
+			System.out.println("Entro a Solicitar");
+			///
 			try {
+				///
+				System.out.println("Entro a try");
+				///
 				EstadisticasVisualizar(request, response);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -578,6 +592,9 @@ public class ServletClienteABM extends HttpServlet {
 	
 	public void EstadisticasVisualizar(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
+		///
+		System.out.println("Entro en EstadisticasVisualizar");
+		///
 		CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
 		MovimientoNegocioImpl movimientoNegocio = new MovimientoNegocioImpl();
 		
@@ -588,6 +605,10 @@ public class ServletClienteABM extends HttpServlet {
 		double importeMovidoSemana = 0;
 
 		String opcionSeleccionada = request.getParameter("estadistica");
+		
+		///
+		System.out.println("Valor de opcionSeleccionada = [" + opcionSeleccionada + "]");
+		///
 
 		// Procesa las fechas en caso de ser necesario
 		String fechaDesdeStr = null;
@@ -646,6 +667,11 @@ public class ServletClienteABM extends HttpServlet {
 
 			request.setAttribute("porcentajeCuentasActivas", strPorcentajeCuentasActivas);
 			request.setAttribute("porcentajeCuentasInactivas", strPorcentajeCuentasInactivas);
+			
+			///
+			System.out.println("Valor de strPorcentajeCuentasActivas = [" + strPorcentajeCuentasActivas + "]");
+			System.out.println("Valor de strPorcentajeCuentasActivas = [" + strPorcentajeCuentasInactivas + "]");
+			///
 			break;
 
 		case "option3":

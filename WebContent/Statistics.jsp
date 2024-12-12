@@ -154,9 +154,9 @@ function onRadioChange() {
 	
 				<div id="dateInput" class="hidden">
 				    <label for="fechaDesde">Desde:</label>
-				    <input type="date" id="fechaDesde" name="fechaDesde" required>
+				    <input type="date" id="fechaDesde" name="fechaDesde">
 				    <label for="fechaHasta">Hasta:</label>
-				    <input type="date" id="fechaHasta" name="fechaHasta" required>
+				    <input type="date" id="fechaHasta" name="fechaHasta">
 				</div>
 	
 				<input type="submit" class="btn" value="Solicitar" name="accion">
