@@ -1,3 +1,4 @@
+<%@page import="integrador.daoimpl.UsuarioDaoImpl"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 	<%@ page import="integrador.model.Cuenta"%>
@@ -173,6 +174,7 @@ h1 {
 		<div class="contenedor">
 			<%
                 ArrayList<Cuenta> cuentas = (ArrayList<Cuenta>) request.getAttribute("cuentas");
+			
             %>
             <h1>Listado de Cuentas</h1>
 			<div class="table-container">
@@ -204,9 +206,13 @@ h1 {
                                 <td><%= cuenta.getEstado() %></td>
 								<td>
 								    <%
+								    
+								    
 								        if ("A".equals(cuenta.getEstado())) {
+								        	
+								        	
 								    %>
-								        <form method="post" action="ServletCuentaABM">
+								        <form id="activarCuentaForm" onsubmit="return confirm('¿Estás seguro de ejecutar esta accion?');" method="post" action="ServletCuentaABM">
 								            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
 								            <input type="hidden" name="accion" value="darBaja" />
 								            <button type="submit" class="btn btn-danger shadow-lg fw-bolder">Dar de baja</button>
@@ -214,18 +220,23 @@ h1 {
 								    <%
 								        } else {
 								    %>
-								        <form method="post" action="ServletCuentaABM">
+								    
+								    <
+								        <form onsubmit="return confirm('¿Estás seguro de ejecutar esta accion?');" method="post" action="ServletCuentaABM">
 								            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
 								            <input type="hidden" name="accion" value="habilitar" />
 								            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
 								        </form>
+								        
 								    <%
 								        }
+								    
 								    %>
 								     <div style="margin-top: 10px" >
 							    	<form onsubmit="return confirm('¿Estás seguro de ejecutar esta accion?');"  method="post" action="ServletCuentaABM">
 							            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
 							            <input type="hidden" name="tipoCuentaId" value="<%= cuenta.getTipoCuenta().getId() %>" />
+							            <input type="hidden" name="usuarioDNI" value="<%= cuenta.getDni() %>" />							        
 							            <input type="hidden" name="accion" value="Modificar" />
 							            <button type="submit" class="btn btn-warning shadow-lg fw-bolder text-white">Modificar Tipo Cuenta</button>
 							        </form>
@@ -256,6 +267,48 @@ h1 {
 	        info: false
 	    });
 	});
+</script>
+
+
+<script>
+    // Función para contar las cuentas activas
+    
+    function contarCuentasActivas() {
+    	 
+    	var contarCuentasActivas = 0;
+    	var usuarioDNI = document.getElementById('usuarioDNI').value;
+    	
+    	 ArrayList<Cuenta> cuentas1 = (ArrayList<Cuenta>) request.getAttribute("cuentas");
+    	 
+   
+  
+    		if (cuentas1 != null) {
+    			for (Cuenta cuenta1 : cuentas1){
+					if ("A".equals(cuenta.getEstado()) && (cuenta.getDNI().equals(usuarioDNI)) {					            	    	
+						contarCuentasActivas++;	
+					            	    }
+    			} 			
+    	 }
+    		return contarCuentasActivas;
+    }
+    	 
+    		// Evento al enviar el formulario
+    	    document.getElementById('activarCuentaForm').addEventListener('submit', function(event) {
+    	        const maxCuentasActivas = 3; // Límite de cuentas activas permitidas
+
+    	        const cuentasActivas = contarCuentasActivas();
+
+    	        if (cuentasActivas >= maxCuentasActivas) {
+    	            // Si el usuario ya tiene el máximo de cuentas activas, mostrar alerta y prevenir el envío
+    	            if (!confirm('¿Ya tienes el máximo de cuentas activas? ¿Estás seguro de ejecutar esta acción?')) {
+    	                event.preventDefault(); // Prevenir el envío del formulario
+    	            }
+    	        }
+    	    }
+   
+    	 
+     %>
+				  
 </script>
 
 </html>

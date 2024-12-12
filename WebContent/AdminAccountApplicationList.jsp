@@ -167,7 +167,7 @@ h1 {
 								<td><%= solicitud.getTipoCuenta().getDescripcion() %></td>
 								<td><%= solicitud.getEstado() %></td>
 								<td>
-							        <form method="post" action="ServletCuentaABM">
+							        <form onsubmit="return confirm('¿Estás seguro de ejecutar esta accion?');" method="post" action="ServletCuentaABM">
 							            <input type="hidden" name="solicitudId" value="<%= solicitud.getId() %>" />
 							            <input type="hidden" name="accion" value="altaCuenta" />
 							            <button type="submit" class="btn btn-success shadow-lg fw-bolder">Habilitar</button>
