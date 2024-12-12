@@ -92,6 +92,7 @@
 							<th>Importe pedido</th>
 							<th>Plazo de pago en meses</th>
 							<th>Monto mensual</th>
+							<th>Cuotas a Pagar</th>
 							<th>Estado</th>
 							<th>Aprobar</th>
 							<th>Rechazar</th>                  
@@ -118,6 +119,7 @@
 										<td>$<%=prestamo.getImportePedido()%></td>
 										<td><%=prestamo.getPlazoDePagoEnMeses()%></td>
 										<td>$<%=prestamo.getMontoMensual()%></td>
+										<td>$<%=prestamo.getCuotasPagadas()%></td>
 										<td><%=prestamo.getEstado()%></td>
 										
 										<td>
