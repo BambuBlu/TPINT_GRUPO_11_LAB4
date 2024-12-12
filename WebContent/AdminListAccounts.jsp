@@ -196,12 +196,14 @@ h1 {
 								    <%
 								        }
 								    %>
+								     <div style="margin-top: 10px" >
 							    	<form method="post" action="ServletCuentaABM">
 							            <input type="hidden" name="cuentaNumero" value="<%= cuenta.getNumeroDeCuenta() %>" />
 							            <input type="hidden" name="tipoCuentaId" value="<%= cuenta.getTipoCuenta().getId() %>" />
 							            <input type="hidden" name="accion" value="Modificar" />
 							            <button type="submit" class="btn btn-warning shadow-lg fw-bolder text-white">Modificar Tipo Cuenta</button>
 							        </form>
+							       </div>
 								</td>
                             </tr>
                         <%

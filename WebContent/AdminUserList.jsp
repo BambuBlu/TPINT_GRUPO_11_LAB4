@@ -265,14 +265,14 @@ tr {
 								    <%
 								        }
 								    %>
-								    
+								      <div style="margin-top: 10px" >
 							    	<form method="post" action="ServletClienteABM"> <!-- Serverle com para post -->
 							            <input type="hidden" name="clienteId" value="<%= cliente.getDni() %>" />
 							            <input type="hidden" name="clienteEstado" value="<%= cliente.getEstado() %>" />
 							            <input type="hidden" name="accion" value="modificar" />
 							            <button type="submit" class="btn btn-warning shadow-lg fw-bolder text-white">Modificar datos</button>
 							        </form>
-								    
+								    </div>
 								</td>
                             </tr>
                         <%

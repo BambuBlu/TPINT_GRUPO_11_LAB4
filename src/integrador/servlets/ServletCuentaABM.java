@@ -360,13 +360,21 @@ public class ServletCuentaABM extends HttpServlet {
 			int cantidadCuotasInt = Integer.parseInt(cantidadCuotas);
 			int cuotaPagar;
 
-			if (cantidadCuotasInt == 1) {
+		/*	if (cantidadCuotasInt == 1) {
 				cuotaPagar = 3;
 			} else if (cantidadCuotasInt == 2) {
 				cuotaPagar = 6;
 			} else {
 				cuotaPagar = 12;
-			}
+			}*/
+
+			if (cantidadCuotasInt == 3) { // ya desde el jsp se envia la cantidad de cuotas en el value del option
+					cuotaPagar = 3;
+				} else if (cantidadCuotasInt == 6) {
+					cuotaPagar = 6;
+				} else {
+					cuotaPagar = 12;
+				}
 
 			double montoConInteres = montoPedido * 1.1;
 			double cuotaConInteres = montoConInteres / cuotaPagar;
