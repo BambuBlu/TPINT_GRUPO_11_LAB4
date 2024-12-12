@@ -14,6 +14,32 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+        
+        <script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous"></script>
+	
+	<!-- PARA PAGINACION Y FILTRADO -->
+	<link rel="stylesheet" href="/DataTables/datatables.css" />
+ 
+  <!-- Estilos de RowGroup -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowgroup/1.0.0/css/rowGroup.dataTables.min.css">
+    
+    	 <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    
+     <!-- RowGroup -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/rowgroup/1.0.0/js/dataTables.rowGroup.min.js"></script>
+     <!-- Datable -->
+	<script src="/DataTables/datatables.js"></script>
+	
+
+
+<!--  -->
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Listado de cuentas</title>
 <style>
@@ -150,7 +176,7 @@ h1 {
             %>
             <h1>Listado de Cuentas</h1>
 			<div class="table-container">
-				<table class="tabla">
+				<table class="tabla" id="tableAccountsList_id">
 					<thead>
 						<tr class="text-center fw-bolder fs-5">
 							<th>Numero de cuenta</th>
@@ -215,5 +241,23 @@ h1 {
 			</div>
 		</div>
 	</div>
+	
+		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    
 </body>
+
+<script type="text/javascript">
+	$(document).ready(function() { //  Inicializo tabla
+		var table = $('#tableAccountsList_id').DataTable({
+	        scrollY: 'auto',
+	        paging: true,
+	        searching: true,
+	        info: false
+	    });
+	}
+
+	
+</script>
+
 </html>
