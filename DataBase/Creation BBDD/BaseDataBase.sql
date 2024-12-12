@@ -250,8 +250,77 @@ INSERT INTO Generos (descripcion) VALUES
 ('Prefiero no decirlo'),
 ('Otro');
 
-  -- Insertar un admin, cuenta y usuario de prueba
-INSERT INTO Clientes (dni, cuil, nombre, apellido, sexo_id, nacionalidad, fecha_nacimiento, direccion, localidad_id, mail, telefono)
-VALUES (1, 1001, 'Admin', 'Admin', 1, 'Argentino', '1980-01-01', 'Casa', 1, 'mail@mail.com', '1168740444');
-INSERT INTO usuarios (dni_cliente, usuario, contraseña, tipo_usuario, estado) 
-VALUES (1, 'admin', 123, 'Admin', 'A');
+INSERT INTO clientes (dni, cuil, nombre, apellido, sexo_id, nacionalidad, fecha_nacimiento, direccion, localidad_id, mail, telefono, estado)
+VALUES
+    ('14012536', '20140125363', 'Pedro', 'Ramírez', 1, 'Argentina', '1990-01-15', 'Calle Principal 45', 1, 'pedro.ramirez@example.com', '1123456789', 'A'),
+    ('21543689', '27215436895', 'Laura', 'Sosa', 2, 'Argentina', '1982-07-25', 'Av. San Martín 567', 2, 'laura.sosa@example.com', '2219876543', 'A'),
+    ('39001234', '23390012340', 'Carlos', 'Fernández', 1, 'Argentina', '1992-03-10', 'San Martín 789', 3, 'carlos.fernandez@example.com', '3214567890', 'I'),
+    ('17654321', '25176543218', 'Ana', 'Martínez', 2, 'Argentina', '1988-07-25', 'Belgrano 123', 4, 'ana.martinez@example.com', '2236547891', 'A'),
+    ('24012345', '20240123453', 'Luis', 'Gómez', 1, 'Argentina', '1985-05-20', 'Calle Falsa 234', 5, 'luis.gomez@example.com', '3345678912', 'A'),
+    ('36547812', '27365478125', 'Sofía', 'Pérez', 2, 'Argentina', '1995-10-30', 'Avenida Siempreviva 234', 6, 'sofia.perez@example.com', '4456789123', 'A'),
+    ('15478932', '23154789320', 'Juan', 'García', 1, 'Argentina', '1987-11-15', 'Calle Luna 789', 7, 'juan.garcia@example.com', '5567891234', 'I'),
+    ('29451278', '25294512788', 'María', 'Ruiz', 2, 'Argentina', '1990-12-25', 'Calle Sol 123', 8, 'maria.ruiz@example.com', '6678912345', 'A'),
+    ('18765423', '20187654233', 'Ricardo', 'Alonso', 1, 'Argentina', '1992-01-10', 'Calle Norte 234', 9, 'ricardo.alonso@example.com', '7789123456', 'A'),
+    ('31246789', '27312467895', 'Lucía', 'Sánchez', 2, 'Argentina', '1991-04-18', 'Avenida Sur 456', 10, 'lucia.sanchez@example.com', '8891234567', 'I'),
+    ('17564823', '23175648230', 'Diego', 'Herrera', 1, 'Argentina', '1989-03-12', 'Calle Este 678', 11, 'diego.herrera@example.com', '9912345678', 'A'),
+    ('32015478', '25320154788', 'Camila', 'Torres', 2, 'Argentina', '1986-06-22', 'Calle Oeste 789', 12, 'camila.torres@example.com', '1012345678', 'A'),
+    ('14987654', '20149876543', 'Fernando', 'Morales', 1, 'Argentina', '1994-02-17', 'Av. Principal 890', 13, 'fernando.morales@example.com', '1123456789', 'I'),
+    ('12345678', '20123456783', 'Admin', 'Admin', 1, 'Argentina', '1980-01-01', 'Sede Central', 1, 'admin@example.com', '1111111111', 'A'),
+    ('23456789', '20234567893', 'Admin1', 'Admin1', 1, 'Argentina', '1981-01-01', 'Sede Central', 1, 'admin1@example.com', '2222222222', 'A');
+
+INSERT INTO usuarios (dni_cliente, usuario, contraseña, tipo_usuario, estado)
+VALUES 
+    (14012536, 'pedro.ramirez', '1234', 'Cliente', 'A'),
+    (21543689, 'laura.sosa', '1234', 'Cliente', 'A'),
+    (39001234, 'carlos.fernandez', '1234', 'Cliente', 'I'),
+    (17654321, 'ana.martinez', '1234', 'Cliente', 'A'),
+    (24012345, 'luis.gomez', '1234', 'Cliente', 'A'),
+    (36547812, 'sofia.perez', '1234', 'Cliente', 'A'),
+    (15478932, 'juan.garcia', '1234', 'Cliente', 'I'),
+    (29451278, 'maria.ruiz', '1234', 'Cliente', 'A'),
+    (18765423, 'ricardo.alonso', '1234', 'Cliente', 'A'),
+    (31246789, 'lucia.sanchez', '1234', 'Cliente', 'I'),
+    (17564823, 'diego.herrera', '1234', 'Cliente', 'A'),
+    (32015478, 'camila.torres', '1234', 'Cliente', 'A'),
+    (14987654, 'fernando.morales', '1234', 'Cliente', 'I'),
+    (12345678, 'admin', '1234', 'Admin', 'A'),
+    (23456789, 'admin1', '1234', 'Admin', 'A');
+
+
+INSERT INTO cuentas (numero_de_cuenta, dni_cliente, fecha_de_creacion, id_tipo_cuenta, cbu, saldo, estado)
+VALUES 
+    (10000001, 14012536, '2024-01-01', 1, '100000000', 10000.00, 'A'),
+    (10000002, 21543689, '2024-01-02', 1, '100000001', 10000.00, 'A'),
+    (10000003, 39001234, '2024-01-03', 1, '100000002', 10000.00, 'I'),
+    (10000004, 17654321, '2024-01-04', 1, '100000003', 10000.00, 'A'),
+    (10000005, 24012345, '2024-01-05', 1, '100000004', 10000.00, 'A'),
+    (10000006, 36547812, '2024-01-06', 1, '100000005', 10000.00, 'A'),
+    (10000007, 15478932, '2024-01-07', 1, '100000006', 10000.00, 'I'),
+    (10000008, 29451278, '2024-01-08', 1, '100000007', 10000.00, 'A'),
+    (10000009, 18765423, '2024-01-09', 1, '100000008', 10000.00, 'A'),
+    (10000010, 31246789, '2024-01-10', 1, '100000009', 10000.00, 'I'),
+    (10000011, 17564823, '2024-01-11', 1, '100000010', 10000.00, 'A'),
+    (10000012, 32015478, '2024-01-12', 1, '100000011', 10000.00, 'A'),
+    (10000013, 14987654, '2024-01-13', 1, '100000012', 10000.00, 'I'),
+    (10000014, 12345678, '2024-01-14', 1, '100000013', 10000.00, 'A'),
+    (10000015, 23456789, '2024-01-15', 1, '100000014', 10000.00, 'A');
+
+
+INSERT INTO movimientos (numero_de_cuenta, fecha, detalle, importe, id_tipo_movimiento, cuenta_origen, cuenta_destino)
+VALUES
+    ('1000001', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000001'),
+    ('1000002', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000002'),
+    ('1000003', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000003'),
+    ('1000004', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000004'),
+    ('1000005', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000005'),
+    ('1000006', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000006'),
+    ('1000007', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000007'),
+    ('1000008', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000008'),
+    ('1000009', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '1000009'),
+    ('10000010', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000010'),
+    ('10000011', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000011'),
+    ('10000012', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000012'),
+    ('10000013', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000013'),
+    ('10000014', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000014'),
+    ('10000015', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000015'),
+    ('10000016', '2024-12-10', 'Alta de cuenta', 10000.00, 1, 0, '10000016');
