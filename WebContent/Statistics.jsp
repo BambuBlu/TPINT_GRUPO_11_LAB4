@@ -154,9 +154,9 @@ function onRadioChange() {
 	
 				<div id="dateInput" class="hidden">
 				    <label for="fechaDesde">Desde:</label>
-				    <input type="date" id="fechaDesde" name="fechaDesde">
+				    <input type="date" id="fechaDesde" name="fechaDesde" required>
 				    <label for="fechaHasta">Hasta:</label>
-				    <input type="date" id="fechaHasta" name="fechaHasta">
+				    <input type="date" id="fechaHasta" name="fechaHasta" required>
 				</div>
 	
 				<input type="submit" class="btn" value="Solicitar" name="accion">
@@ -190,6 +190,14 @@ function onRadioChange() {
 						<label>Importe monetario movilizado esta ultima semana: $<%= importeMovidoSemana %></label>
 				<%
 					}
+				%>
+				<%
+				    if (request.getAttribute("error") != null) {
+				        String error = (String) request.getAttribute("error");
+				%>
+				        <div class="error"><%= error %></div>
+				<%
+				    }
 				%>
 			</div>
 		</div>

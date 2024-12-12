@@ -602,18 +602,26 @@ public class ServletClienteABM extends HttpServlet {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 			try {
-				java.util.Date fechaDesdeParsed = sdf.parse(fechaDesdeStr);
-				fechaDesdeDate = new java.sql.Date(fechaDesdeParsed.getTime());
+			    if (fechaDesdeStr != null && !fechaDesdeStr.isEmpty()) {
+			        java.util.Date fechaDesdeParsed = sdf.parse(fechaDesdeStr);
+			        fechaDesdeDate = new java.sql.Date(fechaDesdeParsed.getTime());
+			    } else {
+			        throw new java.text.ParseException("Fecha desde no proporcionada", 0);
+			    }
 
-				java.util.Date fechaHastaParsed = sdf.parse(fechaHastaStr);
-				fechaHastaDate = new java.sql.Date(fechaHastaParsed.getTime());
+			    if (fechaHastaStr != null && !fechaHastaStr.isEmpty()) {
+			        java.util.Date fechaHastaParsed = sdf.parse(fechaHastaStr);
+			        fechaHastaDate = new java.sql.Date(fechaHastaParsed.getTime());
+			    } else {
+			        throw new java.text.ParseException("Fecha hasta no proporcionada", 0);
+			    }
 
 			} catch (java.text.ParseException e) {
-				e.printStackTrace();
-				request.setAttribute("error", "Formato de fecha inválido");
-				RequestDispatcher rd = request.getRequestDispatcher("/Statistics.jsp");
-				rd.forward(request, response);
-				return;
+			    e.printStackTrace();
+			    request.setAttribute("error", "Debe ingresar ambas fechas en el formato correcto (yyyy-MM-dd)");
+			    RequestDispatcher rd = request.getRequestDispatcher("/Statistics.jsp");
+			    rd.forward(request, response);
+			    return;
 			}
 
 		}
