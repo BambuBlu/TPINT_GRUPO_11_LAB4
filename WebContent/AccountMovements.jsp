@@ -223,7 +223,8 @@ td {
         function(settings, data, dataIndex) {
             var min = parseFloat($('#min').val()); // Lee la variacion de los inputs
             var max = parseFloat($('#max').val()); // Lee la variacion de los inputs
-            var amount = parseFloat(data[2].replace(/[\$,]/g, '')) || 0;
+            var amount = parseFloat(data[2].replace(/[^\d.-]/g, '')) || 0; // Con signo negativo
+           // var amount = parseFloat(data[2].replace(/[\$,]/g, '')) || 0;
            // var amount = parseFloat(data[2]) || 0; // Columna 2 (monto)
 
             if (
@@ -244,6 +245,17 @@ td {
     });
 });
 
+	new DataTable('#tableMovementsList_id', {
+	    order: [[3, 'asc']],
+	    rowGroup: {
+	        dataSrc: (row) => {
+	            let base = Math.floor(row[3] / 10);
+	 
+	            return base + '0 - ' + base + '9';
+	        }
+	    }
+	});
+	
 </script>
 
 </html>
