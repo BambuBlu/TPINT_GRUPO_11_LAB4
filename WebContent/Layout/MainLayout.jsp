@@ -78,7 +78,7 @@
 <form action="ServletCuentaABM" method="post">
                 <div class="form-group">            
                     <input type="hidden" name="usuarioActualDNI" value="<%= usuarioActual.getCliente().getDni() %>"  >   
-                    <button type="submit" name="accion" value="btnActualizarCuentaEnSesion" class="btn-submit"> XXX </button>    
+                    <button type="submit" name="accion" value="btnActualizarCuentaEnSesion" class="btn-main"> Mi Cuenta </button>    
                 </div>
             </form>
             
