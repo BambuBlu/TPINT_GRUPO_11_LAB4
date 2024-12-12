@@ -15,6 +15,15 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
+	
+	<!-- PARA PAGINACION Y FILTRADO -->
+<link rel="stylesheet" href="/DataTables/datatables.css" />
+ 
+<script src="/DataTables/datatables.js"></script>
+
+<!--  -->
+
+
 <meta charset="UTF-8">
 <title>Movimientos Caja de Ahorro</title>
 <style>
@@ -149,7 +158,13 @@ td {
 
 		<div class="contenedor">
 			<h1>Movimientos de cuentas</h1>
-			<table>
+			
+			<div>
+<label>Desde: <input type="text" id="min" placeholder="Valor mínimo"></label>
+<label>Hasta: <input type="text" id="max" placeholder="Valor máximo"></label>
+</div>
+
+			<table class="tabla" id="tableMovementsList_id">
             <thead>
                 <tr>
                     <th>Fecha</th>
@@ -190,5 +205,45 @@ td {
         </table>
 		</div>
 	</div>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 </body>
+
+<script type="text/javascript">
+	$(document).ready(function() { //  Inicializo tabla
+		var table = $('#tableMovementsList_id').DataTable({
+	        scrollY: 'auto',
+	        paging: true,
+	        searching: true,
+	        info: false
+	    });
+
+	 // Función de filtrado personalizada (rangos)
+    $.fn.dataTable.ext.search.push( // genero filtro personalizado.
+        function(settings, data, dataIndex) {
+            var min = parseFloat($('#min').val()); // Lee la variacion de los inputs
+            var max = parseFloat($('#max').val()); // Lee la variacion de los inputs
+            var amount = parseFloat(data[2].replace(/[\$,]/g, '')) || 0;
+           // var amount = parseFloat(data[2]) || 0; // Columna 2 (monto)
+
+            if (
+                (isNaN(min) && isNaN(max)) || // Sin rango
+                (isNaN(min) && amount <= max) || // Solo máximo
+                (min <= amount && isNaN(max)) || // Solo mínimo
+                (min <= amount && amount <= max) // Dentro del rango
+            ) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    // Evento para aplicar el filtro cuando cambian los valores
+    $('#min, #max').on('keyup change', function() {
+        table.draw();
+    });
+});
+
+</script>
+
 </html>
