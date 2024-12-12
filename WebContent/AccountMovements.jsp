@@ -17,9 +17,21 @@
 	crossorigin="anonymous"></script>
 	
 	<!-- PARA PAGINACION Y FILTRADO -->
-<link rel="stylesheet" href="/DataTables/datatables.css" />
+	<link rel="stylesheet" href="/DataTables/datatables.css" />
  
-<script src="/DataTables/datatables.js"></script>
+  <!-- Estilos de RowGroup -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowgroup/1.0.0/css/rowGroup.dataTables.min.css">
+    
+    	 <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    
+     <!-- RowGroup -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/rowgroup/1.0.0/js/dataTables.rowGroup.min.js"></script>
+     <!-- Datable -->
+	<script src="/DataTables/datatables.js"></script>
+	
+
 
 <!--  -->
 
@@ -245,16 +257,7 @@ td {
     });
 });
 
-	new DataTable('#tableMovementsList_id', {
-	    order: [[3, 'asc']],
-	    rowGroup: {
-	        dataSrc: (row) => {
-	            let base = Math.floor(row[3] / 10);
-	 
-	            return base + '0 - ' + base + '9';
-	        }
-	    }
-	});
+
 	
 </script>
 
